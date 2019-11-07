@@ -19,7 +19,7 @@ app.stage.addChild(inventory)
 function init () {
   let sheet = loader.resources.sheet
   let spr = new PIXI.Sprite(sheet.textures['bricks'])
-  app.stage.addChild(spr)
+  inventory.addItem(spr)
 }
 
 window.addEventListener('resize', resize)
