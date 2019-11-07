@@ -1,6 +1,7 @@
 const app = new PIXI.Application({
   autoResize: true,
-  resolution: devicePixelRatio
+  resolution: devicePixelRatio,
+  backgroundColor: 0x08151b,
 })
 document.body.appendChild(app.view)
 app.renderer.view.style.position = 'absolute'
