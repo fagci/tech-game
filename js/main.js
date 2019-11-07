@@ -4,22 +4,23 @@ const app = new PIXI.Application({
 })
 document.body.appendChild(app.view)
 
+let loader = PIXI.Loader.shared
+loader.add('sheet', 'assets/ss.json')
+loader.load(init)
 
+function init () {
+  let sheet = loader.resources.sheet
+  let spr = new PIXI.Sprite(sheet.textures['bricks'])
+  const inventory = new Inventory(8)
 
-let loader = PIXI.Loader.shared;
-loader.add('sheet', 'assets/ss.json');
-loader.load(init);
-
-function init() {
-  let sheet = loader.resources.sheet;
-  let spr = new PIXI.Sprite(sheet.textures['bricks']);
-  app.stage.addChild(spr);
+  app.stage.addChild(spr)
+  app.stage.addChild(inventory)
 }
-
-
 
 window.addEventListener('resize', resize)
-function resize() {
+
+function resize () {
   app.renderer.resize(window.innerWidth, window.innerHeight)
 }
+
 resize()
