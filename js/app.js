@@ -8,6 +8,5 @@ class App extends PIXI.Application {
     document.body.appendChild(this.view)
     this.renderer.view.style.position = 'absolute'
     this.renderer.view.style.display = 'block'
-
   }
 }
