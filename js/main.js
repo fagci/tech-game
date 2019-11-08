@@ -26,8 +26,8 @@ window.addEventListener('resize', resize)
 
 function resize () {
   app.renderer.resize(window.innerWidth, window.innerHeight)
-  inventory.x = app.renderer.view.width / 2
-  inventory.y = app.renderer.view.height
+  inventory.x = app.renderer.width / 2
+  inventory.y = app.renderer.height
 }
 
 resize()
