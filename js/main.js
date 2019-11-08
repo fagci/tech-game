@@ -1,12 +1,13 @@
 const app = new PIXI.Application({
-  autoResize: true,
-  resolution: devicePixelRatio,
+  resolution: window.devicePixelRatio,
+  autoDensity: true,
   backgroundColor: 0x08151b,
+  resizeTo: window,
 })
+
 document.body.appendChild(app.view)
 app.renderer.view.style.position = 'absolute'
 app.renderer.view.style.display = 'block'
-app.renderer.autoDensity = true
 
 let loader = PIXI.Loader.shared
 loader.add('sheet', 'assets/ss.json')
@@ -25,9 +26,8 @@ function init () {
 window.addEventListener('resize', resize)
 
 function resize () {
-  app.renderer.resize(window.innerWidth, window.innerHeight)
-  inventory.x = app.renderer.width / 2
-  inventory.y = app.renderer.height
+  inventory.x = app.screen.width / 2
+  inventory.y = app.screen.height
 }
 
 resize()
