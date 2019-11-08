@@ -13,8 +13,7 @@ loader.add('sheet', 'assets/ss.json')
 loader.load(init)
 
 let inventory = new Inventory(8)
-inventory.pivot.x = inventory.width / 2
-inventory.pivot.y = inventory.height
+inventory.pivot.set(inventory.width / 2, inventory.height)
 app.stage.addChild(inventory)
 
 function init () {
