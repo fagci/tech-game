@@ -1,6 +1,7 @@
 class GUI extends PIXI.Container {
   constructor(app) {
     super()
+    this.app = app
 
     const crosshair = new PIXI.Container()
     const cp = new PIXI.Graphics()
@@ -14,9 +15,9 @@ class GUI extends PIXI.Container {
     cp.endFill()
     
     crosshair.pivot.set(5,5)
-    crosshair.position.set((app.renderer.width / 2) | 0,(app.renderer.height / 2) | 0)
 
     crosshair.addChild(cp)
+    this.crosshair = crosshair
     this.addChild(crosshair)
     
 
@@ -27,7 +28,8 @@ class GUI extends PIXI.Container {
   }
 
   resize() {
-    this.inventory.x = app.screen.width / 2
-    this.inventory.y = app.screen.height
+    this.inventory.x = this.app.screen.width / 2
+    this.inventory.y = this.app.screen.height
+    this.crosshair.position.set((this.app.renderer.width / 2) | 0,(this.app.renderer.height / 2) | 0)
   }
 }
