@@ -7,6 +7,10 @@ const gui = new GUI(app)
 app.stage.addChild(game)
 app.stage.addChild(gui)
 
+
+const crtFilter = new PIXI.filters.CRTFilter()
+app.stage.filters =[crtFilter]
+
 const go = new GameObject()
 go.position.set(128,128)
 game.map.addChild(go)
