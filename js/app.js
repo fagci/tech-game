@@ -1,5 +1,5 @@
 class App extends PIXI.Application {
-  constructor () {
+  constructor() {
     super({
       backgroundColor: 0x08151b,
       resizeTo: window,
