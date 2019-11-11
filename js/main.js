@@ -7,12 +7,8 @@ const gui = new GUI(app)
 app.stage.addChild(game)
 app.stage.addChild(gui)
 
-
-const crtFilter = new PIXI.filters.CRTFilter()
-app.stage.filters =[crtFilter]
-
 const go = new GameObject()
-go.position.set(128,128)
+go.position.set(128, 128)
 game.map.addChild(go)
 
 const t = new PIXI.Text('---', { fontSize: 16, fill: 0xffffff })
@@ -25,13 +21,12 @@ window.addEventListener('drag', e => {
     game.moveCamera(-e.dx, -e.dy)
 })
 
-function gameLoop(delta) {
-  controls.update()
+function gameLoop (delta) {
   play()
 }
 
-function play() {
-  let dx = 0, dy = 0;
+function play () {
+  let dx = 0, dy = 0
   if (controls.getKeyDown([38, 87])) dy -= 1
   if (controls.getKeyDown([40, 83])) dy += 1
   if (controls.getKeyDown([37, 65])) dx -= 1

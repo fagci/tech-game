@@ -1,5 +1,5 @@
 class Game extends PIXI.Container {
-  constructor(app, opt) {
+  constructor (app, opt) {
     super()
     this.camera = new PIXI.Container()
     this.app = app
@@ -23,38 +23,22 @@ class Game extends PIXI.Container {
     this.bg = new PIXI.TilingSprite(bgT, 1024, 1024)
     this.addChild(this.bg)
     this.updateCamera()
-
-    const blurFilter = new PIXI.filters.BlurFilter();
-    blurFilter.quality = 16
-    this.filters = [blurFilter];
-
-    this.app.ticker.add(this.animate)
   }
 
-
-  animate = (t) => {
-    this.filters[0].blur *= 0.7
-  }
-
-
-  updateCamera() {
-    const RW2 = this.app.renderer.width / 2;
-    const RH2 = this.app.renderer.height / 2;
+  updateCamera () {
+    const RW2 = this.app.renderer.width / 2
+    const RH2 = this.app.renderer.height / 2
     this.position.set(RW2 | 0, RH2 | 0)
   }
 
-  setCameraPosition(x, y) {
+  setCameraPosition (x, y) {
     this.camera.position.set(x, y)
     this.pivot.copyFrom(this.camera.position)
   }
 
-
-
-  moveCamera(dx, dy) {
+  moveCamera (dx, dy) {
     let cx = this.camera.position.x
     let cy = this.camera.position.y
-
-    this.filters[0].blur = Math.sqrt(dx*dx + dy*dy) * 0.1
 
     cx += dx
     cy += dy

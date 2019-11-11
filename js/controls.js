@@ -1,5 +1,5 @@
 class Controls {
-  constructor() {
+  constructor () {
     this._keyDown = {}
     this._mouseDown = {}
     this._isMouseDown = false
@@ -22,10 +22,10 @@ class Controls {
   }
 
   getKeyDown = (key) => {
-    if(key instanceof Array) {
+    if (key instanceof Array) {
       return key.filter(e => this._keyDown[e]).length
     }
-    
+
     return !!this._keyDown[key]
   }
 
@@ -58,9 +58,5 @@ class Controls {
     event.dx = deltaX
     event.dy = deltaY
     window.dispatchEvent(event)
-  }
-
-  update() {
-
   }
 }
