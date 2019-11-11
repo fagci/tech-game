@@ -1,12 +1,9 @@
 class Game extends PIXI.Container {
   constructor (app, opt) {
     super()
-    this.camera = new PIXI.Container()
     this.app = app
+    this.camera = new PIXI.Container()
     this.map = new PIXI.Container()
-
-    this.map.width = 1024
-    this.map.height = 1024
 
     this.addChild(this.map)
 
@@ -14,16 +11,20 @@ class Game extends PIXI.Container {
 
     bgG.lineStyle(1, 0x666666)
     bgG.moveTo(0, 0)
-    bgG.lineTo(0, 32)
+    bgG.lineTo(0, 31)
     bgG.moveTo(0, 0)
-    bgG.lineTo(32, 0)
+    bgG.lineTo(31, 0)
 
     let bgT = this.app.renderer.generateTexture(bgG)
 
-    this.bg = new PIXI.TilingSprite(bgT, 1024, 1024)
+    this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
     this.addChild(this.bg)
     this.updateCamera()
+
+    this.app.ticker.add(this.gameLoop)
   }
+
+  gameLoop = (t) => this.map.children.forEach(c => c.update && c.update(t))
 
   updateCamera () {
     const RW2 = this.app.renderer.width / 2

@@ -1,5 +1,5 @@
 class GameObject extends PIXI.Graphics {
-  constructor() {
+  constructor () {
     super()
 
     this.lineStyle(1, 0x1D313B)
@@ -7,9 +7,13 @@ class GameObject extends PIXI.Graphics {
     this.drawRect(0, 0, 32, 32)
     this.endFill()
 
+    this.pivot.set(0, 0)
+
     this.text = new PIXI.Text('', { fontSize: 8, fill: 0x00FF00 })
     this.addChild(this.text)
 
-    this.text.text = `${this.position.x | 0},${this.position.y | 0}`
+    this.on('added', function() {
+      this.text.text = `${this.position.x | 0},${this.position.y | 0}`
+    })
   }
 }
