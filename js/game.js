@@ -5,22 +5,21 @@ class Game extends PIXI.Container {
     this.camera = new PIXI.Container()
     this.map = new PIXI.Container()
 
-    this.addChild(this.map)
-
     let bgG = new PIXI.Graphics()
 
-    bgG.lineStyle(1, 0x666666)
+    bgG.lineStyle(1, 0x444444)
     bgG.moveTo(0, 0)
     bgG.lineTo(0, 31)
     bgG.moveTo(0, 0)
     bgG.lineTo(31, 0)
 
     let bgT = this.app.renderer.generateTexture(bgG)
-
     this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
-    this.addChild(this.bg)
-    this.updateCamera()
 
+    this.addChild(this.bg)
+    this.addChild(this.map)
+
+    this.updateCamera()
     this.app.ticker.add(this.gameLoop)
   }
 
