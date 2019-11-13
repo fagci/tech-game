@@ -39,7 +39,7 @@ class InventorySlot extends PIXI.Graphics {
       let item = this.items[0]
       this.itemSprite = item
 
-      item.anchor.set(.5)
+      item.pivot.set(item.width/2, item.height/2)
 
       item.x = this.w / 2
       item.y = this.h / 2
@@ -49,35 +49,6 @@ class InventorySlot extends PIXI.Graphics {
       // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
       item.buttonMode = true
 
-      function onDragStart (event) {
-        this.data = event.data
-        this.alpha = 0.5
-        this.dragging = true
-      }
-
-      function onDragEnd () {
-        this.alpha = 1
-        this.dragging = false
-        this.data = null
-      }
-
-      function onDragMove () {
-        if (this.dragging) {
-          let newPosition = this.data.getLocalPosition(this.parent)
-          this.position.x = newPosition.x
-          this.position.y = newPosition.y
-        }
-      }
-
-      item
-        .on('mousedown', onDragStart)
-        .on('touchstart', onDragStart)
-        .on('mouseup', onDragEnd)
-        .on('mouseupoutside', onDragEnd)
-        .on('touchend', onDragEnd)
-        .on('touchendoutside', onDragEnd)
-        .on('mousemove', onDragMove)
-        .on('touchmove', onDragMove)
 
       this.addChild(item) // TODO: make container, draw above
     }
@@ -91,5 +62,22 @@ class InventorySlot extends PIXI.Graphics {
     }
     this.draw()
   }
+}
 
+class InventoryItem extends PIXI.Graphics {
+  constructor () {
+    super()
+
+    this.lineStyle(1, 0x00ff00)
+    this.beginFill(0x0)
+    this.drawRect(0, 0, 32, 32)
+    this.endFill()
+
+    this.text = new PIXI.Text('', { fontSize: 8, fill: 0x00FF00 })
+    this.addChild(this.text)
+
+    this.on('added', function() {
+      this.text.text = `${this.position.x | 0},${this.position.y | 0}\n${this.name}`
+    })
+  }
 }

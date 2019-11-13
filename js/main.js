@@ -11,6 +11,9 @@ const go = new GameObject()
 go.position.set(128, 128)
 game.map.addChild(go)
 
+const invItem = new InventoryItem()
+gui.inventory.addItem(invItem)
+
 const t = new PIXI.Text('---', { fontSize: 16, fill: 0xffffff })
 app.stage.addChild(t)
 

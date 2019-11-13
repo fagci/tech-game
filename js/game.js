@@ -37,17 +37,16 @@ class Game extends PIXI.Container {
   }
 
   moveCamera (dx, dy) {
-    let cx = this.camera.position.x
-    let cy = this.camera.position.y
+    let {x, y} = this.camera.position
 
-    cx += dx
-    cy += dy
+    x += dx
+    y += dy
 
-    if (cx < 0) cx = 0
-    if (cy < 0) cy = 0
-    if (cx > this.width) cx = this.width
-    if (cy > this.height) cy = this.height
+    if (x < 0) x = 0
+    if (y < 0) y = 0
+    if (x > this.width) x = this.width
+    if (y > this.height) y = this.height
 
-    this.setCameraPosition(cx | 0, cy | 0)
+    this.setCameraPosition(x | 0, y | 0)
   }
 }

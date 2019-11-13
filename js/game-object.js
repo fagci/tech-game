@@ -7,8 +7,6 @@ class GameObject extends PIXI.Graphics {
     this.drawRect(0, 0, 32, 32)
     this.endFill()
 
-    this.pivot.set(0, 0)
-
     this.text = new PIXI.Text('', { fontSize: 8, fill: 0x00FF00 })
     this.addChild(this.text)
 
