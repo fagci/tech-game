@@ -5,15 +5,44 @@
 class Inventory extends PIXI.Container {
   constructor (slotsCount) {
     super()
+    this.slots = new PIXI.Container()
+
+    this.detailsView = new PIXI.Container()
+    this.detailsViewText = new PIXI.Text('No description', { fontSize: 8, fill: 0xffffff })
+
     for (let i = 0; i < slotsCount; i++) {
       let slotSquare = new InventorySlot()
       slotSquare.x = slotSquare.w * i
-      this.addChild(slotSquare)
+      this.slots.addChild(slotSquare)
     }
+
+    const detailsViewBg = new PIXI.Graphics()
+
+    detailsViewBg.lineStyle(1, 0xff0000)
+    detailsViewBg.beginFill(0x0000ff)
+    detailsViewBg.drawRect(0, 0, this.slots.width, this.height)
+    detailsViewBg.endFill()
+
+    this.detailsViewBg = detailsViewBg
+
+    this.detailsView.addChild(this.detailsViewBg)
+    this.detailsView.addChild(this.detailsViewText)
+    this.detailsView.pivot.set(0, this.detailsView.height)
+
+    this.addChild(this.slots)
+    this.addChild(this.detailsView)
+
+    this.slots.on('click', e => {
+      console.log(e.target)
+      if (e.target instanceof InventoryItem) {
+        this.detailsView.pivot.set(0, this.detailsView.height)
+        this.detailsViewText.text = e.target.details
+      }
+    })
   }
 
   addItem (item) {
-    this.children[0].addItem(item)
+    this.slots.children[0].addItem(item)
   }
 }
 
@@ -39,7 +68,7 @@ class InventorySlot extends PIXI.Graphics {
       let item = this.items[0]
       this.itemSprite = item
 
-      item.pivot.set(item.width/2, item.height/2)
+      item.pivot.set(item.width / 2, item.height / 2)
 
       item.x = this.w / 2
       item.y = this.h / 2
@@ -48,7 +77,6 @@ class InventorySlot extends PIXI.Graphics {
 
       // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
       item.buttonMode = true
-
 
       this.addChild(item) // TODO: make container, draw above
     }
@@ -68,6 +96,8 @@ class InventoryItem extends PIXI.Graphics {
   constructor () {
     super()
 
+    this.description = 'Base inventory item. Does nothing.'
+
     this.lineStyle(1, 0x00ff00)
     this.beginFill(0x0)
     this.drawRect(0, 0, 32, 32)
@@ -76,7 +106,7 @@ class InventoryItem extends PIXI.Graphics {
     this.text = new PIXI.Text('', { fontSize: 8, fill: 0x00FF00 })
     this.addChild(this.text)
 
-    this.on('added', function() {
+    this.on('added', function () {
       this.text.text = `${this.position.x | 0},${this.position.y | 0}\n${this.name}`
     })
   }
