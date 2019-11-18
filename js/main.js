@@ -7,9 +7,13 @@ const gui = new GUI(app)
 app.stage.addChild(game)
 app.stage.addChild(gui)
 
-const go = new GameObject()
-go.position.set(128, 128)
-game.map.addChild(go)
+const go1 = new GameObject()
+go1.position.set(128, 128)
+game.map.addChild(go1)
+
+const go2 = new GameObject()
+go2.position.set(256, 64)
+game.map.addChild(go2)
 
 const invItem = new InventoryItem()
 gui.inventory.addItem(invItem)

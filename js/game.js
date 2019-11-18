@@ -16,14 +16,24 @@ class Game extends PIXI.Container {
     let bgT = this.app.renderer.generateTexture(bgG)
     this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
 
+    this.laserLayer = new PIXI.Graphics()
+
     this.addChild(this.bg)
     this.addChild(this.map)
+    this.addChild(this.laserLayer)
 
     this.updateCamera()
     this.app.ticker.add(this.gameLoop)
+
+    this.interactive = true
+    this.on('click', e => {
+      console.log('From game:', e.type, e.target)
+    })
   }
 
-  gameLoop = (t) => this.map.children.forEach(c => c.update && c.update(t))
+  gameLoop = (t) => {
+    this.map.children.forEach(c => {c.update && c.update(t)})
+  }
 
   updateCamera () {
     const RW2 = this.app.renderer.width / 2
@@ -37,7 +47,7 @@ class Game extends PIXI.Container {
   }
 
   moveCamera (dx, dy) {
-    let {x, y} = this.camera.position
+    let { x, y } = this.camera.position
 
     x += dx
     y += dy
