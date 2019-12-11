@@ -8,12 +8,12 @@ class Game extends PIXI.Container {
     let bgG = new PIXI.Graphics()
 
     bgG.lineStyle(1, 0x444444)
-    bgG.beginFill(0x6688aa)
-    bgG.drawRect(0, 0, 32, 32)
-    bgG.endFill()
+    bgG.moveTo(0, 31)
+    bgG.lineTo(0, 0)
+    bgG.lineTo(31, 0)
 
     let bgT = this.app.renderer.generateTexture(bgG)
-    bgT.setSize(31, 31)
+    // bgT.setSize(31, 31)
     this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
 
     this.laserLayer = new PIXI.Graphics()
@@ -32,7 +32,7 @@ class Game extends PIXI.Container {
   }
 
   gameLoop = (t) => {
-    this.map.children.forEach(c => {c.update && c.update(t)})
+    this.map.children.forEach(c => c.update && c.update(t))
   }
 
   updateCamera () {
