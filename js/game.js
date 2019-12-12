@@ -1,21 +1,14 @@
 class Game extends PIXI.Container {
   constructor (app) {
     super()
-    console.log('Game init start')
-
     this.app = app
-    this.stateManager = new StateManager(app)
-    console.log('Game init end')
+    this.stateManager = new StateManager(this)
   }
 
-  update () {
-    this.stateManager.update()
-  }
+  update = time => this.stateManager.update(time)
 
   start () {
-    console.log('Game start')
     this.stateManager.push(new TestState(this.app))
     this.app.ticker.add(this.update)
-    console.log('Game end')
   }
 }

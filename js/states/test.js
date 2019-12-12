@@ -14,7 +14,6 @@ class TestState extends State {
     bgG.lineTo(31, 0)
 
     let bgT = this.app.renderer.generateTexture(bgG)
-    // bgT.setSize(31, 31)
     this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
 
     this.laserLayer = new PIXI.Graphics()
@@ -47,10 +46,18 @@ class TestState extends State {
 
     this.t = new PIXI.Text('---', { fontSize: 16, fill: 0xffffff })
     this.addChild(this.t)
+
+    window.addEventListener('resize', () => {
+      gui.resize()
+      this.updateCamera()
+    })
+    window.addEventListener('drag', e => {
+      if (e.dx !== 0 || e.dy !== 0)
+        this.moveCamera(-e.dx, -e.dy)
+    })
   }
 
   update = (time) => {
-    this.map.children.forEach(c => c.update && c.update(time))
     let dx = 0, dy = 0
     if (this.controls.getKeyDown([38, 87])) dy -= 1
     if (this.controls.getKeyDown([40, 83])) dy += 1
@@ -61,6 +68,8 @@ class TestState extends State {
       const div = Math.sqrt(dx * dx + dy * dy) / 10.0
       this.moveCamera(dx / div, dy / div)
     }
+
+    this.map.children.forEach(c => c.update && c.update(time))
 
     this.t.text = `Camera pos: ${this.camera.position.x},${this.camera.position.y}`
   }
