@@ -42,9 +42,6 @@ class TestState extends State {
         gui.inventory.addItem(invItem)
         this.app.stage.addChild(gui)
 
-        this.t = new PIXI.Text('---', { fontSize: 16, fill: 0xffffff })
-        this.addChild(this.t)
-
         window.addEventListener('resize', () => {
             gui.resize()
             this.updateCamera()
@@ -69,8 +66,6 @@ class TestState extends State {
         }
 
         this.map.children.forEach(c => c.update && c.update(time))
-
-        this.t.text = `Camera pos: ${this.camera.position.x},${this.camera.position.y}`
     }
 
     updateCamera() {
