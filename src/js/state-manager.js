@@ -11,9 +11,9 @@ export default class StateManager extends Array {
     return this.length ? this[this.length - 1] : null
   }
 
-  update () {
+  update (time) {
     const state = this.top()
-    if (state && state.update) state.update()
+    if (state && state.update) state.update(time)
   };
 
   render () {

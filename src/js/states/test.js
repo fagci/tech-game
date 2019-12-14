@@ -62,10 +62,10 @@ export default class TestState extends State {
     update = (time) => {
         let dx = 0,
             dy = 0
-        if (this.controls.getKeyDown([38, 87])) dy -= 1
-        if (this.controls.getKeyDown([40, 83])) dy += 1
-        if (this.controls.getKeyDown([37, 65])) dx -= 1
-        if (this.controls.getKeyDown([39, 68])) dx += 1
+        if (this.controls.getKeyDown([38, 87])) dy -= time
+        if (this.controls.getKeyDown([40, 83])) dy += time
+        if (this.controls.getKeyDown([37, 65])) dx -= time
+        if (this.controls.getKeyDown([39, 68])) dx += time
 
         if (dx !== 0 || dy !== 0) {
             const div = Math.sqrt(dx * dx + dy * dy) / 10.0
