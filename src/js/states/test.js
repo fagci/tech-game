@@ -1,4 +1,11 @@
-class TestState extends State {
+import * as PIXI from 'pixi.js'
+import Controls from '../controls'
+import State from '../state'
+import GameObject from '../game-object'
+import GUI from '../gui'
+import {InventoryItem} from '../inventory'
+
+export default class TestState extends State {
     constructor(app) {
         super(app)
         this.controls = new Controls()

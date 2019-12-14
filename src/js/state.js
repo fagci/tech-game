@@ -1,4 +1,6 @@
-class State extends PIXI.Container {
+import * as PIXI from 'pixi.js'
+
+export default class State extends PIXI.Container {
   /**
    * @param {PIXI.Application} app
    */

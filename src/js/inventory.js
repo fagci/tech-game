@@ -1,8 +1,10 @@
+import * as PIXI from 'pixi.js'
+
 /**
  * @class Inventory
  */
 
-class Inventory extends PIXI.Container {
+export default class Inventory extends PIXI.Container {
   constructor (slotsCount) {
     super()
     this.slots = new PIXI.Container()
@@ -46,7 +48,7 @@ class Inventory extends PIXI.Container {
   }
 }
 
-class InventorySlot extends PIXI.Graphics {
+export class InventorySlot extends PIXI.Graphics {
   constructor (size) {
     super()
     const SLOT_SIZE = size || 48
@@ -92,7 +94,7 @@ class InventorySlot extends PIXI.Graphics {
   }
 }
 
-class InventoryItem extends PIXI.Graphics {
+export class InventoryItem extends PIXI.Graphics {
   constructor () {
     super()
 

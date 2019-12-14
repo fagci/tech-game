@@ -1,4 +1,8 @@
-class GUI extends PIXI.Container {
+import * as PIXI from 'pixi.js'
+import Inventory from './inventory'
+
+
+export default class GUI extends PIXI.Container {
   constructor(app) {
     super()
     this.app = app

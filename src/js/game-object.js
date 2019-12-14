@@ -1,4 +1,6 @@
-class GameObject extends PIXI.Graphics {
+import * as PIXI from 'pixi.js'
+
+export default class GameObject extends PIXI.Graphics {
   constructor () {
     super()
 

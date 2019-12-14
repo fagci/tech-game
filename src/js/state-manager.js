@@ -1,4 +1,4 @@
-class StateManager extends Array {
+export default class StateManager extends Array {
   /**
    * @param {Game} container
    */
