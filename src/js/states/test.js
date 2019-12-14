@@ -12,20 +12,30 @@ export default class TestState extends State {
         this.camera = new PIXI.Container()
         this.map = new PIXI.Container()
 
-        let bgG = new PIXI.Graphics()
+        const bgG = new PIXI.Graphics()
 
-        bgG.lineStyle(1, 0x444444)
-        bgG.moveTo(0, 31)
-        bgG.lineTo(0, 0)
-        bgG.lineTo(31, 0)
+        bgG.lineStyle(0)
+        bgG.beginFill(0,0)
+        bgG.drawRect(0,0,32,32)
+        bgG.endFill()
+        bgG.lineStyle(1, 0x888888)
+        bgG.drawCircle(0,0,0.25)
 
-        let bgT = this.app.renderer.generateTexture(bgG)
-        this.bg = new PIXI.TilingSprite(bgT, 1025, 1025)
+        const bgMap = new PIXI.Graphics()
+        bgMap.lineStyle(1, 0x888888)
+        bgMap.beginFill(0x002233)
+        bgMap.drawRect(0,0,1024,1024)
+        bgMap.endFill()
+
+
+        const bgT = this.app.renderer.generateTexture(bgG)
+        const bgGrid = new PIXI.TilingSprite(bgT, 1024, 1024)
 
         this.laserLayer = new PIXI.Graphics()
 
         this.addChild(this.map)
-        this.map.addChild(this.bg)
+        this.map.addChild(bgMap)
+        this.map.addChild(bgGrid)
         this.map.addChild(this.laserLayer)
 
         this.updateCamera()
@@ -48,6 +58,11 @@ export default class TestState extends State {
 
         gui.inventory.addItem(invItem)
         this.app.stage.addChild(gui)
+
+
+        this.drone = new Drone()
+        this.drone.position.set(100,100)
+        this.map.addChild(this.drone)
 
         window.addEventListener('resize', () => {
             gui.resize()
@@ -78,7 +93,7 @@ export default class TestState extends State {
     updateCamera() {
         const RW2 = this.app.renderer.width / 2
         const RH2 = this.app.renderer.height / 2
-        this.position.set(RW2 | 0, RH2 | 0)
+        this.position.set(RW2, RH2)
     }
 
     setCameraPosition(x, y) {
@@ -92,11 +107,26 @@ export default class TestState extends State {
         x += dx
         y += dy
 
-        if (x < 0) x = 0
-        if (y < 0) y = 0
+        if (x < 0) x = 0.0
+        if (y < 0) y = 0.0
         if (x > this.map.width) x = this.map.width
         if (y > this.map.height) y = this.map.height
 
-        this.setCameraPosition(x | 0, y | 0)
+        this.setCameraPosition(x, y)
     }
+}
+
+class Drone extends PIXI.Sprite {
+  constructor() {
+    super()
+
+    const g =new PIXI.Graphics()
+    g.lineStyle(2,0x00ff00);
+    g.moveTo(0,0)
+    g.lineTo(30,15)
+    g.lineTo(0,30)
+    this.addChild(g)
+
+    this.anchor.set(0.5)
+  }
 }
