@@ -1,0 +1,27 @@
+{
+  "name": "tech-game",
+  "version": "0.0.1",
+  "description": "Tech game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html",
+    "prebuild": "rm -rf dist",
+    "build": "parcel build src/index.html --public-url '.'"
+  },
+  "repository": "git+https://github.com/fagcinsk/tech-game.git",
+  "author": "Mikhail Yudin aka fagci",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fagcinsk/tech-game/issues"
+  },
+  "homepage": "https://github.com/fagcinsk/tech-game#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0"
+  },
+  "dependencies": {
+    "pixi.js": "^5.2.0"
+  }
+}
