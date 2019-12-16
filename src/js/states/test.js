@@ -18,13 +18,14 @@ export default class TestState extends State {
         bgG.beginFill(0,0)
         bgG.drawRect(0,0,32,32)
         bgG.endFill()
-        bgG.lineStyle(1, 0x888888)
-        bgG.drawCircle(0,0,0.25)
+        bgG.lineStyle(0, 0)
+        bgG.beginFill(0x888888)
+        bgG.drawRect(0,0,1,1)
 
         const bgMap = new PIXI.Graphics()
-        bgMap.lineStyle(1, 0x888888)
+        bgMap.lineStyle(1, 0x888888, 1.0, 1.0)
         bgMap.beginFill(0x002233)
-        bgMap.drawRect(0,0,1024,1024)
+        bgMap.drawRect(1,1,1023,1023)
         bgMap.endFill()
 
 
