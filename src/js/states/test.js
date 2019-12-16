@@ -14,7 +14,7 @@ export default class TestState extends State {
 
     const bgG = new PIXI.Graphics()
 
-    bgG.lineStyle(0)
+    bgG.lineStyle(0, 0, 1, 0)
     bgG.beginFill(0, 0)
     bgG.drawRect(0, 0, 32, 32)
     bgG.endFill()
@@ -25,11 +25,11 @@ export default class TestState extends State {
     const bgMap = new PIXI.Graphics()
     bgMap.lineStyle(1, 0x888888, 1.0, 0)
     bgMap.beginFill(0x002233)
-    bgMap.drawRect(0, 0, 1024, 1024)
+    bgMap.drawRect(0, 0, 1025, 1025)
     bgMap.endFill()
 
     const bgT = this.app.renderer.generateTexture(bgG)
-    const bgGrid = new PIXI.TilingSprite(bgT, 1024, 1024)
+    const bgGrid = new PIXI.TilingSprite(bgT, 1025, 1025)
 
     this.laserLayer = new PIXI.Graphics()
 
