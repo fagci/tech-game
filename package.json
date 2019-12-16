@@ -22,6 +22,7 @@
     "babel-preset-env": "^1.7.0"
   },
   "dependencies": {
+    "pixi-viewport": "^4.4.1",
     "pixi.js": "^5.2.0"
   }
 }

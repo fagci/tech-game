@@ -3,47 +3,53 @@ import Controls from '../controls'
 import State from '../state'
 import GameObject from '../game-object'
 import GUI from '../gui'
-import { InventoryItem } from '../inventory'
+import {InventoryItem} from '../inventory'
+
+import {Viewport} from 'pixi-viewport'
 
 export default class TestState extends State {
-  constructor (app) {
+  constructor(app) {
     super(app)
     this.controls = new Controls()
-    this.camera = new PIXI.Container()
     this.map = new PIXI.Container()
+
+    this.viewport = new Viewport({
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      worldWidth: 1024,
+      worldHeight: 1024,
+      interaction: app.renderer.plugins.interaction
+    })
+
+    this.addChild(this.viewport)
+
+    this.viewport
+      .drag({clampWheel: true, mouseButtons: 'left'})
+      .pinch()
+      .wheel()
+      .decelerate()
+      .clampZoom({
+        minHeight: app.renderer.screen.height / 4,
+        minWidth: app.renderer.screen.width / 4,
+        maxHeight: app.renderer.screen.height * 4,
+        maxWidth: app.renderer.screen.width * 4,
+      })
+      .clamp({ direction: 'all' })
 
     const bgG = new PIXI.Graphics()
 
     bgG.lineStyle(0, 0, 1, 0)
-    bgG.beginFill(0, 0)
-    bgG.drawRect(0, 0, 32, 32)
-    bgG.endFill()
-    bgG.lineStyle(0, 0)
-    bgG.beginFill(0x888888)
-    bgG.drawRect(0, 0, 1, 1)
+    bgG.beginFill(0x888888), bgG.drawRect(0, 0, 64, 64), bgG.endFill()
+    bgG.beginFill(0x444444), bgG.drawRect(0, 0, 32, 32), bgG.endFill()
+    bgG.beginFill(0x444444), bgG.drawRect(32, 32, 32, 32), bgG.endFill()
 
-    const bgMap = new PIXI.Graphics()
-    bgMap.lineStyle(1, 0x888888, 1.0, 0)
-    bgMap.beginFill(0x002233)
-    bgMap.drawRect(0, 0, 1025, 1025)
-    bgMap.endFill()
 
     const bgT = this.app.renderer.generateTexture(bgG)
-    const bgGrid = new PIXI.TilingSprite(bgT, 1025, 1025)
+    const bgGrid = new PIXI.TilingSprite(bgT, 1024, 1024)
 
-    this.laserLayer = new PIXI.Graphics()
 
-    this.addChild(this.map)
-    this.map.addChild(bgMap)
+    this.viewport.addChild(this.map)
     this.map.addChild(bgGrid)
-    this.map.addChild(this.laserLayer)
-
-    this.updateCamera()
-
-    this.interactive = true
-    this.on('click', e => {
-      console.log('From test:', e.type, e.target)
-    })
 
     const go1 = new GameObject()
     go1.position.set(128, 128)
@@ -57,7 +63,7 @@ export default class TestState extends State {
     const gui = new GUI(app)
 
     gui.inventory.addItem(invItem)
-    this.app.stage.addChild(gui)
+    this.addChild(gui)
 
     this.drone = new Drone()
     this.drone.position.set(100, 100)
@@ -65,11 +71,7 @@ export default class TestState extends State {
 
     window.addEventListener('resize', () => {
       gui.resize()
-      this.updateCamera()
-    })
-    window.addEventListener('drag', e => {
-      if (e.dx !== 0 || e.dy !== 0)
-        this.moveCamera(-e.dx, -e.dy)
+      this.viewport.resize(window.innerWidth, window.innerHeight)
     })
   }
 
@@ -83,40 +85,16 @@ export default class TestState extends State {
 
     if (dx !== 0 || dy !== 0) {
       const div = Math.sqrt(dx * dx + dy * dy) / 10.0
-      this.moveCamera(dx / div, dy / div)
+
+      // this.moveCamera(dx / div, dy / div)
     }
 
     this.map.children.forEach(c => c.update && c.update(time))
   }
-
-  updateCamera () {
-    const RW2 = this.app.renderer.width / 2
-    const RH2 = this.app.renderer.height / 2
-    this.position.set(RW2 | 0, RH2 | 0)
-  }
-
-  setCameraPosition (x, y) {
-    this.camera.position.set(x | 0, y | 0)
-    this.map.pivot.copyFrom(this.camera.position)
-  }
-
-  moveCamera (dx, dy) {
-    let { x, y } = this.camera.position
-
-    x += dx
-    y += dy
-
-    if (x < 0) x = 0.0
-    if (y < 0) y = 0.0
-    if (x > this.map.width) x = this.map.width
-    if (y > this.map.height) y = this.map.height
-
-    this.setCameraPosition(x, y)
-  }
 }
 
 class Drone extends PIXI.Sprite {
-  constructor () {
+  constructor() {
     super()
 
     const g = new PIXI.Graphics()

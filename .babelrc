@@ -4,5 +4,6 @@
   ],
   "plugins": [
           "transform-class-properties"
-  ]
+  ],
+  "sourceMaps": true
 }

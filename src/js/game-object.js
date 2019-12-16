@@ -24,9 +24,9 @@ export default class GameObject extends PIXI.Graphics {
 
   redraw () {
     if (this.selected) {
-      this.lineStyle(1, 0xff0000)
+      this.lineStyle(1, 0xff0000, 1, 0)
     } else {
-      this.lineStyle(1, 0x1D313B)
+      this.lineStyle(1, 0x1D313B, 1, 0)
     }
 
     this.beginFill(0x253B45)
