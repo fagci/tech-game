@@ -1,18 +1,22 @@
 import * as PIXI from 'pixi.js'
+import { Viewport } from 'pixi-viewport'
 import Controls from '../controls'
 import State from '../state'
-import GameObject from '../game-object'
 import GUI from '../gui'
-import {InventoryItem} from '../inventory'
 
-import {Viewport} from 'pixi-viewport'
+import { InventoryItem } from '../inventory'
+import Base from '../game-objects/base'
 
 export default class TestState extends State {
-  constructor(app) {
+  constructor (app) {
     super(app)
-    this.controls = new Controls()
-    this.map = new PIXI.Container()
 
+    // Create things
+
+    this.controls = new Controls()
+    this.level = new PIXI.Container()
+    this.ground = new PIXI.Container()
+    this.entitiesLayer = new PIXI.Container()
     this.viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
@@ -20,11 +24,17 @@ export default class TestState extends State {
       worldHeight: 1024,
       interaction: app.renderer.plugins.interaction
     })
+    const bgGrid = this.createBackgroundGrid()
 
-    this.addChild(this.viewport)
+    const playerBase = new Base()
+    const drone = new Drone()
+    const invItem = new InventoryItem()
+    const gui = new GUI(app)
+
+    // Set things options
 
     this.viewport
-      .drag({clampWheel: true, mouseButtons: 'left'})
+      .drag({ clampWheel: true, mouseButtons: 'left' })
       .pinch()
       .wheel()
       .decelerate()
@@ -36,6 +46,36 @@ export default class TestState extends State {
       })
       .clamp({ direction: 'all' })
 
+    // Setup stage
+
+    this.addChild(this.viewport)
+    this.viewport.addChild(this.level)
+
+    this.level.addChild(this.ground)
+    this.level.addChild(this.entitiesLayer)
+
+    this.entitiesLayer.addChild(playerBase)
+
+    this.ground.addChild(bgGrid)
+
+    this.addChild(gui)
+    gui.inventory.addItem(invItem)
+
+    this.level.addChild(drone)
+
+    // Positioning things
+
+    playerBase.position.set(512, 512)
+    drone.position.set(100, 100)
+    this.viewport.moveCenter(512, 512)
+
+    window.addEventListener('resize', () => {
+      gui.resize()
+      this.viewport.resize(window.innerWidth, window.innerHeight)
+    })
+  }
+
+  createBackgroundGrid () {
     const bgG = new PIXI.Graphics()
 
     bgG.lineStyle(0, 0, 1, 0)
@@ -43,36 +83,9 @@ export default class TestState extends State {
     bgG.beginFill(0x444444), bgG.drawRect(0, 0, 32, 32), bgG.endFill()
     bgG.beginFill(0x444444), bgG.drawRect(32, 32, 32, 32), bgG.endFill()
 
-
     const bgT = this.app.renderer.generateTexture(bgG)
     const bgGrid = new PIXI.TilingSprite(bgT, 1024, 1024)
-
-
-    this.viewport.addChild(this.map)
-    this.map.addChild(bgGrid)
-
-    const go1 = new GameObject()
-    go1.position.set(128, 128)
-    this.map.addChild(go1)
-
-    const go2 = new GameObject()
-    go2.position.set(256, 64)
-    this.map.addChild(go2)
-
-    const invItem = new InventoryItem()
-    const gui = new GUI(app)
-
-    gui.inventory.addItem(invItem)
-    this.addChild(gui)
-
-    this.drone = new Drone()
-    this.drone.position.set(100, 100)
-    this.map.addChild(this.drone)
-
-    window.addEventListener('resize', () => {
-      gui.resize()
-      this.viewport.resize(window.innerWidth, window.innerHeight)
-    })
+    return bgGrid
   }
 
   update = (time) => {
@@ -89,12 +102,12 @@ export default class TestState extends State {
       // this.moveCamera(dx / div, dy / div)
     }
 
-    this.map.children.forEach(c => c.update && c.update(time))
+    this.ground.children.forEach(c => c.update && c.update(time))
   }
 }
 
 class Drone extends PIXI.Sprite {
-  constructor() {
+  constructor () {
     super()
 
     const g = new PIXI.Graphics()
