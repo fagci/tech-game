@@ -3,6 +3,7 @@ import { Viewport } from 'pixi-viewport'
 import Controls from '../controls'
 import State from '../state'
 import GUI from '../gui'
+import checkers from '../../assets/checkers.png'
 
 import { InventoryItem } from '../inventory'
 import Base from '../game-objects/base'
@@ -27,7 +28,6 @@ export default class TestState extends State {
       worldHeight: this.WORLD_HEIGHT,
       interaction: app.renderer.plugins.interaction
     })
-    const bgGrid = this.createBackgroundGrid()
 
     const playerBase = new Base()
     const drone = new Drone()
@@ -59,7 +59,17 @@ export default class TestState extends State {
 
     this.entitiesLayer.addChild(playerBase)
 
-    this.ground.addChild(bgGrid)
+    const loader = PIXI.Loader.shared
+      .add('CHECKERS', checkers)
+      .on('error', e => console.log(e))
+      .load((loader, resources) => {
+
+        const checkersTexture = resources.CHECKERS.texture
+        const sprite = new PIXI.Sprite(checkersTexture)
+        const bgT = this.app.renderer.generateTexture(sprite)
+        const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
+        this.ground.addChild(bgGrid)
+      })
 
     this.addChild(gui)
     gui.inventory.addItem(invItem)
@@ -76,18 +86,6 @@ export default class TestState extends State {
       gui.resize()
       this.viewport.resize(window.innerWidth, window.innerHeight)
     })
-  }
-
-  createBackgroundGrid () {
-    const bgG = new PIXI.Graphics()
-
-    bgG.lineStyle(0, 0, 1, 0)
-    bgG.beginFill(0x888888), bgG.drawRect(0, 0, 64, 64), bgG.endFill()
-    bgG.beginFill(0x444444), bgG.drawRect(0, 0, 32, 32), bgG.endFill()
-    bgG.beginFill(0x444444), bgG.drawRect(32, 32, 32, 32), bgG.endFill()
-
-    const bgT = this.app.renderer.generateTexture(bgG)
-    return new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
   }
 
   update = (time) => {
