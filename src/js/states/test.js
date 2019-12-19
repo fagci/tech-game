@@ -13,6 +13,9 @@ export default class TestState extends State {
 
     // Create things
 
+    this.WORLD_WIDTH = 10240
+    this.WORLD_HEIGHT = 10240
+
     this.controls = new Controls()
     this.level = new PIXI.Container()
     this.ground = new PIXI.Container()
@@ -20,8 +23,8 @@ export default class TestState extends State {
     this.viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
-      worldWidth: 1024,
-      worldHeight: 1024,
+      worldWidth: this.WORLD_WIDTH,
+      worldHeight: this.WORLD_HEIGHT,
       interaction: app.renderer.plugins.interaction
     })
     const bgGrid = this.createBackgroundGrid()
@@ -65,9 +68,9 @@ export default class TestState extends State {
 
     // Positioning things
 
-    playerBase.position.set(512, 512)
+    playerBase.position.set(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
     drone.position.set(100, 100)
-    this.viewport.moveCenter(512, 512)
+    this.viewport.moveCenter(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
 
     window.addEventListener('resize', () => {
       gui.resize()
@@ -84,8 +87,7 @@ export default class TestState extends State {
     bgG.beginFill(0x444444), bgG.drawRect(32, 32, 32, 32), bgG.endFill()
 
     const bgT = this.app.renderer.generateTexture(bgG)
-    const bgGrid = new PIXI.TilingSprite(bgT, 1024, 1024)
-    return bgGrid
+    return new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
   }
 
   update = (time) => {

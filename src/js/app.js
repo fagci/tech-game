@@ -9,7 +9,6 @@ export default class App extends PIXI.Application {
     })
     PIXI.settings.ROUND_PIXELS = true
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
-    PIXI.settings.ANISOTROPIC_LEVEL = 0
 
     this.view.addEventListener('contextmenu', e => {
       e.preventDefault()
