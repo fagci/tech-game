@@ -3,10 +3,11 @@ import { Viewport } from 'pixi-viewport'
 import Controls from '../controls'
 import State from '../state'
 import GUI from '../ui/gui'
-import checkers from '../../assets/checkers.png'
 
 import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
+import GameMap from '../game-map'
+import checkers from '../../assets/checkers.png'
 
 export default class TestState extends State {
   constructor (app) {
@@ -18,9 +19,7 @@ export default class TestState extends State {
     this.WORLD_HEIGHT = 10240
 
     this.controls = new Controls()
-    this.level = new PIXI.Container()
-    this.ground = new PIXI.Container()
-    this.entitiesLayer = new PIXI.Container()
+    this.map = new GameMap()
     this.viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
@@ -52,29 +51,14 @@ export default class TestState extends State {
     // Setup stage
 
     this.addChild(this.viewport)
-    this.viewport.addChild(this.level)
+    this.viewport.addChild(this.map)
 
-    this.level.addChild(this.ground)
-    this.level.addChild(this.entitiesLayer)
-
-    this.entitiesLayer.addChild(playerBase)
-
-    const loader = PIXI.Loader.shared
-      .add('CHECKERS', checkers)
-      .on('error', e => console.log(e))
-      .load((loader, resources) => {
-
-        const checkersTexture = resources.CHECKERS.texture
-        const sprite = new PIXI.Sprite(checkersTexture)
-        const bgT = this.app.renderer.generateTexture(sprite)
-        const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-        this.ground.addChild(bgGrid)
-      })
+    this.map.groundLayer.addChild(playerBase)
 
     this.addChild(gui)
     gui.inventory.addItem(invItem)
 
-    this.level.addChild(drone)
+    this.map.addChild(drone)
 
     // Positioning things
 
@@ -82,10 +66,23 @@ export default class TestState extends State {
     drone.position.set(100, 100)
     this.viewport.moveCenter(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
 
+    this.loader.add('CHECKERS', checkers)
+    this.loader.load()
+
     window.addEventListener('resize', () => {
       gui.resize()
       this.viewport.resize(window.innerWidth, window.innerHeight)
     })
+  }
+
+  init (loader, resources) {
+    console.log('init test',resources)
+    const checkersTexture = resources.CHECKERS.texture
+    const sprite = new PIXI.Sprite(checkersTexture)
+    const bgT = this.app.renderer.generateTexture(sprite)
+    const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
+    bgGrid.zIndex = -1
+    this.map.groundLayer.addChild(bgGrid)
   }
 
   update = (time) => {
@@ -102,7 +99,7 @@ export default class TestState extends State {
       // this.moveCamera(dx / div, dy / div)
     }
 
-    this.ground.children.forEach(c => c.update && c.update(time))
+    this.map.update(time)
   }
 }
 
