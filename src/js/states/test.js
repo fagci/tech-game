@@ -31,7 +31,7 @@ export default class TestState extends State {
     const playerBase = new Base()
     const drone = new Drone()
     const invItem = new InventoryItem()
-    const gui = new GUI(app)
+    this.gui = new GUI(app, this.map, this.viewport)
 
     // Set things options
 
@@ -53,12 +53,12 @@ export default class TestState extends State {
     this.addChild(this.viewport)
     this.viewport.addChild(this.map)
 
-    this.map.groundLayer.addChild(playerBase)
+    this.map.entitiesLayer.addChild(playerBase)
 
-    this.addChild(gui)
-    gui.inventory.addItem(invItem)
+    this.addChild(this.gui)
+    this.gui.inventory.addItem(invItem)
 
-    this.map.addChild(drone)
+    this.map.entitiesLayer.addChild(drone)
 
     // Positioning things
 
@@ -70,13 +70,13 @@ export default class TestState extends State {
     this.loader.load()
 
     window.addEventListener('resize', () => {
-      gui.resize()
+      this.gui.resize()
       this.viewport.resize(window.innerWidth, window.innerHeight)
     })
   }
 
   init (loader, resources) {
-    console.log('init test',resources)
+    console.log('init test', resources)
     const checkersTexture = resources.CHECKERS.texture
     const sprite = new PIXI.Sprite(checkersTexture)
     const bgT = this.app.renderer.generateTexture(sprite)
@@ -100,6 +100,7 @@ export default class TestState extends State {
     }
 
     this.map.update(time)
+    this.gui.update(time)
   }
 }
 

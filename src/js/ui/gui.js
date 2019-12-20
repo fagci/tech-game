@@ -3,7 +3,7 @@ import Inventory from './inventory'
 import MiniMap from './minimap'
 
 export default class GUI extends PIXI.Container {
-  constructor (app) {
+  constructor (app, map, viewport) {
     super()
     this.app = app
 
@@ -28,7 +28,7 @@ export default class GUI extends PIXI.Container {
     this.inventory.pivot.set(this.inventory.width / 2, this.inventory.height)
     this.addChild(this.inventory)
 
-    this.miniMap = new MiniMap()
+    this.miniMap = new MiniMap(map, viewport)
     this.addChild(this.miniMap)
 
     this.resize()
@@ -38,5 +38,9 @@ export default class GUI extends PIXI.Container {
     this.inventory.x = this.app.screen.width / 2
     this.inventory.y = this.app.screen.height
     this.crosshair.position.set((this.app.renderer.width / 2) | 0, (this.app.renderer.height / 2) | 0)
+  }
+
+  update (time) {
+    this.miniMap.update(time)
   }
 }
