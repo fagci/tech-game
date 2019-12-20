@@ -14,5 +14,7 @@ export default class GameObject extends PIXI.Graphics {
       if (e.data.button === 0) this.selected = !this.selected
       this.redraw && this.redraw()
     })
+
+    this.on('added', go => console.log('added',go))
   }
 }
