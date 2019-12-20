@@ -27,19 +27,9 @@ export default class MiniMap extends PIXI.Container {
 
     this.entities = {}
 
-    const px = 200.0 / this.viewport.worldWidth
-    const py = 200.0 / this.viewport.worldHeight
+    this.px = 200.0 / this.viewport.worldWidth
+    this.py = 200.0 / this.viewport.worldHeight
 
-    map.entitiesLayer.on('added', gameObject => {
-      console.info('added', gameObject)
-      const e = new PIXI.Graphics()
-      e.lineStyle(1, 0xffffff, 1, 0)
-      e.beginFill(0x00ff00)
-      e.drawCircle(0, 0, 5)
-      e.endFill()
-      e.position.set(gameObject.position.x * px, gameObject.position.y * py)
-      this.addChild(e)
-    })
 
     this.viewport.on('moved', e => {
 
@@ -55,13 +45,26 @@ export default class MiniMap extends PIXI.Container {
           vh: ${vh}
       `)
 
-      this.view.position.set(vx * px, vy * py)
+      this.view.position.set(vx * this.px, vy * this.py)
       this.view.clear()
       this.view.lineStyle(1, 0xff0000, 0.75, 0)
       this.view.beginFill(0xff0000, 0.24)
-      this.view.drawRect(0, 0, vw * px, vh * py)
+      this.view.drawRect(0, 0, vw * this.px, vh * this.py)
       this.view.endFill()
 
+    })
+  }
+
+  refresh() {
+    this.map.entitiesLayer.children.forEach(gameObject => {
+      console.info('added', gameObject)
+      const e = new PIXI.Graphics()
+      e.lineStyle(1, 0xffffff, 1, 0)
+      e.beginFill(0x00ff00)
+      e.drawCircle(0, 0, 5)
+      e.endFill()
+      e.position.set(gameObject.position.x * this.px, gameObject.position.y * this.py)
+      this.addChild(e)
     })
   }
 

@@ -69,6 +69,8 @@ export default class TestState extends State {
     this.loader.add('CHECKERS', checkers)
     this.loader.load()
 
+    this.gui.miniMap.refresh()
+
     window.addEventListener('resize', () => {
       this.gui.resize()
       this.viewport.resize(window.innerWidth, window.innerHeight)
