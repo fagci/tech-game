@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js'
 import Inventory from './inventory'
-
+import MiniMap from './minimap'
 
 export default class GUI extends PIXI.Container {
-  constructor(app) {
+  constructor (app) {
     super()
     this.app = app
 
@@ -17,23 +17,26 @@ export default class GUI extends PIXI.Container {
     cp.moveTo(11, 0)
     cp.lineTo(0, 11)
     cp.endFill()
-    
-    crosshair.pivot.set(5,5)
+
+    crosshair.pivot.set(5, 5)
 
     crosshair.addChild(cp)
     this.crosshair = crosshair
     this.addChild(crosshair)
-    
 
     this.inventory = new Inventory(6)
     this.inventory.pivot.set(this.inventory.width / 2, this.inventory.height)
     this.addChild(this.inventory)
+
+    this.miniMap = new MiniMap()
+    this.addChild(this.miniMap)
+
     this.resize()
   }
 
-  resize() {
+  resize () {
     this.inventory.x = this.app.screen.width / 2
     this.inventory.y = this.app.screen.height
-    this.crosshair.position.set((this.app.renderer.width / 2) | 0,(this.app.renderer.height / 2) | 0)
+    this.crosshair.position.set((this.app.renderer.width / 2) | 0, (this.app.renderer.height / 2) | 0)
   }
 }

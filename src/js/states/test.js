@@ -2,10 +2,10 @@ import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import Controls from '../controls'
 import State from '../state'
-import GUI from '../gui'
+import GUI from '../ui/gui'
 import checkers from '../../assets/checkers.png'
 
-import { InventoryItem } from '../inventory'
+import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
 
 export default class TestState extends State {
