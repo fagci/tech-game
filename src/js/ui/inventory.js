@@ -23,8 +23,10 @@ export default class Inventory extends PIXI.Container {
       slotSquare.interactive = true
       slotSquare.on('pointerover', e => {
         const slot = e.target
-        console.log(slot)
-        this.setDescription(slot.items ? slot.items[0].description : null)
+        if(slot instanceof InventorySlot) {
+          console.log(slot)
+          this.setDescription(slot.items ? slot.items[0].description : null)
+        }
       })
 
       slotSquare.on('pointerout', e => {

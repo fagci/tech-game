@@ -15,8 +15,8 @@ export default class TestState extends State {
 
     // Create things
 
-    this.WORLD_WIDTH = 10240
-    this.WORLD_HEIGHT = 10240
+    this.WORLD_WIDTH = 8192
+    this.WORLD_HEIGHT = 8192
 
     this.map = new GameMap()
     this.viewport = new Viewport({

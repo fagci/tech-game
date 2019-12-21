@@ -34,8 +34,6 @@ export default class GUI extends PIXI.Container {
     this.console.pivot.set(this.console.width, 0)
     this.console.position.set(this.app.screen.width, 0)
     this.addChild(this.console)
-    this.console.addMessage('Hello my friend.')
-    this.console.addMessage('It\'s time to make something cool!')
 
     this.on('added', parent => {
       console.info('GUI added')
@@ -57,5 +55,6 @@ export default class GUI extends PIXI.Container {
 
   update(time) {
     this.miniMap.update(time)
+    this.console.update(time)
   }
 }

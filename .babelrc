@@ -1,9 +1,17 @@
 {
   "presets": [
-    ["env", { "targets": { "browsers": "last 2 versions" } }]
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": "last 2 versions"
+        }
+      }
+    ]
   ],
   "plugins": [
-          "transform-class-properties"
+    "transform-class-properties",
+    "transform-object-rest-spread"
   ],
   "sourceMaps": true
 }
