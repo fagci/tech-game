@@ -48,18 +48,6 @@ export default class TestState extends State {
       })
       .clamp({ direction: 'all' })
 
-    // Setup stage
-
-    this.addChild(this.viewport)
-    this.viewport.addChild(this.map)
-
-    this.map.entitiesLayer.addChild(playerBase)
-
-    this.addChild(this.gui)
-    this.gui.inventory.addItem(invItem)
-
-    this.map.entitiesLayer.addChild(drone)
-
     // Positioning things
 
     playerBase.position.set(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
@@ -69,7 +57,18 @@ export default class TestState extends State {
     this.loader.add('CHECKERS', checkers)
     this.loader.load()
 
-    this.gui.miniMap.refresh()
+    // Setup stage
+
+    this.addChild(this.viewport)
+    this.viewport.addChild(this.map)
+
+    this.map.entitiesLayer.addChild(playerBase)
+
+
+    this.gui.inventory.addItem(invItem)
+    this.map.entitiesLayer.addChild(drone)
+
+    this.addChild(this.gui)
 
     window.addEventListener('resize', () => {
       this.gui.resize()
@@ -78,7 +77,6 @@ export default class TestState extends State {
   }
 
   init (loader, resources) {
-    console.log('init test', resources)
     const checkersTexture = resources.CHECKERS.texture
     const sprite = new PIXI.Sprite(checkersTexture)
     const bgT = this.app.renderer.generateTexture(sprite)

@@ -22,9 +22,13 @@ export default class State extends PIXI.Container {
       .on('complete', (loader, resources) => this.init(loader, resources))
   }
 
-  progress (loader, resources) {console.info('progress', loader.progress)}
+  progress (loader, resources) {
+    //TODO: implement progress indicator
+  }
 
-  init (loader, resources) {console.info('load', resources)}
+  init (loader, resources) {
+    //
+  }
 
   error (error) {console.error(error)}
 }

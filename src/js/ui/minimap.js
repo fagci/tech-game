@@ -12,8 +12,6 @@ export default class MiniMap extends PIXI.Container {
     this.map = map
     this.viewport = viewport
 
-    console.warn(map, viewport)
-
     const bg = new PIXI.Graphics()
     bg.lineStyle(1, 0xffffff, 1, 0)
     bg.beginFill(0x000000)
@@ -25,39 +23,34 @@ export default class MiniMap extends PIXI.Container {
     this.addChild(bg)
     this.addChild(this.view)
 
-    this.entities = {}
-
     this.px = 200.0 / this.viewport.worldWidth
     this.py = 200.0 / this.viewport.worldHeight
 
 
-    this.viewport.on('moved', e => {
-
-      const vx = this.viewport.left
-      const vy = this.viewport.top
-      const vw = this.viewport.right - vx
-      const vh = this.viewport.bottom - vy
-
-      console.log(`
-          vx: ${vx}
-          vy: ${vy}
-          vw: ${vw}
-          vh: ${vh}
-      `)
-
-      this.view.position.set(vx * this.px, vy * this.py)
-      this.view.clear()
-      this.view.lineStyle(1, 0xff0000, 0.75, 0)
-      this.view.beginFill(0xff0000, 0.24)
-      this.view.drawRect(0, 0, vw * this.px, vh * this.py)
-      this.view.endFill()
-
+    this.viewport.on('moved', e => this.updateViewportRegion())
+    this.on('added', e => {
+      console.info('Minimap added')
+      this.refresh()
+      this.updateViewportRegion()
     })
+  }
+
+  updateViewportRegion() {
+    const vx = this.viewport.left
+    const vy = this.viewport.top
+    const vw = this.viewport.right - vx
+    const vh = this.viewport.bottom - vy
+
+    this.view.position.set(vx * this.px, vy * this.py)
+    this.view.clear()
+    this.view.lineStyle(1, 0xff0000, 0.75, 0)
+    this.view.beginFill(0xff0000, 0.24)
+    this.view.drawRect(0, 0, vw * this.px, vh * this.py)
+    this.view.endFill()
   }
 
   refresh() {
     this.map.entitiesLayer.children.forEach(gameObject => {
-      console.info('added', gameObject)
       const e = new PIXI.Graphics()
       e.lineStyle(1, 0xffffff, 1, 0)
       e.beginFill(0x00ff00)
