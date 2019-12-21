@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import State from '../state'
+import State from './state'
 
 export default class MainMenuState extends State {
   constructor(app) {

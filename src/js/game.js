@@ -1,21 +1,18 @@
 import * as PIXI from 'pixi.js'
-import StateManager from './state-manager'
-import MainMenuState from './states/main-menu'
-import TestState from './states/test'
+import StateManager from './states/state-manager'
+import SplashState from './states/spalsh'
 
 export default class Game extends PIXI.Container {
   constructor (app) {
     super()
     this.app = app
-    this.stateManager = new StateManager(this)
-
+    this.app.stateManager = new StateManager(this)
   }
 
-  update = time => this.stateManager.update(time)
+  update = time => this.app.stateManager.update(time)
 
   start = () => {
-    // this.stateManager.push(new MainMenuState(this.app))
-    this.stateManager.push(new TestState(this.app))
+    this.app.stateManager.push(new SplashState(this.app))
     this.app.ticker.add(this.update)
     this.app.renderer.render(this.app.stage)
   }

@@ -1,15 +1,13 @@
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import Controls from '../controls'
-import State from '../state'
+import State from './state'
 import GUI from '../ui/gui'
 
 import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
-import checkers from '../../assets/checkers.png'
-import spriteSheetPng from '../../assets/ss.png'
-import spriteSheetJson from '../../assets/ss.json'
+
 import GameObject from "../game-objects/game-object"
 
 export default class TestState extends State {
@@ -57,8 +55,7 @@ export default class TestState extends State {
     drone.position.set(100, 100)
     this.viewport.moveCenter(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
 
-    this.loader.add('ss', spriteSheetPng)
-    this.loader.load()
+
 
     // Setup stage
 
@@ -73,23 +70,16 @@ export default class TestState extends State {
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
 
+    const texture = this.app.textures.grass
+    const sprite = new PIXI.Sprite(texture)
+    const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, 1)
+    const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
+    bgGrid.zIndex = -1
+    this.map.groundLayer.addChild(bgGrid)
+
     window.addEventListener('resize', () => {
       this.gui.resize()
       this.viewport.resize(window.innerWidth, window.innerHeight)
-    })
-  }
-
-  init (loader, resources) {
-    console.log(resources)
-    const spriteSheetTexture = resources.ss.texture
-    const spriteSheet = new PIXI.Spritesheet(spriteSheetTexture, spriteSheetJson)
-    spriteSheet.parse(textures => {
-      const texture = textures.grass
-      const sprite = new PIXI.Sprite(texture)
-      const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, 1)
-      const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-      bgGrid.zIndex = -1
-      this.map.groundLayer.addChild(bgGrid)
     })
   }
 
