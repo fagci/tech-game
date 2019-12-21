@@ -5,14 +5,14 @@ import * as PIXI from 'pixi.js'
  */
 
 export default class Inventory extends PIXI.Container {
-  constructor (slotsCount) {
+  constructor(slotsCount) {
     super()
     this.slots = new PIXI.Container()
 
     this.detailsView = new PIXI.Container()
     this.detailsViewBg = new PIXI.Graphics()
     this.detailsView.addChild(this.detailsViewBg)
-    this.detailsViewText = new PIXI.Text('', { fontSize: 14, wordWrap: true, fill: 0xffffff })
+    this.detailsViewText = new PIXI.Text('', {fontSize: 14, wordWrap: true, fill: 0xffffff})
     this.detailsView.addChild(this.detailsViewText)
 
     for (let i = 0; i < slotsCount; i++) {
@@ -22,7 +22,9 @@ export default class Inventory extends PIXI.Container {
 
       slotSquare.interactive = true
       slotSquare.on('pointerover', e => {
-        this.setDescription('Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.')
+        const slot = e.target
+        console.log(slot)
+        this.setDescription(slot.items ? slot.items[0].description : null)
       })
 
       slotSquare.on('pointerout', e => {
@@ -36,14 +38,14 @@ export default class Inventory extends PIXI.Container {
     this.setDescription(null)
   }
 
-  addItem (item) {
+  addItem(item) {
     this.slots.children[0].addItem(item)
   }
 
   setDescription(text) {
     this.detailsViewText.text = text
     this.detailsViewText.style.wordWrapWidth = this.slots.width
-    const height = text?this.detailsViewText.height:0
+    const height = text ? this.detailsViewText.height : 0
 
     this.detailsViewBg.clear()
     this.detailsViewBg.lineStyle(1, 0, 1, 0)
@@ -55,7 +57,7 @@ export default class Inventory extends PIXI.Container {
 }
 
 export class InventorySlot extends PIXI.Graphics {
-  constructor (size) {
+  constructor(size) {
     super()
     const SLOT_SIZE = size || 48
     this.w = SLOT_SIZE
@@ -66,9 +68,9 @@ export class InventorySlot extends PIXI.Graphics {
     this.draw()
   }
 
-  draw () {
+  draw() {
     this.children.length = 0
-    this.lineStyle(1, 0x1D313B,1,0)
+    this.lineStyle(1, 0x1D313B, 1, 0)
     this.beginFill(0x253B45)
     this.drawRect(0, 0, this.w, this.h)
     this.endFill()
@@ -88,11 +90,11 @@ export class InventorySlot extends PIXI.Graphics {
 
       this.addChild(item) // TODO: make container, draw above
     }
-    const text = new PIXI.Text(this.items.length, { fontSize: 16, fill: 0xFFFFFF })
+    const text = new PIXI.Text(this.items.length, {fontSize: 16, fill: 0xFFFFFF})
     this.addChild(text)
   }
 
-  addItem (item) {
+  addItem(item) {
     if (this.items.length + 1 < (item.stackSize || 16)) {
       this.items.push(item)
     }
@@ -101,7 +103,7 @@ export class InventorySlot extends PIXI.Graphics {
 }
 
 export class InventoryItem extends PIXI.Graphics {
-  constructor () {
+  constructor() {
     super()
 
     this.description = 'Base inventory item. Does nothing.'
@@ -111,7 +113,7 @@ export class InventoryItem extends PIXI.Graphics {
     this.drawRect(0, 0, 32, 32)
     this.endFill()
 
-    this.text = new PIXI.Text('', { fontSize: 8, fill: 0x00FF00 })
+    this.text = new PIXI.Text('', {fontSize: 8, fill: 0x00FF00})
     this.addChild(this.text)
 
     this.on('added', function () {

@@ -1,13 +1,14 @@
 import * as PIXI from 'pixi.js'
 import Inventory from './inventory'
 import MiniMap from './minimap'
+import Console from "./console"
 
 export default class GUI extends PIXI.Container {
   constructor(app, map, viewport) {
     super()
+    this.app = app
     this.map = map
     this.viewport = viewport
-    this.app = app
 
     this.crosshair = new PIXI.Container()
     const cp = new PIXI.Graphics()
@@ -28,6 +29,13 @@ export default class GUI extends PIXI.Container {
     this.inventory = new Inventory(6)
     this.inventory.pivot.set(this.inventory.width, this.inventory.height)
     this.addChild(this.inventory)
+
+    this.app.console = this.console = new Console()
+    this.console.pivot.set(this.console.width, 0)
+    this.console.position.set(this.app.screen.width, 0)
+    this.addChild(this.console)
+    this.console.addMessage('Hello my friend.')
+    this.console.addMessage('It\'s time to make something cool!')
 
     this.on('added', parent => {
       console.info('GUI added')
