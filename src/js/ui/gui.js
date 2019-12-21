@@ -26,7 +26,7 @@ export default class GUI extends PIXI.Container {
     this.addChild(this.crosshair)
 
     this.inventory = new Inventory(6)
-    this.inventory.pivot.set(this.inventory.width / 2, this.inventory.height)
+    this.inventory.pivot.set(this.inventory.width, this.inventory.height)
     this.addChild(this.inventory)
 
     this.on('added', parent => {
@@ -42,7 +42,7 @@ export default class GUI extends PIXI.Container {
   }
 
   resize() {
-    this.inventory.x = this.app.screen.width / 2
+    this.inventory.x = this.app.screen.width
     this.inventory.y = this.app.screen.height
     this.crosshair.position.set((this.app.renderer.width / 2) | 0, (this.app.renderer.height / 2) | 0)
   }

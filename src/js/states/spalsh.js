@@ -12,7 +12,7 @@ export default class SplashState extends State {
 
     this.progressbar = new PIXI.Container()
 
-    this.progressbarText = new PIXI.Text('Loading...', {fill:0xffffff})
+    this.progressbarText = new PIXI.Text('Loading...', {fill: 0})
 
     this.progressbarText.position.y = -32
 

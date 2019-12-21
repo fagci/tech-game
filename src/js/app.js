@@ -4,7 +4,7 @@ export default class App extends PIXI.Application {
   constructor () {
     super({
       // antialias: true,
-      backgroundColor: 0x08151b,
+      backgroundColor: 0x88eeff,
       resizeTo: window,
       resolution: window.devicePixelRatio || 1,
     })

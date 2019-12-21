@@ -14,6 +14,8 @@ export default class MiniMap extends PIXI.Container {
     this.map = map
     this.viewport = viewport
 
+    this.alpha = 0.25
+
     this.interactive = true
     this.buttonMode = true
 
@@ -42,7 +44,14 @@ export default class MiniMap extends PIXI.Container {
     })
 
     this.on('pointermove', e => {
+      if(e.target === this) {
+        this.alpha = 1
+      }
       if(this.isPointerDown) this.moveViewportByEvent(e)
+    })
+
+    this.on('pointerout', e => {
+      this.alpha = 0.25
     })
   }
 
@@ -77,13 +86,6 @@ export default class MiniMap extends PIXI.Container {
 
     this.addChild(bg)
     this.addChild(this.view)
-
-    const rt = PIXI.RenderTexture.create({width:this.MINIMAP_SIZE,height:this.MINIMAP_SIZE, resolution: this.px})
-    this.app.renderer.render(this.map, rt)
-    const sprite = new PIXI.Sprite(rt)
-    // sprite.scale.set(this.px,this.py)
-    sprite.position.set(0,0)
-    this.addChild(sprite)
 
     this.map.entitiesLayer.children.forEach(gameObject => {
       const e = new PIXI.Graphics()

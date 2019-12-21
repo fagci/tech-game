@@ -10,41 +10,47 @@ export default class Inventory extends PIXI.Container {
     this.slots = new PIXI.Container()
 
     this.detailsView = new PIXI.Container()
-    this.detailsViewText = new PIXI.Text('No description', { fontSize: 8, fill: 0xffffff })
+    this.detailsViewBg = new PIXI.Graphics()
+    this.detailsView.addChild(this.detailsViewBg)
+    this.detailsViewText = new PIXI.Text('', { fontSize: 14, wordWrap: true, fill: 0xffffff })
+    this.detailsView.addChild(this.detailsViewText)
 
     for (let i = 0; i < slotsCount; i++) {
       let slotSquare = new InventorySlot()
       slotSquare.x = slotSquare.w * i
       this.slots.addChild(slotSquare)
+
+      slotSquare.interactive = true
+      slotSquare.on('pointerover', e => {
+        this.setDescription('Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.')
+      })
+
+      slotSquare.on('pointerout', e => {
+        this.setDescription(null)
+      })
     }
 
-    const detailsViewBg = new PIXI.Graphics()
-
-    detailsViewBg.lineStyle(1, 0xff0000)
-    detailsViewBg.beginFill(0x0000ff)
-    detailsViewBg.drawRect(0, 0, this.slots.width, this.height)
-    detailsViewBg.endFill()
-
-    this.detailsViewBg = detailsViewBg
-
-    this.detailsView.addChild(this.detailsViewBg)
-    this.detailsView.addChild(this.detailsViewText)
-    this.detailsView.pivot.set(0, this.detailsView.height)
 
     this.addChild(this.slots)
     this.addChild(this.detailsView)
-
-    this.slots.on('click', e => {
-      console.log(e.target)
-      if (e.target instanceof InventoryItem) {
-        this.detailsView.pivot.set(0, this.detailsView.height)
-        this.detailsViewText.text = e.target.details
-      }
-    })
+    this.setDescription(null)
   }
 
   addItem (item) {
     this.slots.children[0].addItem(item)
+  }
+
+  setDescription(text) {
+    this.detailsViewText.text = text
+    this.detailsViewText.style.wordWrapWidth = this.slots.width
+    const height = text?this.detailsViewText.height:0
+
+    this.detailsViewBg.clear()
+    this.detailsViewBg.lineStyle(1, 0, 1, 0)
+    this.detailsViewBg.beginFill(0)
+    this.detailsViewBg.drawRect(0, 0, this.detailsViewText.width, height)
+    this.detailsViewBg.endFill()
+    this.detailsView.pivot.set(0, height)
   }
 }
 
@@ -62,7 +68,7 @@ export class InventorySlot extends PIXI.Graphics {
 
   draw () {
     this.children.length = 0
-    this.lineStyle(1, 0x1D313B)
+    this.lineStyle(1, 0x1D313B,1,0)
     this.beginFill(0x253B45)
     this.drawRect(0, 0, this.w, this.h)
     this.endFill()

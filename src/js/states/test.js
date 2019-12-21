@@ -20,8 +20,8 @@ export default class TestState extends State {
 
     this.map = new GameMap()
     this.viewport = new Viewport({
-      screenWidth: window.innerWidth,
-      screenHeight: window.innerHeight,
+      screenWidth: this.app.screen.width,
+      screenHeight: this.app.screen.height,
       worldWidth: this.WORLD_WIDTH,
       worldHeight: this.WORLD_HEIGHT,
       interaction: app.renderer.plugins.interaction
@@ -53,8 +53,7 @@ export default class TestState extends State {
     const WORLD_W2 = (this.WORLD_WIDTH / 2) | 0
     const WORLD_H2 = (this.WORLD_HEIGHT / 2) | 0
     playerBase.position.set(WORLD_W2, WORLD_H2)
-    drone.position.set(100, 100)
-    this.viewport.moveCenter(WORLD_W2 + 0.5, WORLD_H2 + 0.5) // FIXME: hack to make initial image w/o artifacts
+    this.viewport.moveCenter(WORLD_W2, WORLD_H2) // FIXME: initial image w/o artifacts
 
 
     // Setup stage
@@ -72,9 +71,8 @@ export default class TestState extends State {
 
     const texture = this.app.textures.grass
     const sprite = new PIXI.Sprite(texture)
-    const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, 1)
+    const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
     const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-    bgGrid.zIndex = -1
     this.map.groundLayer.addChild(bgGrid)
 
     window.addEventListener('resize', () => {
