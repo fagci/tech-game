@@ -4,6 +4,7 @@ import {Viewport} from 'pixi-viewport'
 
 export default class MiniMap extends PIXI.Container {
   /**
+   * @param {PIXI.Application} app
    * @param {GameMap} map
    * @param {Viewport} viewport
    */
@@ -16,10 +17,10 @@ export default class MiniMap extends PIXI.Container {
     this.interactive = true
     this.buttonMode = true
 
+    this.MINIMAP_SIZE = 150.0
 
-
-    this.px = 200.0 / this.viewport.worldWidth
-    this.py = 200.0 / this.viewport.worldHeight
+    this.px = this.MINIMAP_SIZE / this.viewport.worldWidth
+    this.py = this.MINIMAP_SIZE / this.viewport.worldHeight
 
 
     this.viewport.on('moved', e => this.updateViewportRegion())
@@ -69,7 +70,7 @@ export default class MiniMap extends PIXI.Container {
     const bg = new PIXI.Graphics()
     bg.lineStyle(1, 0, 1, 1)
     bg.beginFill(0x223844)
-    bg.drawRect(0, 0, 200, 200)
+    bg.drawRect(0, 0, this.MINIMAP_SIZE, this.MINIMAP_SIZE)
     bg.endFill()
 
     this.view = new PIXI.Graphics()
@@ -77,7 +78,7 @@ export default class MiniMap extends PIXI.Container {
     this.addChild(bg)
     this.addChild(this.view)
 
-    const rt = PIXI.RenderTexture.create({width:200,height:200, resolution: this.px})
+    const rt = PIXI.RenderTexture.create({width:this.MINIMAP_SIZE,height:this.MINIMAP_SIZE, resolution: this.px})
     this.app.renderer.render(this.map, rt)
     const sprite = new PIXI.Sprite(rt)
     // sprite.scale.set(this.px,this.py)
@@ -87,8 +88,8 @@ export default class MiniMap extends PIXI.Container {
     this.map.entitiesLayer.children.forEach(gameObject => {
       const e = new PIXI.Graphics()
       e.lineStyle(1, 0x00ff00, 0.75, 0)
-      e.beginFill(0x00ff00, 0.24)
-      e.drawCircle(0, 0, 5)
+      e.beginFill(0x00ff00, 0.75)
+      e.drawCircle(0, 0, 3)
       e.endFill()
       e.position.set(gameObject.position.x * this.px, gameObject.position.y * this.py)
       e.gameObject = gameObject

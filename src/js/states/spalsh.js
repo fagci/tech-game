@@ -51,6 +51,7 @@ export default class SplashState extends State {
     const spriteSheetTexture = resources.ss.texture
     const spriteSheet = new PIXI.Spritesheet(spriteSheetTexture, spriteSheetJson)
     spriteSheet.parse(textures => {
+      Object.values(textures).forEach(texture => texture.mipmap = true)
       this.app.textures = textures
       this.app.stateManager.push(new TestState(this.app))
     })
