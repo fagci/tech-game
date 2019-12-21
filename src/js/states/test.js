@@ -8,6 +8,7 @@ import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
 import checkers from '../../assets/checkers.png'
+import GameObject from "../game-objects/game-object"
 
 export default class TestState extends State {
   constructor (app) {
@@ -104,9 +105,11 @@ export default class TestState extends State {
   }
 }
 
-class Drone extends PIXI.Sprite {
+class Drone extends GameObject {
   constructor () {
     super()
+
+    this.phase = 0;
 
     const g = new PIXI.Graphics()
     g.lineStyle(2, 0x00ff00)
@@ -114,7 +117,14 @@ class Drone extends PIXI.Sprite {
     g.lineTo(30, 15)
     g.lineTo(0, 30)
     this.addChild(g)
+  }
 
-    this.anchor.set(0.5)
+  update (time) {
+    const r = 1000
+    this.phase += time * 0.01;
+    // console.log(this.phase)
+    const x = Math.cos(this.phase) * r + r
+    const y = Math.sin(this.phase) * r + r
+    this.position.set(x,y)
   }
 }

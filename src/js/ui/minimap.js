@@ -1,20 +1,23 @@
 import * as PIXI from 'pixi.js'
 import GameMap from '../game-map'
-import { Viewport } from 'pixi-viewport'
+import {Viewport} from 'pixi-viewport'
 
 export default class MiniMap extends PIXI.Container {
   /**
    * @param {GameMap} map
    * @param {Viewport} viewport
    */
-  constructor (map, viewport) {
+  constructor(map, viewport) {
     super()
     this.map = map
     this.viewport = viewport
 
+    this.interactive = true
+    this.buttonMode = true
+
     const bg = new PIXI.Graphics()
-    bg.lineStyle(1, 0xffffff, 1, 0)
-    bg.beginFill(0x000000)
+    bg.lineStyle(1, 0, 1, 1)
+    bg.beginFill(0x223844)
     bg.drawRect(0, 0, 200, 200)
     bg.endFill()
 
@@ -33,6 +36,27 @@ export default class MiniMap extends PIXI.Container {
       this.refresh()
       this.updateViewportRegion()
     })
+
+    this.isPointerDown = false
+
+    this.on('pointerdown', e => {
+      this.isPointerDown = true
+      this.moveViewportByEvent(e)
+    })
+
+    this.on('pointerup', e => {
+      this.isPointerDown = false
+    })
+
+    this.on('pointermove', e => {
+      if(this.isPointerDown) this.moveViewportByEvent(e)
+    })
+  }
+
+  moveViewportByEvent(e){
+    const pos = e.data.getLocalPosition(this)
+    this.viewport.moveCenter(pos.x / this.px, pos.y / this.py)
+    this.updateViewportRegion()
   }
 
   updateViewportRegion() {
@@ -52,16 +76,21 @@ export default class MiniMap extends PIXI.Container {
   refresh() {
     this.map.entitiesLayer.children.forEach(gameObject => {
       const e = new PIXI.Graphics()
-      e.lineStyle(1, 0xffffff, 1, 0)
-      e.beginFill(0x00ff00)
+      e.lineStyle(1, 0x00ff00, 0.75, 0)
+      e.beginFill(0x00ff00, 0.24)
       e.drawCircle(0, 0, 5)
       e.endFill()
       e.position.set(gameObject.position.x * this.px, gameObject.position.y * this.py)
+      e.gameObject = gameObject
       this.addChild(e)
     })
   }
 
-  update (time) {
-
+  update(time) {
+    this.children.forEach(e => {
+      if (e.gameObject) {
+        e.position.set(e.gameObject.position.x * this.px, e.gameObject.position.y * this.py)
+      }
+    })
   }
 }

@@ -21,5 +21,7 @@ export default class GameMap extends PIXI.Container {
     this.addChild(this.skyLayer)
   }
 
-  update = (time) => {}
+  update = (time) => {
+    this.entitiesLayer.children.forEach(go => go.update && go.update(time))
+  }
 }

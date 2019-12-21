@@ -38,7 +38,6 @@ export default class GUI extends PIXI.Container {
 
   addElements() {
     this.miniMap = new MiniMap(this.map, this.viewport)
-    this.miniMap.alpha = 0.75
     this.addChild(this.miniMap)
   }
 
