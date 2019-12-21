@@ -7,24 +7,16 @@ export default class MiniMap extends PIXI.Container {
    * @param {GameMap} map
    * @param {Viewport} viewport
    */
-  constructor(map, viewport) {
+  constructor(app, map, viewport) {
     super()
+    this.app = app
     this.map = map
     this.viewport = viewport
 
     this.interactive = true
     this.buttonMode = true
 
-    const bg = new PIXI.Graphics()
-    bg.lineStyle(1, 0, 1, 1)
-    bg.beginFill(0x223844)
-    bg.drawRect(0, 0, 200, 200)
-    bg.endFill()
 
-    this.view = new PIXI.Graphics()
-
-    this.addChild(bg)
-    this.addChild(this.view)
 
     this.px = 200.0 / this.viewport.worldWidth
     this.py = 200.0 / this.viewport.worldHeight
@@ -74,6 +66,24 @@ export default class MiniMap extends PIXI.Container {
   }
 
   refresh() {
+    const bg = new PIXI.Graphics()
+    bg.lineStyle(1, 0, 1, 1)
+    bg.beginFill(0x223844)
+    bg.drawRect(0, 0, 200, 200)
+    bg.endFill()
+
+    this.view = new PIXI.Graphics()
+
+    this.addChild(bg)
+    this.addChild(this.view)
+
+    const rt = PIXI.RenderTexture.create({width:200,height:200, resolution: this.px})
+    this.app.renderer.render(this.map, rt)
+    const sprite = new PIXI.Sprite(rt)
+    // sprite.scale.set(this.px,this.py)
+    sprite.position.set(0,0)
+    this.addChild(sprite)
+
     this.map.entitiesLayer.children.forEach(gameObject => {
       const e = new PIXI.Graphics()
       e.lineStyle(1, 0x00ff00, 0.75, 0)

@@ -8,6 +8,8 @@ import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
 import checkers from '../../assets/checkers.png'
+import spriteSheetPng from '../../assets/ss.png'
+import spriteSheetJson from '../../assets/ss.json'
 import GameObject from "../game-objects/game-object"
 
 export default class TestState extends State {
@@ -55,13 +57,12 @@ export default class TestState extends State {
     drone.position.set(100, 100)
     this.viewport.moveCenter(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
 
-    this.loader.add('CHECKERS', checkers)
+    this.loader.add('ss', spriteSheetPng)
     this.loader.load()
 
     // Setup stage
 
     this.addChild(this.viewport)
-    this.viewport.addChild(this.map)
 
     this.map.entitiesLayer.addChild(playerBase)
 
@@ -69,6 +70,7 @@ export default class TestState extends State {
     this.gui.inventory.addItem(invItem)
     this.map.entitiesLayer.addChild(drone)
 
+    this.viewport.addChild(this.map)
     this.addChild(this.gui)
 
     window.addEventListener('resize', () => {
@@ -78,12 +80,17 @@ export default class TestState extends State {
   }
 
   init (loader, resources) {
-    const checkersTexture = resources.CHECKERS.texture
-    const sprite = new PIXI.Sprite(checkersTexture)
-    const bgT = this.app.renderer.generateTexture(sprite)
-    const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-    bgGrid.zIndex = -1
-    this.map.groundLayer.addChild(bgGrid)
+    console.log(resources)
+    const spriteSheetTexture = resources.ss.texture
+    const spriteSheet = new PIXI.Spritesheet(spriteSheetTexture, spriteSheetJson)
+    spriteSheet.parse(textures => {
+      const texture = textures.grass
+      const sprite = new PIXI.Sprite(texture)
+      const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, 1)
+      const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
+      bgGrid.zIndex = -1
+      this.map.groundLayer.addChild(bgGrid)
+    })
   }
 
   update = (time) => {
@@ -112,19 +119,32 @@ class Drone extends GameObject {
     this.phase = 0;
 
     const g = new PIXI.Graphics()
-    g.lineStyle(2, 0x00ff00)
+    g.lineStyle(3, 0x222222)
+    g.beginFill(0xee6600, 0.24)
     g.moveTo(0, 0)
     g.lineTo(30, 15)
     g.lineTo(0, 30)
+    g.endFill()
     this.addChild(g)
   }
 
+  getDirectionAngle (anchor, point) {
+    return Math.atan2(anchor.y - point.y, anchor.x - point.x) + Math.PI;
+  }
+
   update (time) {
-    const r = 1000
+    const r = 100
     this.phase += time * 0.01;
     // console.log(this.phase)
-    const x = Math.cos(this.phase) * r + r
-    const y = Math.sin(this.phase) * r + r
-    this.position.set(x,y)
+    const x = Math.cos(this.phase) * r + 10240 / 2
+    const y = Math.sin(this.phase) * r + 10240 / 2
+
+    const oldPosition = new PIXI.Point()
+    const newPosition = new PIXI.Point(x,y)
+
+    this.position.copyTo(oldPosition)
+    this.position.copyFrom(newPosition)
+
+    this.rotation = this.getDirectionAngle(oldPosition, newPosition)
   }
 }
