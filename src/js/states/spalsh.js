@@ -44,7 +44,11 @@ export default class SplashState extends State {
     this.progressbarGraphics.drawRect(0, 0, app.screen.width - 64, 16)
     this.progressbarGraphics.endFill()
 
-    this.progressbarText.text = `Loading... ${percent}%`
+    if(percent<100) {
+      this.progressbarText.text = `Loading... ${percent}%`
+    } else {
+      this.progressbarText.text = 'Ready.'
+    }
   }
 
   init(loader, resources) {
