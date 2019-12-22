@@ -10,19 +10,20 @@ export default class GUI extends PIXI.Container {
     this.viewport = viewport
 
     this.crosshair = new PIXI.Container()
-    const cp = new PIXI.Graphics()
+    const crossGraphics = new PIXI.Graphics()
 
-    cp.lineStyle(1, 0xffffff)
-    cp.beginFill(0xffffff)
-    cp.moveTo(0, 0)
-    cp.lineTo(11, 11)
-    cp.moveTo(11, 0)
-    cp.lineTo(0, 11)
-    cp.endFill()
+    crossGraphics
+      .lineStyle(1, 0xffffff)
+      .beginFill(0xffffff)
+      .moveTo(0, 0)
+      .lineTo(11, 11)
+      .moveTo(11, 0)
+      .lineTo(0, 11)
+      .endFill()
 
     this.crosshair.pivot.set(5, 5)
 
-    this.crosshair.addChild(cp)
+    this.crosshair.addChild(crossGraphics)
     this.addChild(this.crosshair)
 
     this.inventory = new Inventory(6)

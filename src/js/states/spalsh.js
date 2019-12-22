@@ -13,15 +13,16 @@ export default class SplashState extends State {
 
     this.progressbarText = new PIXI.Text('Loading...', {fill: 0})
 
+    this.progressBarWidth = app.screen.width - 64
     this.progressbarText.position.y = -32
 
     this.progressbarGraphics = new PIXI.Graphics()
+
     const progressbarRect = new PIXI.Graphics()
-    progressbarRect.lineStyle(1, 0xffffff, 1, 1)
-    progressbarRect.beginFill(0x223344)
-    this.progressBarWidth = app.screen.width - 64
-    progressbarRect.drawRect(0, 0, this.progressBarWidth, 16)
-    progressbarRect.endFill()
+      .lineStyle(1, 0xffffff, 1, 1)
+      .beginFill(0x223344)
+      .drawRect(0, 0, this.progressBarWidth, 16)
+      .endFill()
 
 
     this.progressbar.addChild(this.progressbarText)
@@ -39,10 +40,11 @@ export default class SplashState extends State {
   }
 
   drawProgress(percent) {
-    this.progressbarGraphics.clear()
-    this.progressbarGraphics.beginFill(0x882222)
-    this.progressbarGraphics.drawRect(0, 0, app.screen.width - 64, 16)
-    this.progressbarGraphics.endFill()
+    this.progressbarGraphics
+      .clear()
+      .beginFill(0x882222)
+      .drawRect(0, 0, app.screen.width - 64, 16)
+      .endFill()
 
     if(percent<100) {
       this.progressbarText.text = `Loading... ${percent}%`

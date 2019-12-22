@@ -14,4 +14,8 @@ export default class Game extends PIXI.Container {
     app.stateManager.push(new SplashState())
     app.ticker.add(this.update)
   }
+
+  stop = () => {
+    app.ticker.remove(this.update)
+  }
 }

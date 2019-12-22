@@ -11,28 +11,29 @@ export default class GameObject extends PIXI.Container {
     this.buttonMode = true
 
     this.selectionGraphics = new PIXI.Graphics()
-    this.addChild(this.selectionGraphics)
+
 
     this.on('pointerdown', e => {
       if (e.data.button === 0) this.selected = !this.selected
       this.updateSelection()
     })
 
-    this.on('added', () => this.updateSelection())
+    this.on('added', () => {
+      this.addChild(this.selectionGraphics) // TODO: use pixi-layers to show selection atop of all objects
+      this.updateSelection()
+    })
   }
 
   updateSelection() {
-    this.removeChild(this.selectionGraphics) // TODO: use pixi-layers to show selection atop of all objects
     this.selectionGraphics.clear()
-    if (this.selected) {
-      this.selectionGraphics.lineStyle(2, 0x00ff00, 0.75, 1)
-      this.selectionGraphics.drawRect(0, 0, this.width, this.height)
-    }
-    this.addChild(this.selectionGraphics)
+    if (!this.selected) return
+    this.selectionGraphics
+      .lineStyle(2, 0x00ff00, 0.75, 1)
+      .drawRect(0, 0, this.width, this.height)
   }
 
   destroy(options) {
-    delete this.selectionGraphics
+    this.selectionGraphics.destroy()
     super.destroy(options)
   }
 }

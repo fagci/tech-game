@@ -30,29 +30,32 @@ export default class Console extends PIXI.Container {
       this.consoleBg.drawRect(0, 0, this.MAX_WIDTH, 1)
       return
     }
-    this.consoleBg.beginFill(0x253B45, 0.75)
-    this.consoleBg.drawRect(0, 0, this.MAX_WIDTH, this.msgContainer.height + this.PADDING)
-    this.consoleBg.endFill()
+    this.consoleBg
+      .beginFill(0x253B45, 0.75)
+      .drawRect(0, 0, this.MAX_WIDTH, this.msgContainer.height + this.PADDING)
+      .endFill()
   }
 
   refreshMessages(removedMessages) { // TODO: remove messages and realign
     this.msgContainer.removeChildren()
     this.messages.forEach(msg => {
       const msgName = `msg_${msg.id}`
-      if (!this.msgContainer.getChildByName(msgName)) {
-        const text = `${msg.time.toLocaleString()}\n${msg.text}`
-        const message = new PIXI.Text(text, {
-          fill: 0xffffff,
-          fontSize: 12,
-          padding: 4,
-          wordWrapWidth: this.MAX_WIDTH - this.PADDING * 2,
-          wordWrap: true,
-        })
-        message.name = msgName
-        message.position.x = this.PADDING
-        message.position.y = this.msgContainer.height + this.PADDING
-        this.msgContainer.addChild(message)
-      }
+
+      if (this.msgContainer.getChildByName(msgName)) return
+
+      const text = `${msg.time.toLocaleString()}\n${msg.text}`
+      const message = new PIXI.Text(text, {
+        fill: 0xffffff,
+        fontSize: 12,
+        padding: 4,
+        wordWrapWidth: this.MAX_WIDTH - this.PADDING * 2,
+        wordWrap: true,
+      })
+
+      message.name = msgName
+      message.position.x = this.PADDING
+      message.position.y = this.msgContainer.height + this.PADDING
+      this.msgContainer.addChild(message)
     })
     this.updateConsoleBg()
   }
@@ -69,14 +72,16 @@ export default class Console extends PIXI.Container {
 
   update(delta) {
     const nowTimestamp = +new Date()
-    let i = this.messages.length
     const removedMessages = []
+
+    let i = this.messages.length
+
     while (i--) {
-      let msg = this.messages[i]
-      if (msg.removeAt < nowTimestamp) {
+      if (this.messages[i].removeAt < nowTimestamp) {
         removedMessages.push(this.messages.splice(i, 1))
       }
     }
+
     if (removedMessages.length) this.refreshMessages(removedMessages)
   };
 

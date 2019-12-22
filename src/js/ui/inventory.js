@@ -24,8 +24,7 @@ export default class Inventory extends PIXI.Container {
       slotSquare.on('pointerover', e => {
         const slot = e.target
         if (slot instanceof InventorySlot) {
-          console.log(slot)
-          this.setDescription(slot.items ? slot.items[0].description : null)
+          this.setDescription(slot.items.length ? slot.items[0].description : null)
         }
       })
 
@@ -49,11 +48,13 @@ export default class Inventory extends PIXI.Container {
     this.detailsViewText.style.wordWrapWidth = this.slots.width
     const height = text ? this.detailsViewText.height : 0
 
-    this.detailsViewBg.clear()
-    this.detailsViewBg.lineStyle(1, 0, 1, 0)
-    this.detailsViewBg.beginFill(0)
-    this.detailsViewBg.drawRect(0, 0, this.detailsViewText.width, height)
-    this.detailsViewBg.endFill()
+    this.detailsViewBg
+      .clear()
+      .lineStyle(1, 0, 1, 0)
+      .beginFill(0)
+      .drawRect(0, 0, this.detailsViewText.width, height)
+      .endFill()
+
     this.detailsView.pivot.set(0, height)
   }
 }
@@ -72,10 +73,12 @@ export class InventorySlot extends PIXI.Graphics {
 
   draw() {
     this.children.length = 0
-    this.lineStyle(1, 0x1D313B, 1, 0)
-    this.beginFill(0x253B45)
-    this.drawRect(0, 0, this.w, this.h)
-    this.endFill()
+    this
+      .lineStyle(1, 0x1D313B, 1, 0)
+      .beginFill(0x253B45)
+      .drawRect(0, 0, this.w, this.h)
+      .endFill()
+
     if (this.items.length > 0 && !this.itemSprite) {
       let item = this.items[0]
       this.itemSprite = item
@@ -86,13 +89,11 @@ export class InventorySlot extends PIXI.Graphics {
       item.y = this.h / 2
 
       item.interactive = true
-
-      // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
       item.buttonMode = true
 
       this.addChild(item) // TODO: make container, draw above
     }
-    const text = new PIXI.Text(this.items.length, {fontSize: 16, fill: 0xFFFFFF})
+    const text = new PIXI.Text(`${this.items.length}`, {fontSize: 16, fill: 0xFFFFFF})
     this.addChild(text)
   }
 
@@ -110,10 +111,11 @@ export class InventoryItem extends PIXI.Graphics {
 
     this.description = 'Base inventory item. Does nothing.'
 
-    this.lineStyle(1, 0x00ff00)
-    this.beginFill(0x0)
-    this.drawRect(0, 0, 32, 32)
-    this.endFill()
+    this
+      .lineStyle(1, 0x00ff00)
+      .beginFill(0x0)
+      .drawRect(0, 0, 32, 32)
+      .endFill()
 
     this.text = new PIXI.Text('', {fontSize: 8, fill: 0x00FF00})
     this.addChild(this.text)

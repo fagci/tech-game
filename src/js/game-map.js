@@ -22,6 +22,6 @@ export default class GameMap extends PIXI.Container {
   }
 
   update = (time) => {
-    this.entitiesLayer.children.forEach(go => go.update && go.update(time))
+    this.entitiesLayer.children.forEach(gameObject => gameObject.update && gameObject.update(time))
   }
 }

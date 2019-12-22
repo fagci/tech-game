@@ -56,9 +56,10 @@ class Button extends PIXI.Sprite {
   }
 
   drawBg(color) {
-    this.bg.lineStyle(1, 0xffffff)
-    this.bg.beginFill(color)
-    this.bg.drawRect(0, 0, this.w, this.h)
-    this.bg.endFill()
+    this.bg
+      .lineStyle(1, 0xffffff)
+      .beginFill(color)
+      .drawRect(0, 0, this.w, this.h)
+      .endFill()
   }
 }

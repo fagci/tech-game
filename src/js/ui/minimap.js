@@ -52,25 +52,26 @@ export default class MiniMap extends PIXI.Container {
   }
 
   updateViewportRegion() {
-    const vx = this.viewport.left
-    const vy = this.viewport.top
-    const vw = this.viewport.right - vx
-    const vh = this.viewport.bottom - vy
+    const {left, top, right, bottom} = this.viewport
+    const vw = right - left
+    const vh = bottom - top
 
-    this.view.position.set(vx * this.px, vy * this.py)
-    this.view.clear()
-    this.view.lineStyle(1, 0xff0000, 0.75, 0)
-    this.view.beginFill(0xff0000, 0.24)
-    this.view.drawRect(0, 0, vw * this.px, vh * this.py)
-    this.view.endFill()
+    this.view.position.set(left * this.px, top * this.py)
+
+    this.view
+      .clear()
+      .lineStyle(1, 0xff0000, 0.75, 0)
+      .beginFill(0xff0000, 0.24)
+      .drawRect(0, 0, vw * this.px, vh * this.py)
+      .endFill()
   }
 
   refresh() {
     const bg = new PIXI.Graphics()
-    bg.lineStyle(1, 0, 1, 1)
-    bg.beginFill(0x223844)
-    bg.drawRect(0, 0, this.MINIMAP_SIZE, this.MINIMAP_SIZE)
-    bg.endFill()
+      .lineStyle(1, 0, 1, 1)
+      .beginFill(0x223844)
+      .drawRect(0, 0, this.MINIMAP_SIZE, this.MINIMAP_SIZE)
+      .endFill()
 
     this.view = new PIXI.Graphics()
 
@@ -86,9 +87,8 @@ export default class MiniMap extends PIXI.Container {
 
   update() {
     this.children.forEach(miniMapEntity => {
-      if (miniMapEntity instanceof MiniMapEntity) {
-        miniMapEntity.position.set(miniMapEntity.gameObject.position.x * this.px, miniMapEntity.gameObject.position.y * this.py)
-      }
+      if (!(miniMapEntity instanceof MiniMapEntity)) return
+      miniMapEntity.position.set(miniMapEntity.gameObject.position.x * this.px, miniMapEntity.gameObject.position.y * this.py)
     })
   }
 }
@@ -100,9 +100,11 @@ class MiniMapEntity extends PIXI.Graphics {
   constructor(gameObject) {
     super()
     this.gameObject = gameObject
-    this.lineStyle(1, 0x00ff00, 0.75, 0)
-    this.beginFill(0x00ff00, 0.75)
-    this.drawCircle(0, 0, 3)
-    this.endFill()
+
+    this
+      .lineStyle(1, 0x00ff00, 0.75, 0)
+      .beginFill(0x00ff00, 0.75)
+      .drawCircle(0, 0, 3)
+      .endFill()
   }
 }
