@@ -28,6 +28,8 @@ export default class Base extends GameObject {
     this.graphics[1].position.set(-12, 12)
     this.graphics[2].position.set(12, -12)
     this.graphics[3].position.set(12, 12)
+
+    this.pivot.set(16, 16)
   }
 
   destroy(options) {

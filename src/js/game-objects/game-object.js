@@ -27,7 +27,6 @@ export default class GameObject extends PIXI.Container {
     this.selectionGraphics.clear()
     if (!this.selected) return
     const b = this.getLocalBounds()
-    console.log(b)
     this.selectionGraphics
       .lineStyle(2, 0x00ff00, 0.75, 1)
       .beginFill(0x00ff00, 0.24)

@@ -31,6 +31,7 @@ export default class TestState extends State {
     const invItem = new InventoryItem()
     this.gui = new GUI(this.map, this.viewport)
 
+
     // Set things options
 
     this.viewport
@@ -73,6 +74,16 @@ export default class TestState extends State {
     const bgT = app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
     const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
     this.map.groundLayer.addChild(bgGrid)
+
+
+    const cross = new PIXI.Graphics()
+      .lineStyle(1, 0xff0000, 1, 0)
+      .moveTo(-100, 0)
+      .lineTo(100, 0)
+      .moveTo(0, -100)
+      .lineTo(0, 100)
+    cross.position.set(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
+    this.map.groundLayer.addChild(cross)
 
     window.addEventListener('resize', () => {
       this.gui.resize()
