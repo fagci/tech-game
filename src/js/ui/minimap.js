@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import GameMap from '../game-map'
 import GameObject from '../game-objects/game-object'
 import {Viewport} from 'pixi-viewport'
+import Ballistic from '../game-objects/ballistic'
 
 export default class MiniMap extends PIXI.Container {
   /**
@@ -75,6 +76,7 @@ export default class MiniMap extends PIXI.Container {
 
     this.view = new PIXI.Graphics()
 
+    this.removeChildren()
     this.addChild(bg)
     this.addChild(this.view)
 
@@ -101,9 +103,15 @@ class MiniMapEntity extends PIXI.Graphics {
     super()
     this.gameObject = gameObject
 
+    let color = 0x00ff00
+
+    if (gameObject instanceof Ballistic) {
+      color = 0xff0000
+    }
+
     this
-      .lineStyle(1, 0x00ff00, 0.75, 0)
-      .beginFill(0x00ff00, 0.75)
+      .lineStyle(1, color, 0.75, 0)
+      .beginFill(color, 0.75)
       .drawCircle(0, 0, 3)
       .endFill()
   }

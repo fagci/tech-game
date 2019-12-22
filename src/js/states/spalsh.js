@@ -2,9 +2,6 @@ import State from './state'
 import * as PIXI from 'pixi.js'
 import TestState from './test'
 
-const spriteSheetJson = '/ss.json'
-const spriteSheet2Json = '/swss.json'
-
 export default class SplashState extends State {
   constructor() {
     super()
@@ -34,8 +31,9 @@ export default class SplashState extends State {
     this.addChild(this.progressbar)
     this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
 
-    this.loader.add('ss', spriteSheetJson)
-    this.loader.add('ss2', spriteSheet2Json)
+    this.loader.add('ss', '/ss.json')
+    this.loader.add('ss2', '/swss.json')
+    this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
     this.loader.load()
   }
 
@@ -47,14 +45,16 @@ export default class SplashState extends State {
       .endFill()
 
     if(percent<100) {
-      this.progressbarText.text = `Loading... ${percent}%`
+      this.progressbarText.text = `Loading... ${percent.toFixed(0)}%`
     } else {
       this.progressbarText.text = 'Ready.'
     }
   }
 
   init(loader, resources) {
+    console.log(resources)
     app.textures = {...resources.ss.textures, ...resources.ss2.textures}
+    app.sounds = {rocket_launch: resources.rocket_launch.sound}
     this.removeChildren()
     app.stateManager.push(new TestState(app))
   }

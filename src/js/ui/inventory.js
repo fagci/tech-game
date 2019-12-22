@@ -24,7 +24,6 @@ export default class Inventory extends PIXI.Container {
 
     this.addChild(this.slots)
     this.addChild(this.detailsView)
-    this.setDescription(null)
   }
 
   addItem(item) {
@@ -33,7 +32,7 @@ export default class Inventory extends PIXI.Container {
 
   setDescription(text) {
     this.detailsViewText.text = text
-    this.detailsViewText.style.wordWrapWidth = this.slots.width
+    this.detailsViewText.style.wordWrapWidth = this.width
     const height = text ? this.detailsViewText.height : 0
 
     this.detailsViewBg
@@ -72,7 +71,7 @@ export class InventorySlot extends PIXI.Graphics {
       let item = this.items[0]
       this.itemSprite = item
 
-      item.pivot.set(item.width / 2, item.height / 2)
+      item.pivot.set(16, 16)
 
       item.x = this.w / 2
       item.y = this.h / 2

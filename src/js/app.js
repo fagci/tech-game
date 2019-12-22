@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import 'pixi-sound'
 
 export default class App extends PIXI.Application {
   constructor() {
