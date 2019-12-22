@@ -16,21 +16,9 @@ export default class Inventory extends PIXI.Container {
     this.detailsView.addChild(this.detailsViewText)
 
     for (let i = 0; i < slotsCount; i++) {
-      let slotSquare = new InventorySlot()
+      let slotSquare = new InventorySlot(this)
       slotSquare.x = slotSquare.w * i
       this.slots.addChild(slotSquare)
-
-      slotSquare.interactive = true
-      slotSquare.on('pointerover', e => {
-        const slot = e.target
-        if (slot instanceof InventorySlot) {
-          this.setDescription(slot.items.length ? slot.items[0].description : null)
-        }
-      })
-
-      slotSquare.on('pointerout', e => {
-        this.setDescription(null)
-      })
     }
 
 
@@ -60,18 +48,19 @@ export default class Inventory extends PIXI.Container {
 }
 
 export class InventorySlot extends PIXI.Graphics {
-  constructor(size) {
+  constructor(inventory, size) {
     super()
-    const SLOT_SIZE = size || 48
-    this.w = SLOT_SIZE
-    this.h = SLOT_SIZE
+    this.inventory = inventory
+    this.w = this.h = size || 48
 
     this.items = []
 
-    this.draw()
+    this.text = new PIXI.Text('', {fontSize: 16, fill: 0xFFFFFF})
+
+    this.updateSlotGraphics()
   }
 
-  draw() {
+  updateSlotGraphics() {
     this.children.length = 0
     this
       .lineStyle(1, 0x1D313B, 1, 0)
@@ -91,17 +80,28 @@ export class InventorySlot extends PIXI.Graphics {
       item.interactive = true
       item.buttonMode = true
 
+      item.on('pointerover', e => {
+        const target = e.target
+        if (target instanceof InventoryItem) {
+          this.inventory.setDescription(target.description || null)
+        }
+      })
+
+      item.on('pointerout', e => {
+        this.inventory.setDescription(null)
+      })
+
       this.addChild(item) // TODO: make container, draw above
+      this.addChild(this.text)
+      this.text.text = `${this.items.length}`
     }
-    const text = new PIXI.Text(`${this.items.length}`, {fontSize: 16, fill: 0xFFFFFF})
-    this.addChild(text)
   }
 
   addItem(item) {
     if (this.items.length + 1 < (item.stackSize || 16)) {
       this.items.push(item)
     }
-    this.draw()
+    this.updateSlotGraphics()
   }
 }
 
@@ -116,12 +116,5 @@ export class InventoryItem extends PIXI.Graphics {
       .beginFill(0x0)
       .drawRect(0, 0, 32, 32)
       .endFill()
-
-    this.text = new PIXI.Text('', {fontSize: 8, fill: 0x00FF00})
-    this.addChild(this.text)
-
-    this.on('added', function () {
-      this.text.text = `${this.position.x | 0},${this.position.y | 0}\n${this.name}`
-    })
   }
 }
