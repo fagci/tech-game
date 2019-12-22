@@ -36,7 +36,9 @@ export default class TestState extends State {
 
     this.viewport
       .drag({clampWheel: true, mouseButtons: 'left'})
-      .pinch()
+      .pinch({
+        percent: 3,
+      })
       .wheel()
       .decelerate()
       .clampZoom({

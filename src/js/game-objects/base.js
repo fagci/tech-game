@@ -1,10 +1,17 @@
 import * as PIXI from 'pixi.js'
 import GameObject from './game-object'
+import ProgressBar from '../ui/progressbar'
 
 export default class Base extends GameObject {
   constructor() {
     super()
 
+    this.maxLife = 5000
+    this.life = 1200
+
+    this.lifeIndicator = new ProgressBar(32, 4, this.maxLife, this.life)
+    this.lifeIndicator.pivot.set(17, 2)
+    this.lifeIndicator.position.set(16, 16)
 
     let textureArray = [
       app.textures.base_1,
@@ -28,6 +35,8 @@ export default class Base extends GameObject {
     this.graphics[1].position.set(-12, 12)
     this.graphics[2].position.set(12, -12)
     this.graphics[3].position.set(12, 12)
+
+    this.addChild(this.lifeIndicator)
 
     this.pivot.set(16, 16)
   }
