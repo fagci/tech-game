@@ -90,7 +90,10 @@ export default class MiniMap extends PIXI.Container {
   update() {
     this.children.forEach(miniMapEntity => {
       if (!(miniMapEntity instanceof MiniMapEntity)) return
-      miniMapEntity.position.set(miniMapEntity.gameObject.position.x * this.px, miniMapEntity.gameObject.position.y * this.py)
+      const gameObject = miniMapEntity.gameObject
+      if (gameObject) {
+        miniMapEntity.position.set(gameObject.position.x * this.px, gameObject.position.y * this.py)
+      }
     })
   }
 }

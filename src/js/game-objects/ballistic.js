@@ -6,27 +6,26 @@ export default class Ballistic extends GameObject {
   constructor(fromPosition, direction) {
     super()
 
-    console.log('rocket')
+    this.DAMAGE = 1200
+    this.MAX_SPEED = 12
 
-    app.miniMapUpdate()
+    app.miniMapUpdate() // TODO: update minimap globally on item added to entity map
     app.sounds.rocket_launch.play()
 
-    this.direction = direction
+    this.direction = direction + (Math.random() - 0.5) * 0.4
     this.speed = 0
-    this.maxSpeed = 12
     this.lifeTime = 0
     this.lifeTimeMax = 4
     this.acceleration = 0.5
     this.position.copyFrom(fromPosition)
 
-    this.g = new PIXI.Sprite(window.app.textures.small_rocket)
-    this.g.anchor.set(0.5, 0.5)
-    this.addChild(this.g)
+    this.sprite = new PIXI.Sprite(window.app.textures.small_rocket)
+    this.sprite.anchor.set(0.5, 0.5)
+    this.addChild(this.sprite)
   }
 
   update(time) {
-    // console.log(`Rocket upd: ${this.speed}`)
-    if (this.speed < this.maxSpeed) this.speed += this.acceleration * time
+    if (this.speed < this.MAX_SPEED) this.speed += this.acceleration * time
     const x = this.position.x + Math.cos(this.direction) * this.speed
     const y = this.position.y + Math.sin(this.direction) * this.speed
     const oldPosition = new PIXI.Point()
@@ -48,7 +47,7 @@ export default class Ballistic extends GameObject {
   }
 
   destroy(options) {
-    console.log(`Rocket destroy`)
+    this.sprite.destroy()
     super.destroy(options)
     app.miniMapUpdate()
   }

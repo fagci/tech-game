@@ -21,10 +21,13 @@ export default class ProgressBar extends PIXI.Container {
       .drawRect(0, 0, this.w, this.h)
       .endFill()
 
+    this.pivot.set(this.w / 2, this.h / 2)
+
     this.redrawProgress()
   }
 
   setProgress(value) {
+    if (value < 0) value = 0
     this.value = value
     this.redrawProgress()
   }
@@ -34,7 +37,7 @@ export default class ProgressBar extends PIXI.Container {
       .clear()
       .lineStyle(0, 0, 0, 0)
       .beginFill(0x00ff00)
-      .drawRect(0, 0, (this.width * this.value / this.max) | 0, this.h)
+      .drawRect(0, 0, (this.w * this.value / this.max) | 0, this.h)
   }
 
 }

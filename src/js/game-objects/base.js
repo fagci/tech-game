@@ -8,13 +8,12 @@ export default class Base extends GameObject {
     super()
 
     this.maxLife = 5000
-    this.life = 1200
+    this.life = 5000
 
     this.lifeIndicator = new ProgressBar(32, 4, this.maxLife, this.life)
-    this.lifeIndicator.pivot.set(17, 2)
     this.lifeIndicator.position.set(16, 16)
 
-    let textureArray = [
+    const textureArray = [
       app.textures.base_1,
       app.textures.base_2,
       app.textures.base_3,
@@ -41,33 +40,34 @@ export default class Base extends GameObject {
 
     this.pivot.set(16, 16)
 
-    this.on('added', world => this.world = world)
-    this.bounds = this.getLocalBounds()
-    this.bounds.x = 4096 - 16
-    this.bounds.y = 4096 - 16
-    console.log(this.bounds)
+    this.on('added', world => {
+      this.world = world
+      this.globalHitArea = this.world.getLocalBounds()
+    })
   }
 
   update() {
     if (this.life <= 0) {
       this.life = 0
       this.alpha -= 0.05
+      if (this.alpha <= 0) this.destroy()
       return
     }
     this.world.children.forEach(gameObject => {
       if (gameObject instanceof Ballistic) {
-        if (this.bounds.contains(gameObject.position.x, gameObject.position.y)) {
+        if (this.globalHitArea.contains(gameObject.position.x, gameObject.position.y)) {
           console.log(`Hit`)
           gameObject.hit()
-          this.takeDamage(100)
+          this.takeDamage(gameObject.DAMAGE)
         }
       }
     })
   }
 
   destroy(options) {
+    app.miniMapUpdate()
     delete this.graphics
-    super.destroy(options)
+    // super.destroy() // TODO: destroy base couple with minimap entity
   }
 
   takeDamage(value) {
