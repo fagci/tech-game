@@ -43,6 +43,10 @@ export default class Ballistic extends GameObject {
     this.lifeTime += app.ticker.elapsedMS / 1000.0
   }
 
+  hit() {
+    this.destroy()
+  }
+
   destroy(options) {
     console.log(`Rocket destroy`)
     super.destroy(options)

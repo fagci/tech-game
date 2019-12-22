@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import GameObject from './game-object'
 import ProgressBar from '../ui/progressbar'
+import Ballistic from './ballistic'
 
 export default class Base extends GameObject {
   constructor() {
@@ -39,10 +40,38 @@ export default class Base extends GameObject {
     this.addChild(this.lifeIndicator)
 
     this.pivot.set(16, 16)
+
+    this.on('added', world => this.world = world)
+    this.bounds = this.getLocalBounds()
+    this.bounds.x = 4096 - 16
+    this.bounds.y = 4096 - 16
+    console.log(this.bounds)
+  }
+
+  update() {
+    if (this.life <= 0) {
+      this.life = 0
+      this.alpha -= 0.05
+      return
+    }
+    this.world.children.forEach(gameObject => {
+      if (gameObject instanceof Ballistic) {
+        if (this.bounds.contains(gameObject.position.x, gameObject.position.y)) {
+          console.log(`Hit`)
+          gameObject.hit()
+          this.takeDamage(100)
+        }
+      }
+    })
   }
 
   destroy(options) {
     delete this.graphics
     super.destroy(options)
+  }
+
+  takeDamage(value) {
+    this.life -= value
+    this.lifeIndicator.setProgress(this.life)
   }
 }
