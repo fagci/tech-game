@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import GameMap from '../game-map'
+import GameObject from '../game-objects/game-object'
 import {Viewport} from 'pixi-viewport'
 
 export default class MiniMap extends PIXI.Container {
@@ -12,48 +13,39 @@ export default class MiniMap extends PIXI.Container {
     this.map = map
     this.viewport = viewport
 
-    this.alpha = 0.25
+    this.MINIMAP_SIZE = 150.0
 
+    this.alpha = 0.25
     this.interactive = true
     this.buttonMode = true
 
-    this.MINIMAP_SIZE = 150.0
+    this.isPointerDown = false
 
     this.px = this.MINIMAP_SIZE / this.viewport.worldWidth
     this.py = this.MINIMAP_SIZE / this.viewport.worldHeight
 
-
-    this.viewport.on('moved', e => this.updateViewportRegion())
-    this.on('added', e => {
-      console.info('Minimap added')
+    this.viewport.on('moved', () => this.updateViewportRegion())
+    this.on('added', () => {
       this.refresh()
       this.updateViewportRegion()
     })
-
-    this.isPointerDown = false
 
     this.on('pointerdown', e => {
       this.isPointerDown = true
       this.moveViewportByEvent(e)
     })
 
-    this.on('pointerup', e => {
-      this.isPointerDown = false
-    })
+    this.on('pointerup', () => this.isPointerDown = false)
 
     this.on('pointermove', e => {
-      if(e.target === this) {
-        this.alpha = 1
-      }
-      if(this.isPointerDown) this.moveViewportByEvent(e)
+      if (e.target === this) this.alpha = 1
+      if (this.isPointerDown) this.moveViewportByEvent(e)
     })
 
-    this.on('pointerout', e => {
-      this.alpha = 0.25
-    })
+    this.on('pointerout', () => this.alpha = 0.25)
   }
 
-  moveViewportByEvent(e){
+  moveViewportByEvent(e) {
     const pos = e.data.getLocalPosition(this)
     this.viewport.moveCenter(pos.x / this.px, pos.y / this.py)
     this.updateViewportRegion()
@@ -86,22 +78,31 @@ export default class MiniMap extends PIXI.Container {
     this.addChild(this.view)
 
     this.map.entitiesLayer.children.forEach(gameObject => {
-      const e = new PIXI.Graphics()
-      e.lineStyle(1, 0x00ff00, 0.75, 0)
-      e.beginFill(0x00ff00, 0.75)
-      e.drawCircle(0, 0, 3)
-      e.endFill()
-      e.position.set(gameObject.position.x * this.px, gameObject.position.y * this.py)
-      e.gameObject = gameObject
-      this.addChild(e)
+      if (gameObject instanceof GameObject) {
+        this.addChild(new MiniMapEntity(gameObject))
+      }
     })
   }
 
-  update(time) {
-    this.children.forEach(e => {
-      if (e.gameObject) {
-        e.position.set(e.gameObject.position.x * this.px, e.gameObject.position.y * this.py)
+  update() {
+    this.children.forEach(miniMapEntity => {
+      if (miniMapEntity instanceof MiniMapEntity) {
+        miniMapEntity.position.set(miniMapEntity.gameObject.position.x * this.px, miniMapEntity.gameObject.position.y * this.py)
       }
     })
+  }
+}
+
+class MiniMapEntity extends PIXI.Graphics {
+  /**
+   * @param {GameObject} gameObject
+   */
+  constructor(gameObject) {
+    super()
+    this.gameObject = gameObject
+    this.lineStyle(1, 0x00ff00, 0.75, 0)
+    this.beginFill(0x00ff00, 0.75)
+    this.drawCircle(0, 0, 3)
+    this.endFill()
   }
 }

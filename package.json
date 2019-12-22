@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html",
+    "start_showcase": "parcel src/index.html --host 0.0.0.0",
     "prebuild": "rm -rf dist",
     "build": "parcel build src/index.html --public-url '.'"
   },

@@ -6,7 +6,6 @@ export default class App extends PIXI.Application {
       // antialias: true,
       backgroundColor: 0x88eeff,
       resizeTo: window,
-      resolution: window.devicePixelRatio || 1,
     })
     PIXI.settings.ROUND_PIXELS = true
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST

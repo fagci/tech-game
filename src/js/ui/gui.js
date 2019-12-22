@@ -31,11 +31,9 @@ export default class GUI extends PIXI.Container {
 
     app.console = this.console = new Console()
     this.console.pivot.set(this.console.width, 0)
-    this.console.position.set(app.screen.width, 0)
     this.addChild(this.console)
 
-    this.on('added', parent => {
-      console.info('GUI added')
+    this.on('added', () => {
       this.addElements()
       this.resize()
     })
@@ -47,9 +45,11 @@ export default class GUI extends PIXI.Container {
   }
 
   resize() {
-    this.inventory.x = app.screen.width
-    this.inventory.y = app.screen.height
-    this.crosshair.position.set((app.renderer.width / 2) | 0, (app.renderer.height / 2) | 0)
+    const {width, height} = app.screen
+    this.inventory.x = width
+    this.inventory.y = height
+    this.console.position.set(width, 0)
+    this.crosshair.position.set((width / 2) | 0, (height / 2) | 0)
   }
 
   update(time) {

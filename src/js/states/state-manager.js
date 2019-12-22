@@ -22,7 +22,7 @@ export default class StateManager extends Array {
   };
 
   push (state) {
-    console.log(`New state: ${state.constructor.name}`)
+    console.log(`[STATE] ${state.constructor.name}`)
     super.push(state)
     this.attachTopState()
     state.onEnter()
@@ -51,7 +51,6 @@ export default class StateManager extends Array {
 
   attachTopState = () => {
     const state = this.top()
-    // this.container.removeChildren()
     if (!state) return
     this.container.addChild(state)
   }

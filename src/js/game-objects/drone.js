@@ -1,5 +1,6 @@
-import GameObject from "./game-object"
 import * as PIXI from "pixi.js"
+import GameObject from "./game-object"
+import {pointDirection} from "../utils/geometry"
 
 export class Drone extends GameObject {
   constructor() {
@@ -8,17 +9,14 @@ export class Drone extends GameObject {
     this.phase = 0;
 
     this.g = new PIXI.Sprite(window.app.textures.plane)
-    this.g.anchor.set(0.5,0.5)
+    this.g.anchor.set(0.5, 0.5)
     this.addChild(this.g)
-  }
-
-  static getDirectionAngle(anchor, point) {
-    return Math.atan2(anchor.y - point.y, anchor.x - point.x) + Math.PI;
   }
 
   update(time) {
     const r = 150
-    this.phase += time * 0.02;
+    this.phase += time * 0.02
+    this.phase %= Math.PI * 2
     const x = Math.cos(this.phase) * r + 4096
     const y = Math.sin(this.phase) * r + 4096
 
@@ -28,6 +26,6 @@ export class Drone extends GameObject {
     this.position.copyTo(oldPosition)
     this.position.copyFrom(newPosition)
 
-    this.rotation = Drone.getDirectionAngle(oldPosition, newPosition) + Math.PI/2
+    this.rotation = pointDirection(oldPosition, newPosition) + Math.PI / 2
   }
 }

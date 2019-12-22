@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
 
 export default class GameObject extends PIXI.Container {
-  constructor() {
+  constructor(name) {
     super()
 
-    this.name = this.constructor.name
+    this.name = name || this.constructor.name
     this.selected = false
 
     this.interactive = true
@@ -18,7 +18,7 @@ export default class GameObject extends PIXI.Container {
       this.updateSelection()
     })
 
-    this.on('added', parent => this.updateSelection())
+    this.on('added', () => this.updateSelection())
   }
 
   updateSelection() {
@@ -29,5 +29,10 @@ export default class GameObject extends PIXI.Container {
       this.selectionGraphics.drawRect(0, 0, this.width, this.height)
     }
     this.addChild(this.selectionGraphics)
+  }
+
+  destroy(options) {
+    delete this.selectionGraphics
+    super.destroy(options)
   }
 }

@@ -13,6 +13,5 @@ export default class Game extends PIXI.Container {
   start = () => {
     app.stateManager.push(new SplashState())
     app.ticker.add(this.update)
-    app.renderer.render(app.stage)
   }
 }

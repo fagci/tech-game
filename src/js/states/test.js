@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import Controls from '../controls'
 import State from './state'
 import GUI from '../ui/gui'
 
