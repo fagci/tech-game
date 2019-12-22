@@ -1,9 +1,9 @@
 import State from "./state"
 
-import spriteSheetPng from '../../assets/ss.png'
-import spriteSheetJson from '../../assets/ss.json'
-import spriteSheet2Png from '../../assets/swss.png'
-import spriteSheet2Json from '../../assets/swss.json'
+const spriteSheetPng = '/ss.png'
+const spriteSheetJson = '/ss.json'
+const spriteSheet2Png = '/swss.png'
+const spriteSheet2Json = '/swss.json'
 import * as PIXI from "pixi.js"
 import TestState from "./test"
 
@@ -35,8 +35,8 @@ export default class SplashState extends State {
     this.addChild(this.progressbar)
     this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
 
-    this.loader.add('ss', spriteSheetPng)
-    this.loader.add('ss2', spriteSheet2Png)
+    this.loader.add('ss', spriteSheetJson)
+    this.loader.add('ss2', spriteSheet2Json)
     this.loader.load()
   }
 
@@ -50,17 +50,9 @@ export default class SplashState extends State {
   }
 
   init(loader, resources) {
-    const spriteSheetTexture = resources.ss.texture
-    const spriteSheet2Texture = resources.ss2.texture
-    const spriteSheet = new PIXI.Spritesheet(spriteSheetTexture, spriteSheetJson)
-    const spriteSheet2 = new PIXI.Spritesheet(spriteSheet2Texture, spriteSheet2Json)
-    spriteSheet.parse(textures => {
-      spriteSheet2.parse(textures2 => {
-        app.textures = {...textures, ...textures2}
-        this.removeChildren()
-        app.stateManager.push(new TestState(app))
-      })
-    })
+    app.textures = {...resources.ss.textures, ...resources.ss2.textures}
+    this.removeChildren()
+    app.stateManager.push(new TestState(app))
   }
 
   progress(loader, resources) {

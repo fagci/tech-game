@@ -21,10 +21,15 @@
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "parcel-plugin-static-files-copy": "^2.2.1"
   },
   "dependencies": {
     "pixi-viewport": "^4.4.1",
     "pixi.js": "^5.2.0"
+  },
+  "staticFiles": {
+    "staticPath": "assets",
+    "watcherGlob": "**"
   }
 }
