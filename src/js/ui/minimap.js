@@ -4,13 +4,11 @@ import {Viewport} from 'pixi-viewport'
 
 export default class MiniMap extends PIXI.Container {
   /**
-   * @param {PIXI.Application} app
    * @param {GameMap} map
    * @param {Viewport} viewport
    */
-  constructor(app, map, viewport) {
+  constructor(map, viewport) {
     super()
-    this.app = app
     this.map = map
     this.viewport = viewport
 

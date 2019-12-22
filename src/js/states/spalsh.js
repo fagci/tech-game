@@ -8,8 +8,8 @@ import * as PIXI from "pixi.js"
 import TestState from "./test"
 
 export default class SplashState extends State {
-  constructor(app) {
-    super(app)
+  constructor() {
+    super()
 
     this.progressbar = new PIXI.Container()
 
@@ -21,7 +21,7 @@ export default class SplashState extends State {
     const progressbarRect = new PIXI.Graphics()
     progressbarRect.lineStyle(1, 0xffffff, 1, 1)
     progressbarRect.beginFill(0x223344)
-    this.progressBarWidth = this.app.screen.width - 64
+    this.progressBarWidth = app.screen.width - 64
     progressbarRect.drawRect(0, 0, this.progressBarWidth, 16)
     progressbarRect.endFill()
 
@@ -33,7 +33,7 @@ export default class SplashState extends State {
     this.progressbar.pivot.set((this.progressbar.width / 2) | 0, (this.progressbar.height / 2) | 0)
 
     this.addChild(this.progressbar)
-    this.progressbar.position.set((this.app.screen.width / 2) | 0, (this.app.screen.height / 2) | 0)
+    this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
 
     this.loader.add('ss', spriteSheetPng)
     this.loader.add('ss2', spriteSheet2Png)
@@ -43,7 +43,7 @@ export default class SplashState extends State {
   drawProgress(percent) {
     this.progressbarGraphics.clear()
     this.progressbarGraphics.beginFill(0x882222)
-    this.progressbarGraphics.drawRect(0, 0, this.app.screen.width - 64, 16)
+    this.progressbarGraphics.drawRect(0, 0, app.screen.width - 64, 16)
     this.progressbarGraphics.endFill()
 
     this.progressbarText.text = `Loading... ${percent}%`
@@ -56,9 +56,9 @@ export default class SplashState extends State {
     const spriteSheet2 = new PIXI.Spritesheet(spriteSheet2Texture, spriteSheet2Json)
     spriteSheet.parse(textures => {
       spriteSheet2.parse(textures2 => {
-        this.app.textures = {...textures, ...textures2}
+        app.textures = {...textures, ...textures2}
         this.removeChildren()
-        this.app.stateManager.push(new TestState(this.app))
+        app.stateManager.push(new TestState(app))
       })
     })
   }

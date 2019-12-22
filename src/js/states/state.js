@@ -1,20 +1,16 @@
 import * as PIXI from 'pixi.js'
 
 export default class State extends PIXI.Container {
-  /**
-   * @param {PIXI.Application} app
-   */
-  constructor (app) {
+  constructor () {
     super()
 
-    this.app = app
     this.name = this.constructor.name
 
     this.onEnter = function () {}
     this.onExit = function () {}
 
-    this.onPause = () => this.app.renderer.stop()
-    this.onResume = () => this.app.renderer.start()
+    this.onPause = () => app.renderer.stop()
+    this.onResume = () => app.renderer.start()
 
     this.loader = PIXI.Loader.shared
       .on('error', error => this.error(error))

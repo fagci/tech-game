@@ -4,9 +4,8 @@ import MiniMap from './minimap'
 import Console from "./console"
 
 export default class GUI extends PIXI.Container {
-  constructor(app, map, viewport) {
+  constructor(map, viewport) {
     super()
-    this.app = app
     this.map = map
     this.viewport = viewport
 
@@ -30,9 +29,9 @@ export default class GUI extends PIXI.Container {
     this.inventory.pivot.set(this.inventory.width, this.inventory.height)
     this.addChild(this.inventory)
 
-    this.app.console = this.console = new Console()
+    app.console = this.console = new Console()
     this.console.pivot.set(this.console.width, 0)
-    this.console.position.set(this.app.screen.width, 0)
+    this.console.position.set(app.screen.width, 0)
     this.addChild(this.console)
 
     this.on('added', parent => {
@@ -43,14 +42,14 @@ export default class GUI extends PIXI.Container {
   }
 
   addElements() {
-    this.miniMap = new MiniMap(this.app, this.map, this.viewport)
+    this.miniMap = new MiniMap(this.map, this.viewport)
     this.addChild(this.miniMap)
   }
 
   resize() {
-    this.inventory.x = this.app.screen.width
-    this.inventory.y = this.app.screen.height
-    this.crosshair.position.set((this.app.renderer.width / 2) | 0, (this.app.renderer.height / 2) | 0)
+    this.inventory.x = app.screen.width
+    this.inventory.y = app.screen.height
+    this.crosshair.position.set((app.renderer.width / 2) | 0, (app.renderer.height / 2) | 0)
   }
 
   update(time) {

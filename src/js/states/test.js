@@ -10,8 +10,8 @@ import GameMap from '../game-map'
 import {Drone} from "../game-objects/drone"
 
 export default class TestState extends State {
-  constructor(app) {
-    super(app)
+  constructor() {
+    super()
 
     // Create things
 
@@ -20,8 +20,8 @@ export default class TestState extends State {
 
     this.map = new GameMap()
     this.viewport = new Viewport({
-      screenWidth: this.app.screen.width,
-      screenHeight: this.app.screen.height,
+      screenWidth: app.screen.width,
+      screenHeight: app.screen.height,
       worldWidth: this.WORLD_WIDTH,
       worldHeight: this.WORLD_HEIGHT,
       interaction: app.renderer.plugins.interaction
@@ -30,7 +30,7 @@ export default class TestState extends State {
     const playerBase = new Base()
     const drone = new Drone()
     const invItem = new InventoryItem()
-    this.gui = new GUI(app, this.map, this.viewport)
+    this.gui = new GUI(this.map, this.viewport)
 
     // Set things options
 
@@ -69,15 +69,15 @@ export default class TestState extends State {
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
 
-    const texture = this.app.textures.grass
+    const texture = app.textures.sand
     const sprite = new PIXI.Sprite(texture)
-    const bgT = this.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
+    const bgT = app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
     const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
     this.map.groundLayer.addChild(bgGrid)
 
     window.addEventListener('resize', () => {
       this.gui.resize()
-      this.viewport.resize(this.app.screen.width, this.app.screen.height)
+      this.viewport.resize(app.screen.width, app.screen.height)
     })
   }
 

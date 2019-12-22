@@ -3,17 +3,16 @@ import StateManager from './states/state-manager'
 import SplashState from './states/spalsh'
 
 export default class Game extends PIXI.Container {
-  constructor (app) {
+  constructor () {
     super()
-    this.app = app
-    this.app.stateManager = new StateManager(this)
+    app.stateManager = new StateManager(this)
   }
 
-  update = time => this.app.stateManager.update(time)
+  update = time => app.stateManager.update(time)
 
   start = () => {
-    this.app.stateManager.push(new SplashState(this.app))
-    this.app.ticker.add(this.update)
-    this.app.renderer.render(this.app.stage)
+    app.stateManager.push(new SplashState())
+    app.ticker.add(this.update)
+    app.renderer.render(app.stage)
   }
 }

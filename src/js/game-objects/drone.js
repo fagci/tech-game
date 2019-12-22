@@ -7,15 +7,6 @@ export class Drone extends GameObject {
 
     this.phase = 0;
 
-    // const g = new PIXI.Graphics()
-    // g.lineStyle(3, 0x222222)
-    // g.beginFill(0xee6600, 0.24)
-    // g.moveTo(0, 0)
-    // g.lineTo(30, 15)
-    // g.lineTo(0, 30)
-    // g.endFill()
-    // this.addChild(g)
-
     this.g = new PIXI.Sprite(window.app.textures.plane)
     this.g.anchor.set(0.5,0.5)
     this.addChild(this.g)

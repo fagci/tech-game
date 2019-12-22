@@ -1,8 +1,9 @@
 import App from './app'
 import Game from './game'
 
-const app = new App()
-window.app = app
-const game = new Game(app)
+window.app = new App()
+
+const game = new Game()
 app.stage.addChild(game)
+
 game.start()

@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js'
 import State from './state'
 
 export default class MainMenuState extends State {
-  constructor(app) {
-    super(app)
+  constructor() {
+    super()
 
     const MENU = [
       { title: 'New game', onClick: e => console.log(e.title) },
