@@ -2,11 +2,11 @@
   "meta": {
     "version": "1.0",
     "image": "swss.png",
-    "size": {"w":800,"h":496}
+    "size": {"w": 800, "h": 496}
   },
   "frames": {
     "plane": {
-      "frame": {"x":0,"y":320,"w":48,"h":30}
+      "frame": {"x": 0, "y": 320, "w": 48, "h": 30}
     }
   }
 }

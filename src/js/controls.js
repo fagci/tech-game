@@ -1,5 +1,5 @@
 export default class Controls {
-  constructor () {
+  constructor() {
     this._keyDown = {}
     this._mouseDown = {}
     this._isMouseDown = false

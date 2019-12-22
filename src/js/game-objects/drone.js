@@ -1,12 +1,12 @@
-import * as PIXI from "pixi.js"
-import GameObject from "./game-object"
-import {pointDirection} from "../utils/geometry"
+import * as PIXI from 'pixi.js'
+import GameObject from './game-object'
+import {pointDirection} from '../utils/geometry'
 
 export class Drone extends GameObject {
   constructor() {
     super()
 
-    this.phase = 0;
+    this.phase = 0
 
     this.g = new PIXI.Sprite(window.app.textures.plane)
     this.g.anchor.set(0.5, 0.5)

@@ -14,7 +14,7 @@ var cfg = {
       // { name: 'quit',   from: 'playing',               to: 'lost'     }, // player quit
       // { name: 'win',    from: 'playing',               to: 'won'      }, // player won
       // { name: 'finish', from: ['won', 'lost'],         to: 'menu'     }  // back to menu
-    ]
+    ],
   },
 
   pubsub: [

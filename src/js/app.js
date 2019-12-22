@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 
 export default class App extends PIXI.Application {
-  constructor () {
+  constructor() {
     super({
       // antialias: true,
       backgroundColor: 0x88eeff,

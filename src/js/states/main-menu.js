@@ -6,9 +6,9 @@ export default class MainMenuState extends State {
     super()
 
     const MENU = [
-      { title: 'New game', onClick: e => console.log(e.title) },
-      { title: 'Settings', onClick: e => console.log(e.title) },
-      { title: 'Exit', onClick: e => console.log(e.title) },
+      {title: 'New game', onClick: e => console.log(e.title)},
+      {title: 'Settings', onClick: e => console.log(e.title)},
+      {title: 'Exit', onClick: e => console.log(e.title)},
     ]
 
     this.menuContainer = new PIXI.Container()
@@ -33,7 +33,7 @@ class Button extends PIXI.Sprite {
     this.interactive = true
     this.buttonMode = true
 
-    this.titleText = new PIXI.Text(this.title, { fontFamily: 'Roboto', fontSize: 18, fill: 0xffffff })
+    this.titleText = new PIXI.Text(this.title, {fontFamily: 'Roboto', fontSize: 18, fill: 0xffffff})
     this.bg = new PIXI.Graphics()
 
 

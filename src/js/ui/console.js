@@ -10,7 +10,7 @@ export default class Console extends PIXI.Container {
 
     this.levels = {
       LOW: 5000,
-      URGENT: 60000
+      URGENT: 60000,
     }
 
     this.messages = []
@@ -46,7 +46,7 @@ export default class Console extends PIXI.Container {
           fontSize: 12,
           padding: 4,
           wordWrapWidth: this.MAX_WIDTH - this.PADDING * 2,
-          wordWrap: true
+          wordWrap: true,
         })
         message.name = msgName
         message.position.x = this.PADDING
@@ -62,7 +62,7 @@ export default class Console extends PIXI.Container {
     level = level || this.levels.LOW
     const time = new Date()
     this.messages.push({
-      id, text, level, time, removeAt: +time + level
+      id, text, level, time, removeAt: +time + level,
     })
     this.refreshMessages()
   }

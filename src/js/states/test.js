@@ -6,7 +6,7 @@ import GUI from '../ui/gui'
 import {InventoryItem} from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
-import {Drone} from "../game-objects/drone"
+import {Drone} from '../game-objects/drone'
 
 export default class TestState extends State {
   constructor() {
@@ -23,7 +23,7 @@ export default class TestState extends State {
       screenHeight: app.screen.height,
       worldWidth: this.WORLD_WIDTH,
       worldHeight: this.WORLD_HEIGHT,
-      interaction: app.renderer.plugins.interaction
+      interaction: app.renderer.plugins.interaction,
     })
 
     const playerBase = new Base()

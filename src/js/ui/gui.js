@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import Inventory from './inventory'
 import MiniMap from './minimap'
-import Console from "./console"
+import Console from './console'
 
 export default class GUI extends PIXI.Container {
   constructor(map, viewport) {

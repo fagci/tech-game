@@ -7,7 +7,7 @@ import * as PIXI from 'pixi.js'
  * @property {PIXI.Container} undergroundLayer
  */
 export default class GameMap extends PIXI.Container {
-  constructor () {
+  constructor() {
     super()
 
     this.skyLayer = new PIXI.Container()

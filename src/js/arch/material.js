@@ -1,4 +1,4 @@
 export default {
   AIR: {texture: null},
-  SAND: {texture: 'sand'}
+  SAND: {texture: 'sand'},
 }

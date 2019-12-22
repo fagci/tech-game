@@ -1,4 +1,5 @@
 import Material from './material'
+
 /**
  * @property {GameObject} gameObject
  */

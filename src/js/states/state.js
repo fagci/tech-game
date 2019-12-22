@@ -1,13 +1,15 @@
 import * as PIXI from 'pixi.js'
 
 export default class State extends PIXI.Container {
-  constructor () {
+  constructor() {
     super()
 
     this.name = this.constructor.name
 
-    this.onEnter = function () {}
-    this.onExit = function () {}
+    this.onEnter = function () {
+    }
+    this.onExit = function () {
+    }
 
     this.onPause = () => app.renderer.stop()
     this.onResume = () => app.renderer.start()
@@ -22,13 +24,15 @@ export default class State extends PIXI.Container {
    * @param {PIXI.Loader} loader
    * @param resources
    */
-  progress (loader, resources) {
+  progress(loader, resources) {
     //TODO: implement progress indicator
   }
 
-  init (loader, resources) {
+  init(loader, resources) {
     //
   }
 
-  error (error) {console.error(error)}
+  error(error) {
+    console.error(error)
+  }
 }

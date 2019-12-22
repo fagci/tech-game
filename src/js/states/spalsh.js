@@ -1,11 +1,9 @@
-import State from "./state"
+import State from './state'
+import * as PIXI from 'pixi.js'
+import TestState from './test'
 
-const spriteSheetPng = '/ss.png'
 const spriteSheetJson = '/ss.json'
-const spriteSheet2Png = '/swss.png'
 const spriteSheet2Json = '/swss.json'
-import * as PIXI from "pixi.js"
-import TestState from "./test"
 
 export default class SplashState extends State {
   constructor() {

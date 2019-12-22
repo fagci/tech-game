@@ -2,26 +2,26 @@ export default class StateManager extends Array {
   /**
    * @param {Game} container
    */
-  constructor (container) {
+  constructor(container) {
     super()
     this.container = container
   }
 
-  top () {
+  top() {
     return this.length ? this[this.length - 1] : null
   }
 
-  update (time) {
+  update(time) {
     const state = this.top()
     if (state && state.update) state.update(time)
   };
 
-  render () {
+  render() {
     const state = this.top()
     if (state) state.render()
   };
 
-  push (state) {
+  push(state) {
     console.log(`[STATE] ${state.constructor.name}`)
     super.push(state)
     this.attachTopState()
@@ -29,7 +29,7 @@ export default class StateManager extends Array {
     return state
   };
 
-  pop () {
+  pop() {
     const state = this.top()
     if (!state) return null
     state.onExit()
@@ -39,12 +39,12 @@ export default class StateManager extends Array {
     return oldState
   };
 
-  pause () {
+  pause() {
     const state = this.top()
     if (state.onPause) state.onPause()
   };
 
-  resume () {
+  resume() {
     const state = this.top()
     if (state.onResume) state.onResume()
   };
