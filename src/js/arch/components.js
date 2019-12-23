@@ -1,6 +1,15 @@
 import * as PIXI from 'pixi.js'
 
 /**
+ * @property {string} name
+ */
+class Component {
+  constructor() {
+    this.name = this.constructor.name
+  }
+}
+
+/**
  * Declares health properties
  * @class
  * @property {number} MAX_HEALTH
@@ -13,28 +22,67 @@ export class Health {
   }
 }
 
-export class Material {
-  constructor() {
-
-  }
-}
-
 export class Position {
+  /**
+   * Point desc test
+   * @type {PIXI.Point}
+   * @description Point!
+   */
+  position
+
   constructor(point) {
     this.position = point || new PIXI.Point()
   }
 }
 
-
-export class Ballistic {
+export class Velocity {
   constructor() {
-    this.DAMAGE = 1200
-    this.MAX_SPEED = 12
+    this.x = this.y = 0
+  }
+}
 
+export class Damage {
+  constructor(damage) {
+    this.damage = damage || 100
+  }
+}
+
+export class Engine {
+  constructor(direction, force) {
+    this.force = force || 0
     this.direction = direction
-    this.speed = 0
-    this.lifeTime = 0
-    this.lifeTimeMax = 4
-    this.acceleration = 0.5
+  }
+}
+
+export class Mass {
+  constructor(mass) {
+    this.mass = mass || 1
+  }
+
+}
+
+export class VelocityConstraint {
+  constructor(maxVelocity) {
+    this.maxVelocity = maxVelocity || 12
+  }
+}
+
+export class Friction {
+  constructor() {
+
+  }
+
+}
+
+export class Dissolve {
+  constructor(period) {
+    this.dissolveTime = 0
+    this.dissolveTimeMax = period || 5
+  }
+}
+
+export class Material {
+  constructor() {
+    this.texture = null
   }
 }

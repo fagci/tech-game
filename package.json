@@ -28,7 +28,8 @@
     "pixi-particles": "^4.2.0",
     "pixi-sound": "^3.0.4",
     "pixi-viewport": "^4.4.1",
-    "pixi.js": "^5.2.0"
+    "pixi.js": "^5.2.0",
+    "yagl-ecs": "^1.1.0"
   },
   "staticFiles": {
     "staticPath": "assets",

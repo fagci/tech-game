@@ -7,10 +7,23 @@ import {InventoryItem} from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
 import {Drone} from '../game-objects/drone'
+// import Physics from '../arch/systems/physics'
+import {Position, Velocity} from '../arch/components'
+import Entity from '../arch/ecs/entity'
+import System from '../arch/ecs/system'
+import World from '../arch/ecs/world'
+// import EntityFactory from '../arch/entity-factory'
 
 export default class TestState extends State {
   constructor() {
     super()
+
+    const world = new World()
+    const entity = new Entity(Position, Velocity)
+    const system = new System()
+    world.add(entity)
+
+    console.log(`World: ${world}`)
 
     // Create things
 

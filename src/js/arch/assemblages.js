@@ -1,16 +1,17 @@
-import Entity from './entity'
-import * as Components from './components'
-
-export class Enemy extends Entity {
+export class Enemy {
   constructor() {
-    super()
     this.addComponent(new Components.Health(1000))
   }
 }
 
-export class Bullet extends Entity {
-  constructor() {
-    super()
-    this.addComponent(new Components.Ballistic())
+export class Bullet {
+  constructor(direction) {
+    this
+      .addComponent(new Components.Position())
+      .addComponent(new Components.Engine(direction))
+      .addComponent(new Components.Mass())
+      .addComponent(new Components.SpeedConstraint())
+      .addComponent(new Components.Dissolve())
+      .addComponent(new Components.Damage())
   }
 }

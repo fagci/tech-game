@@ -1343,3 +1343,13 @@ utils-extend@^1.0.4, utils-extend@^1.0.6:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/utils-extend/-/utils-extend-1.0.8.tgz#ccfd7b64540f8e90ee21eec57769d0651cab8a5f"
   integrity sha1-zP17ZFQPjpDuIe7Fd2nQZRyril8=
+
+vigur@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/vigur/-/vigur-0.1.1.tgz#795453536768467e7ec7bb23a665293410c6d777"
+  integrity sha1-eVRTU2doRn5+x7sjpmUpNBDG13c=
+
+yagl-ecs@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/yagl-ecs/-/yagl-ecs-1.1.0.tgz#74cd507bf512a4a12a98860714047dfc241a69a6"
+  integrity sha1-dM1Qe/USpKEqmIYHFAR9/CQaaaY=
