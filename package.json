@@ -25,6 +25,8 @@
     "parcel-plugin-static-files-copy": "^2.2.1"
   },
   "dependencies": {
+    "ecs": "^0.1.1",
+    "ecsy": "^0.2.1",
     "pixi-particles": "^4.2.0",
     "pixi-sound": "^3.0.4",
     "pixi-viewport": "^4.4.1",

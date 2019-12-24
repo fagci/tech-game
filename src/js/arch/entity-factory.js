@@ -1,4 +1,4 @@
-import {World} from 'ecsy'
+import World from './ecs/world'
 import {Damage, Dissolve, Engine, Mass, Position, Velocity, VelocityConstraint} from './components'
 
 export default class EntityFactory {
@@ -10,14 +10,6 @@ export default class EntityFactory {
   }
 
   createBullet() {
-    return this.world
-      .createEntity()
-      .addComponent(Position)
-      .addComponent(Engine)
-      .addComponent(Mass)
-      .addComponent(Velocity)
-      .addComponent(VelocityConstraint)
-      .addComponent(Dissolve)
-      .addComponent(Damage)
+    return this.world.createEntity(Position, Engine, Mass, Velocity, VelocityConstraint, Dissolve, Damage)
   }
 }

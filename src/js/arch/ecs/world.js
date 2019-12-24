@@ -1,13 +1,16 @@
+import Entity from './entity'
+
 export default class World {
   constructor() {
     this._groups = {}
+    this._systems = []
   }
 
   /**
-   * @returns {Object[]}
+   * @returns {Object.<string,Array>}
    */
   get groups() {
-    return Object.values(this._groups)
+    return this._groups
   }
 
   /**
@@ -32,6 +35,26 @@ export default class World {
       })
     })
     return this
+  }
+
+  addSystem(system) {
+    this._systems.push(system)
+    return this
+  }
+
+  removeSystem(system) {
+    this._systems.splice(this._systems.indexOf(system), 1)
+    return this
+  }
+
+  update(delta, time) {
+    this._systems.forEach(system => system.update(delta, time))
+  }
+
+  createEntity(...components) {
+    const entity = new Entity(...components)
+    this.add(entity)
+    return entity
   }
 
   toString() {
