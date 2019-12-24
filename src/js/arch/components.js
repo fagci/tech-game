@@ -71,7 +71,6 @@ export class Friction {
   constructor() {
 
   }
-
 }
 
 export class Dissolve {
@@ -81,8 +80,18 @@ export class Dissolve {
   }
 }
 
-export class Material {
+export class RenderMaterial {
   constructor() {
     this.texture = null
+  }
+}
+
+export class RenderObject extends PIXI.Container {
+  constructor() {
+    super()
+    const g = new PIXI.Graphics()
+      .lineStyle(1, 0x0000ff, 1, 0)
+      .drawCircle(0, 0, 10)
+    this.addChild(g)
   }
 }

@@ -1,23 +1,11 @@
 import Entity from './entity'
+import {RenderObject} from '../components'
 
 export default class World {
-  constructor() {
-    this._groups = {}
+  constructor(map) {
+    this._entities = []
     this._systems = []
-  }
-
-  /**
-   * @returns {Object.<string,Array>}
-   */
-  get groups() {
-    return this._groups
-  }
-
-  /**
-   * @returns {string[]}
-   */
-  get groupNames() {
-    return Object.keys(this._groups)
+    this.map = map
   }
 
   /**
@@ -25,15 +13,32 @@ export default class World {
    * @param {...Entity} entities
    * @returns {World}
    */
-  add(...entities) {
+  addEntity(...entities) {
     entities.forEach(entity => {
-      entity.componentNames.forEach(componentName => {
-        if (!this._groups[componentName]) {
-          this._groups[componentName] = []
-        }
-        this._groups[componentName].push(entity)
-      })
+      this._entities.push(entity)
+      const renderObject = entity.get(RenderObject)
+      console.log(`Test 4 RO`, entity)
+      if (renderObject) {
+        this.map.addChild(renderObject)
+        console.info(`Entiti with RenderObject added to map`)
+      }
     })
+    return this
+  }
+
+  /**
+   *
+   * @param {...Entity} entities
+   * @returns {World}
+   */
+  removeEntity(...entities) {
+    let i = entities.length
+    while (i--) {
+      if (this._entities.indexOf(this._entities[i]) !== -1) {
+        const removedEntity = this._entities.splice(i, 1)
+        console.log(`Removed entity ${removedEntity[0]}`)
+      }
+    }
     return this
   }
 
@@ -47,17 +52,19 @@ export default class World {
     return this
   }
 
+  createEntity(...components) {
+    return new Entity(...components)
+  }
+
+  get entities() {
+    return this._entities
+  }
+
   update(delta, time) {
     this._systems.forEach(system => system.update(delta, time))
   }
 
-  createEntity(...components) {
-    const entity = new Entity(...components)
-    this.add(entity)
-    return entity
-  }
-
   toString() {
-    return JSON.stringify(this._groups, null, 2)
+    return JSON.stringify(this.entities.map(e => e.toString()), null, 2)
   }
 }

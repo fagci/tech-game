@@ -16,15 +16,6 @@ export default class TestState extends State {
   constructor() {
     super()
 
-    const world = new World()
-    this.world = world
-    const entityFactory = new EntityFactory(world)
-    world.add(entityFactory.createBullet())
-    world
-      .addSystem(new Physics(world))
-
-    console.log(`World: ${world}`)
-
     // Create things
 
     this.WORLD_WIDTH = 8192
@@ -99,6 +90,17 @@ export default class TestState extends State {
       .lineTo(0, 100)
     cross.position.set(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
     this.map.groundLayer.addChild(cross)
+
+
+    const world = new World(this.map.entitiesLayer)
+    this.world = world
+    const entityFactory = new EntityFactory(world)
+    world
+      .addEntity(entityFactory.createBullet())
+      .addSystem(new Physics(world))
+
+    console.log(`World: ${world}`)
+
 
     window.addEventListener('resize', () => {
       this.gui.resize()

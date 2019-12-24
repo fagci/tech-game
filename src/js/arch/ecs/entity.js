@@ -43,7 +43,13 @@ export default class Entity {
   }
 
   get = (name) => {
+    if (name instanceof Function) name = new name
     return this._components[name instanceof String ? name : name.constructor.name]
+  }
+
+  has = (name) => {
+    if (name instanceof Function) name = new name
+    return this._components[name instanceof String ? name : name.constructor.name] !== null
   }
 
   toString() {
