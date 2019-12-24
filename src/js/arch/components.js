@@ -98,3 +98,35 @@ export class RenderObject extends PIXI.Container {
     this.addChild(g)
   }
 }
+
+/** @enum PowerSourceType */
+const PowerSourceType = {
+  AIR: Symbol('air'),
+  THERMAL: Symbol('thermal'),
+  MECHANICAL: Symbol('mechanical'),
+  FUEL: Symbol('fuel'),
+}
+
+export class Energy {
+  constructor(totalCapacity, capacity) {
+    this.totalCapacity = totalCapacity || 100
+    this.capacity = capacity || 100
+  }
+}
+
+export class EnergyGenerator extends Energy {
+  constructor(maxPowerStorage, powerStorageLevel) {
+    super(maxPowerStorage, powerStorageLevel)
+    this.powerSource = PowerSourceType.THERMAL
+  }
+}
+
+export class EnergyRetranslator {
+  /**
+   *
+   * @param {Energy} source
+   */
+  constructor(source) {
+    this.source = source
+  }
+}
