@@ -5,7 +5,8 @@ export default class Entity {
    * @description Can create entity with components at once
    */
   constructor(...components) {
-    this._components = {}
+    // this._components = {}
+    Object.defineProperty(this, '_components', {enumerable: false, value: {}})
     this.add(...components)
     this.uid = `${+new Date}_${(Math.random() * 100000) | 0}`
   }
@@ -21,7 +22,7 @@ export default class Entity {
    * @returns {string[]}
    */
   get componentNames() {
-    return Object.keys(this._components)
+    return Object.keys(this._components).filter(k => this.hasOwnProperty(k))
   }
 
   add = (...components) => {
@@ -30,6 +31,16 @@ export default class Entity {
         c = new c
         console.warn(`Using default constructor for ${c.constructor.name}`)
       }
+
+      Object.defineProperty(this, c.constructor.name, {
+        configurable: true,
+        enumerable: true,
+        get: () => {
+          return Reflect.get(this._components, c.constructor.name)
+        },
+      })
+
+
       this._components[c.constructor.name] = c
     })
     return this

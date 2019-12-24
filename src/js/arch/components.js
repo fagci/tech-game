@@ -22,17 +22,7 @@ export class Health {
   }
 }
 
-export class Position {
-  /**
-   * Point desc test
-   * @type {PIXI.Point}
-   * @description Point!
-   */
-  position
-
-  constructor(point) {
-    this.position = point || new PIXI.Point()
-  }
+export class Position extends PIXI.Point {
 }
 
 export class Velocity {
@@ -49,9 +39,22 @@ export class Damage {
 
 export class Engine {
   constructor(direction, force) {
-    this.force = force || 0
-    this.direction = direction
+    this.force = force || 0.05
+    this.direction = direction || 0
+    this.acceleration = 0
+    this.update()
   }
+
+  update() {
+    const x = Math.cos(this.direction) * this.force
+    const y = Math.sin(this.direction) * this.force
+    this.acceleration = new PIXI.Point(x, y)
+  }
+
+  // FIXME:
+  // скорее всего это отдельная сущность,
+  // т.к. сие должно обрабатываться системой физики
+  // как взаимодействие сущностей (прибавление вектора тяги двигателя).
 }
 
 export class Mass {
@@ -63,7 +66,7 @@ export class Mass {
 
 export class VelocityConstraint {
   constructor(maxVelocity) {
-    this.maxVelocity = maxVelocity || 12
+    this.value = maxVelocity || 12
   }
 }
 

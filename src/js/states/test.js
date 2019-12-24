@@ -11,6 +11,7 @@ import {Drone} from '../game-objects/drone'
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
 import EntityFactory from '../arch/entity-factory'
+import Render from '../arch/systems/render'
 
 export default class TestState extends State {
   constructor() {
@@ -98,6 +99,7 @@ export default class TestState extends State {
     world
       .addEntity(entityFactory.createBullet())
       .addSystem(new Physics(world))
+      .addSystem(new Render(world))
 
     console.log(`World: ${world}`)
 
@@ -111,7 +113,7 @@ export default class TestState extends State {
   update = (time) => {
     this.map.update(time)
     this.gui.update(time)
-    this.world.update(app.ticker.deltaMS, performance.now())
+    this.world.update(time)
   }
 }
 

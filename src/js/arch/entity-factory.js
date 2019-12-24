@@ -10,6 +10,6 @@ export default class EntityFactory {
   }
 
   createBullet() {
-    return this.world.createEntity(RenderObject, Position, Engine, Mass, Velocity, VelocityConstraint, Dissolve, Damage)
+    return this.world.createEntity(RenderObject, new Position(4096, 4096 - 50), Engine, Mass, Velocity, VelocityConstraint, Dissolve, Damage)
   }
 }

@@ -9,9 +9,8 @@ export default class System {
   }
 
   /**
-   * @param {number} delta
-   * @param {number} time
+   * @param {number} dt
    */
-  update(delta, time) {
+  update(dt) {
   }
 }
