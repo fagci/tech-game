@@ -27,12 +27,14 @@ export default class Entity {
 
   add = (...components) => {
     components.forEach(c => {
+      let name = c.constructor.name
       if (c instanceof Function) {
         c = new c
-        console.warn(`Using default constructor for ${c.constructor.name}`)
+        name = c.constructor.name
+        console.warn(`Using default constructor for ${name}`)
       }
 
-      Object.defineProperty(this, c.constructor.name, {
+      Object.defineProperty(this, name, {
         configurable: true,
         enumerable: true,
         get: () => {
@@ -40,27 +42,29 @@ export default class Entity {
         },
       })
 
-
-      this._components[c.constructor.name] = c
+      this._components[name] = c
     })
     return this
   }
 
   remove = (...components) => {
     components.forEach(c => {
-      delete this._components[c instanceof String ? c : c.constructor.name]
+      delete this._components[Entity.getComponentName(name)]
     })
     return this
   }
 
   get = (name) => {
-    if (name instanceof Function) name = new name
-    return this._components[name instanceof String ? name : name.constructor.name]
+    return this._components[Entity.getComponentName(name)]
   }
 
   has = (name) => {
-    if (name instanceof Function) name = new name
-    return this._components[name instanceof String ? name : name.constructor.name] !== null
+    return this._components[Entity.getComponentName(name)] !== null
+  }
+
+  static getComponentName(component) {
+    if (component instanceof Function) component = new component
+    return component instanceof String ? component : component.constructor.name
   }
 
   toString() {

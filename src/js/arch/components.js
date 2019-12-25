@@ -40,8 +40,7 @@ export class Damage {
 export class Engine {
   constructor(direction, force) {
     this.force = force || 0.05
-    this.direction = direction || 0
-    this.acceleration = 0
+    this.direction = direction || 0.3
     this.update()
   }
 
@@ -57,22 +56,14 @@ export class Engine {
   // как взаимодействие сущностей (прибавление вектора тяги двигателя).
 }
 
-export class Mass {
-  constructor(mass) {
-    this.mass = mass || 1
-  }
 
-}
-
-export class VelocityConstraint {
-  constructor(maxVelocity) {
-    this.value = maxVelocity || 12
-  }
-}
-
-export class Friction {
-  constructor() {
-
+export class Moving {
+  constructor(options) {
+    this.mass = 1
+    this.force = new PIXI.Point(0, 0)
+    this.velocity = new PIXI.Point(0, 0)
+    this.maxSpeed = 12 // TODO: needed?
+    if (options) Object.assign(this, options)
   }
 }
 

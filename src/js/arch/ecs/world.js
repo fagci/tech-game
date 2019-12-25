@@ -52,6 +52,11 @@ export default class World {
     return this
   }
 
+  /**
+   *
+   * @param {...Object} components
+   * @return {Entity}
+   */
   createEntity(...components) {
     return new Entity(...components)
   }

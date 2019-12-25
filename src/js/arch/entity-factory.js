@@ -1,5 +1,5 @@
 import World from './ecs/world'
-import {Damage, Dissolve, Engine, Mass, Position, RenderObject, Velocity, VelocityConstraint} from './components'
+import {Damage, Dissolve, Moving, Position, RenderObject} from './components'
 
 export default class EntityFactory {
   /**
@@ -10,6 +10,6 @@ export default class EntityFactory {
   }
 
   createBullet() {
-    return this.world.createEntity(RenderObject, new Position(4096, 4096 - 50), Engine, Mass, Velocity, VelocityConstraint, Dissolve, Damage)
+    return this.world.createEntity(RenderObject, new Position(4096, 4096 - 50), Moving, Dissolve, Damage)
   }
 }
