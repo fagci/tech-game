@@ -1,0 +1,22 @@
+{
+  "Bullet": [
+    "RenderObject",
+    {
+      "Position": {
+        "x": 4096,
+        "y": 4046
+      }
+    },
+    {
+      "Moving": {
+        "mass": 1000,
+        "force": {
+          "x": 0,
+          "y": 10
+        }
+      }
+    },
+    "Dissolve",
+    "Damage"
+  ]
+}

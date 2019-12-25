@@ -31,6 +31,7 @@ export default class SplashState extends State {
     this.addChild(this.progressbar)
     this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
 
+    this.loader.add('entities', '/entities/entities.json')
     this.loader.add('ss', '/ss.json')
     this.loader.add('ss2', '/swss.json')
     this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
@@ -44,7 +45,7 @@ export default class SplashState extends State {
       .drawRect(0, 0, app.screen.width - 64, 16)
       .endFill()
 
-    if(percent<100) {
+    if (percent < 100) {
       this.progressbarText.text = `Loading... ${percent.toFixed(0)}%`
     } else {
       this.progressbarText.text = 'Ready.'
@@ -53,6 +54,7 @@ export default class SplashState extends State {
 
   init(loader, resources) {
     console.log(resources)
+    app.entities = resources.entities.data
     app.textures = {...resources.ss.textures, ...resources.ss2.textures}
     app.sounds = {rocket_launch: resources.rocket_launch.sound}
     this.removeChildren()

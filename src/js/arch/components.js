@@ -23,6 +23,10 @@ export class Health {
 }
 
 export class Position extends PIXI.Point {
+  constructor(options) {
+    super()
+    if (options) Object.assign(this, options)
+  }
 }
 
 export class Velocity {
@@ -62,8 +66,9 @@ export class Moving {
     this.mass = 1
     this.force = new PIXI.Point(0, 0)
     this.velocity = new PIXI.Point(0, 0)
-    this.maxSpeed = 12 // TODO: needed?
+    this.maxVelocity = 12 // TODO: needed?
     if (options) Object.assign(this, options)
+    console.info(this)
   }
 }
 

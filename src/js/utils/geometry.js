@@ -5,3 +5,12 @@ export function pointDirection(anchor, point) {
 export function limit(value, max) {
   return value > max ? max : value
 }
+
+export function limitVector(vector, maxSize) {
+  const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y)
+  if (length < maxSize) return vector
+  const divider = length / maxSize
+  vector.x /= divider
+  vector.y /= divider
+  return vector
+}
