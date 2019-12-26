@@ -13,7 +13,7 @@ export default class GUI extends PIXI.Container {
     this.inventory.pivot.set(this.inventory.width, this.inventory.height)
     this.addChild(this.inventory)
 
-    app.console = this.console = new Console()
+    window.app.console = this.console = new Console()
     this.console.pivot.set(this.console.width, 0)
     this.addChild(this.console)
 
@@ -25,12 +25,12 @@ export default class GUI extends PIXI.Container {
 
   addElements() {
     this.miniMap = new MiniMap(this.map, this.viewport)
-    app.miniMapUpdate = this.miniMap.refresh.bind(this.miniMap)
+    window.app.miniMapUpdate = this.miniMap.refresh.bind(this.miniMap)
     this.addChild(this.miniMap)
   }
 
   resize() {
-    const {width, height} = app.screen
+    const {width, height} = window.app.screen
     this.inventory.x = width
     this.inventory.y = height
     this.console.position.set(width, 0)

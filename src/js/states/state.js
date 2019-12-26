@@ -11,8 +11,8 @@ export default class State extends PIXI.Container {
     this.onExit = function () {
     }
 
-    this.onPause = () => app.renderer.stop()
-    this.onResume = () => app.renderer.start()
+    this.onPause = () => window.app.renderer.stop()
+    this.onResume = () => window.app.renderer.start()
 
     this.loader = PIXI.Loader.shared
       .on('error', error => this.error(error))

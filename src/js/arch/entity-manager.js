@@ -11,7 +11,7 @@ export default class EntityManager {
   }
 
   createEntity(name) {
-    const entityComponentsData = app.entities[name]
+    const entityComponentsData = window.app.entities[name]
     const entity = World.createEntity()
 
     entityComponentsData.forEach(componentName => {

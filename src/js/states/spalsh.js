@@ -11,7 +11,7 @@ export default class SplashState extends State {
 
     this.progressbarText = new PIXI.Text('Loading...', {fill: 0})
 
-    this.progressBarWidth = app.screen.width - 64
+    this.progressBarWidth = window.app.screen.width - 64
     this.progressbarText.position.y = -32
 
     this.progressbarGraphics = new PIXI.Graphics()
@@ -43,7 +43,7 @@ export default class SplashState extends State {
     this.progressbarGraphics
       .clear()
       .beginFill(0x882222)
-      .drawRect(0, 0, app.screen.width - 64, 16)
+      .drawRect(0, 0, window.app.screen.width - 64, 16)
       .endFill()
 
     if (percent < 100) {
@@ -55,11 +55,11 @@ export default class SplashState extends State {
 
   init(loader, resources) {
     console.log(resources)
-    app.entities = resources.entities.data
-    app.textures = {...resources.ss.textures, ...resources.ss2.textures}
-    app.sounds = {rocket_launch: resources.rocket_launch.sound}
+    window.app.entities = resources.entities.data
+    window.app.textures = {...resources.ss.textures, ...resources.ss2.textures}
+    window.app.sounds = {rocket_launch: resources.rocket_launch.sound}
     this.removeChildren()
-    app.stateManager.push(new TestState(app))
+    window.app.stateManager.push(new TestState(app))
   }
 
   progress(loader, resources) {

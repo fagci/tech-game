@@ -6,6 +6,6 @@ PIXI.utils.skipHello()
 window.app = new App()
 
 const game = new Game()
-app.stage.addChild(game)
+window.app.stage.addChild(game)
 
 game.start()

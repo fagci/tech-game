@@ -14,10 +14,10 @@ export default class Base extends GameObject {
     this.lifeIndicator.position.set(16, 16)
 
     const textureArray = [
-      app.textures.base_1,
-      app.textures.base_2,
-      app.textures.base_3,
-      app.textures.base_4,
+      window.app.textures.base_1,
+      window.app.textures.base_2,
+      window.app.textures.base_3,
+      window.app.textures.base_4,
     ]
     textureArray.forEach(t => {
       t.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
@@ -65,7 +65,7 @@ export default class Base extends GameObject {
   }
 
   destroy(options) {
-    app.miniMapUpdate()
+    window.app.miniMapUpdate()
     delete this.graphics
     // super.destroy() // TODO: destroy base couple with minimap entity
   }

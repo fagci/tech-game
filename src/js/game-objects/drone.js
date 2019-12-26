@@ -83,7 +83,7 @@ export class Drone extends GameObject {
 
   update(time) {
 // console.log(`Time spent: ${time}`)
-    this.timeSpent += app.ticker.elapsedMS / 1000.0
+    this.timeSpent += window.app.ticker.elapsedMS / 1000.0
 
     const now = Date.now()
     this.emitter.update((now - this.elapsed) * 0.001)

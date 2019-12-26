@@ -24,11 +24,11 @@ export default class TestState extends State {
 
     this.map = new GameMap()
     this.viewport = new Viewport({
-      screenWidth: app.screen.width,
-      screenHeight: app.screen.height,
+      screenWidth: window.app.screen.width,
+      screenHeight: window.app.screen.height,
       worldWidth: this.WORLD_WIDTH,
       worldHeight: this.WORLD_HEIGHT,
-      interaction: app.renderer.plugins.interaction,
+      interaction: window.app.renderer.plugins.interaction,
     })
 
     const playerBase = new Base()
@@ -76,9 +76,9 @@ export default class TestState extends State {
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
 
-    const texture = app.textures.sand
+    const texture = window.app.textures.sand
     const sprite = new PIXI.Sprite(texture)
-    const bgT = app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
+    const bgT = window.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
     const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
     this.map.groundLayer.addChild(bgGrid)
 
@@ -106,7 +106,7 @@ export default class TestState extends State {
 
     window.addEventListener('resize', () => {
       this.gui.resize()
-      this.viewport.resize(app.screen.width, app.screen.height)
+      this.viewport.resize(app.screen.width, window.app.screen.height)
     })
   }
 

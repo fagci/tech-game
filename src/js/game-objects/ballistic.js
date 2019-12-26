@@ -9,8 +9,8 @@ export default class Ballistic extends GameObject {
     this.DAMAGE = 1200
     this.MAX_SPEED = 12
 
-    app.miniMapUpdate() // TODO: update minimap globally on item added to entity map
-    // app.sounds.rocket_launch.play()
+    window.app.miniMapUpdate() // TODO: update minimap globally on item added to entity map
+    // window.app.sounds.rocket_launch.play()
 
     this.direction = direction + (Math.random() - 0.5) * 0.4
     this.speed = 0
@@ -39,7 +39,7 @@ export default class Ballistic extends GameObject {
     if (this.lifeTime >= this.lifeTimeMax) {
       this.destroy()
     }
-    this.lifeTime += app.ticker.elapsedMS / 1000.0
+    this.lifeTime += window.app.ticker.elapsedMS / 1000.0
   }
 
   hit() {
@@ -49,6 +49,6 @@ export default class Ballistic extends GameObject {
   destroy(options) {
     this.sprite.destroy()
     super.destroy(options)
-    app.miniMapUpdate()
+    window.app.miniMapUpdate()
   }
 }
