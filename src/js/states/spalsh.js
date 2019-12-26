@@ -55,9 +55,21 @@ export default class SplashState extends State {
 
   init(loader, resources) {
     console.log(resources)
-    window.app.entities = resources.entities.data
-    window.app.textures = {...resources.ss.textures, ...resources.ss2.textures}
-    window.app.sounds = {rocket_launch: resources.rocket_launch.sound}
+    for (const resourceKey in resources) {
+      if (!resources.hasOwnProperty(resourceKey)) continue
+      const resource = resources[resourceKey]
+      if (resource.textures) {
+        if (!window.app.textures) window.app.textures = {}
+        Object.assign(window.app.textures, resource.textures)
+      } else if (resource.sound) {
+        if (!window.app.sounds) window.app.sounds = {}
+        window.app.sounds[resource.name] = resource.sound
+      } else if(resource.extension === 'json') {
+        window.app.entities = resource.data // TODO: придумать как обозначить контейнер для сущностей, пока так
+      }
+    }
+
+
     this.removeChildren()
     window.app.stateManager.push(new TestState(app))
   }
