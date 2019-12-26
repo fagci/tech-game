@@ -10,7 +10,7 @@ export default class Ballistic extends GameObject {
     this.MAX_SPEED = 12
 
     app.miniMapUpdate() // TODO: update minimap globally on item added to entity map
-    app.sounds.rocket_launch.play()
+    // app.sounds.rocket_launch.play()
 
     this.direction = direction + (Math.random() - 0.5) * 0.4
     this.speed = 0

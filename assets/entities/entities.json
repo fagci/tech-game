@@ -1,6 +1,10 @@
 {
   "Bullet": [
-    "RenderObject",
+    {
+      "RenderObject": {
+        "texture": "cover_red"
+      }
+    },
     {
       "Position": {
         "x": 4096,
@@ -12,11 +16,12 @@
         "mass": 1000,
         "force": {
           "x": 0,
-          "y": 10
+          "y": 1
         }
       }
     },
     "Dissolve",
-    "Damage"
+    "Damage",
+    "Debug"
   ]
 }

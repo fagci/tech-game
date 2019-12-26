@@ -6,6 +6,7 @@ export default class SplashState extends State {
   constructor() {
     super()
 
+
     this.progressbar = new PIXI.Container()
 
     this.progressbarText = new PIXI.Text('Loading...', {fill: 0})
@@ -32,8 +33,8 @@ export default class SplashState extends State {
     this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
 
     this.loader.add('entities', '/entities/entities.json')
-    this.loader.add('ss', '/ss.json')
-    this.loader.add('ss2', '/swss.json')
+    this.loader.add('ss', '/gfx/ss.json')
+    this.loader.add('ss2', '/gfx/swss.json')
     this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
     this.loader.load()
   }

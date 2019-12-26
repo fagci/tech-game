@@ -10,7 +10,7 @@ import {Drone} from '../game-objects/drone'
 
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
-import EntityFactory from '../arch/entity-factory'
+import EntityManager from '../arch/entity-manager'
 import Render from '../arch/systems/render'
 
 export default class TestState extends State {
@@ -95,7 +95,7 @@ export default class TestState extends State {
 
     const world = new World(this.map.entitiesLayer)
     this.world = world
-    const entityFactory = new EntityFactory(world)
+    const entityFactory = new EntityManager(world)
     world
       .addEntity(entityFactory.createBullet())
       .addSystem(new Physics(world))

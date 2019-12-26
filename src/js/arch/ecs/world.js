@@ -1,5 +1,4 @@
 import Entity from './entity'
-import {RenderObject} from '../components'
 
 export default class World {
   constructor(map) {
@@ -16,12 +15,6 @@ export default class World {
   addEntity(...entities) {
     entities.forEach(entity => {
       this._entities.push(entity)
-      const renderObject = entity.get(RenderObject)
-      console.log(`Test 4 RO`, entity)
-      if (renderObject) {
-        this.map.addChild(renderObject)
-        console.info(`Entiti with RenderObject added to map`)
-      }
     })
     return this
   }

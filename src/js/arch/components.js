@@ -29,37 +29,11 @@ export class Position extends PIXI.Point {
   }
 }
 
-export class Velocity {
-  constructor() {
-    this.x = this.y = 0
-  }
-}
-
 export class Damage {
-  constructor(damage) {
-    this.damage = damage || 100
+  constructor(value) {
+    this.value = value || 100
   }
 }
-
-export class Engine {
-  constructor(direction, force) {
-    this.force = force || 0.05
-    this.direction = direction || 0.3
-    this.update()
-  }
-
-  update() {
-    const x = Math.cos(this.direction) * this.force
-    const y = Math.sin(this.direction) * this.force
-    this.acceleration = new PIXI.Point(x, y)
-  }
-
-  // FIXME:
-  // скорее всего это отдельная сущность,
-  // т.к. сие должно обрабатываться системой физики
-  // как взаимодействие сущностей (прибавление вектора тяги двигателя).
-}
-
 
 export class Moving {
   constructor(options) {
@@ -68,7 +42,6 @@ export class Moving {
     this.velocity = new PIXI.Point(0, 0)
     this.maxVelocity = 12 // TODO: needed?
     if (options) Object.assign(this, options)
-    console.info(this)
   }
 }
 
@@ -79,19 +52,23 @@ export class Dissolve {
   }
 }
 
-export class RenderMaterial {
-  constructor() {
-    this.texture = null
-  }
-}
-
 export class RenderObject extends PIXI.Container {
-  constructor() {
+  constructor(options) {
     super()
     const g = new PIXI.Graphics()
       .lineStyle(1, 0x0000ff, 1, 0)
       .drawCircle(0, 0, 10)
     this.addChild(g)
+
+    this.texture = 'bricks'
+
+
+    if (options) Object.assign(this, options)
+
+    this.sprite = new PIXI.Sprite(app.textures[this.texture])
+    this.addChild(this.sprite)
+    this.sprite.anchor.set(0.5, 0.5)
+
   }
 }
 
@@ -126,3 +103,9 @@ export class EnergyRetranslator {
     this.source = source
   }
 }
+
+// export class Debug {
+//   constructor() {
+//
+//   }
+// }
