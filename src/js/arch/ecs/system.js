@@ -1,8 +1,6 @@
-import World from './world'
-
 export default class System {
   /**
-   * @param {World} world
+   * @param {import(./world)} world
    */
   constructor(world) {
     this.world = world

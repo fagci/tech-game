@@ -1,10 +1,8 @@
-import World from './ecs/world'
 import * as Components from './components'
-import {RenderObject} from './components'
 
 export default class EntityManager {
   /**
-   * @param {World} world
+   * @param {import(./ecs/world)} world
    */
   constructor(world) {
     this.world = world
