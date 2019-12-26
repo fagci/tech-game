@@ -1,8 +1,10 @@
+import World from './ecs/world' // TODO: remove this (move entity manager to world?)
 import * as Components from './components'
 
 export default class EntityManager {
   /**
-   * @param {import(./ecs/world)} world
+   * @typedef {import(./ecs/world)} World
+   * @param {World} world
    */
   constructor(world) {
     this.world = world
@@ -10,7 +12,7 @@ export default class EntityManager {
 
   createEntity(name) {
     const entityComponentsData = app.entities[name]
-    const entity = this.world.createEntity()
+    const entity = World.createEntity()
 
     entityComponentsData.forEach(componentName => {
       let name = componentName

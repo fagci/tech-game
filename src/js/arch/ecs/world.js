@@ -50,7 +50,7 @@ export default class World {
    * @param {...Object} components
    * @return {Entity}
    */
-  createEntity(...components) {
+  static createEntity(...components) {
     return new Entity(...components)
   }
 
