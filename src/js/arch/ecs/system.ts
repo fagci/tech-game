@@ -1,10 +1,9 @@
-export default class System {
+import World from './world'
 
-  /**
-   * @typedef {import(./world.js)} World
-   * @param {World} world
-   */
-  constructor(world) {
+export default class System {
+  world: World
+
+  constructor(world: World) {
     this.world = world
     world.addEntity()
   }

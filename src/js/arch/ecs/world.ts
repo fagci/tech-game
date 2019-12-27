@@ -1,18 +1,20 @@
 import Entity from './entity'
+import System from './system'
+import * as PIXI from 'pixi.js'
+import * as Components from '../components'
 
 export default class World {
-  constructor(map) {
+  _entities: any[]
+  _systems: any[]
+  map: any
+
+  constructor(map: PIXI.Container) {
     this._entities = []
     this._systems = []
     this.map = map
   }
 
-  /**
-   *
-   * @param {...Entity} entities
-   * @returns {World}
-   */
-  addEntity(...entities) {
+  addEntity(...entities: typeof Entity[]): World {
     entities.forEach(entity => {
       this._entities.push(entity)
     })
@@ -24,7 +26,7 @@ export default class World {
    * @param {...Entity} entities
    * @returns {World}
    */
-  removeEntity(...entities) {
+  removeEntity(...entities: typeof Entity[]) {
     let i = entities.length
     while (i--) {
       if (this._entities.indexOf(this._entities[i]) !== -1) {
@@ -35,12 +37,12 @@ export default class World {
     return this
   }
 
-  addSystem(system) {
+  addSystem(system: typeof System[]) {
     this._systems.push(system)
     return this
   }
 
-  removeSystem(system) {
+  removeSystem(system: typeof System) {
     this._systems.splice(this._systems.indexOf(system), 1)
     return this
   }
@@ -50,7 +52,7 @@ export default class World {
    * @param {...Object} components
    * @return {Entity}
    */
-  static createEntity(...components) {
+  static createEntity(...components: typeof Components[]) {
     return new Entity(...components)
   }
 
@@ -58,7 +60,7 @@ export default class World {
     return this._entities
   }
 
-  update(delta, time) {
+  update(delta: number, time: number) {
     this._systems.forEach(system => system.update(delta, time))
   }
 
