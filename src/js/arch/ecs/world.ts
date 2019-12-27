@@ -1,12 +1,12 @@
 import Entity from './entity'
 import System from './system'
 import * as PIXI from 'pixi.js'
-import * as Components from '../components'
+import * as Components from './components'
 
 export default class World {
-  _entities: any[]
-  _systems: any[]
-  map: any
+  map: PIXI.Container
+  private readonly _entities: Entity[]
+  private _systems: System[]
 
   constructor(map: PIXI.Container) {
     this._entities = []
@@ -14,19 +14,18 @@ export default class World {
     this.map = map
   }
 
-  addEntity(...entities: typeof Entity[]): World {
+  static createEntity(...components: typeof Components[]): Entity {
+    return new Entity(...components)
+  }
+
+  addEntity(...entities: Entity[]): World {
     entities.forEach(entity => {
       this._entities.push(entity)
     })
     return this
   }
 
-  /**
-   *
-   * @param {...Entity} entities
-   * @returns {World}
-   */
-  removeEntity(...entities: typeof Entity[]) {
+  removeEntity(...entities: Entity[]) {
     let i = entities.length
     while (i--) {
       if (this._entities.indexOf(this._entities[i]) !== -1) {
@@ -37,31 +36,22 @@ export default class World {
     return this
   }
 
-  addSystem(system: typeof System[]) {
+  addSystem(system: System) {
     this._systems.push(system)
     return this
   }
 
-  removeSystem(system: typeof System) {
+  removeSystem(system: System) {
     this._systems.splice(this._systems.indexOf(system), 1)
     return this
-  }
-
-  /**
-   *
-   * @param {...Object} components
-   * @return {Entity}
-   */
-  static createEntity(...components: typeof Components[]) {
-    return new Entity(...components)
   }
 
   get entities() {
     return this._entities
   }
 
-  update(delta: number, time: number) {
-    this._systems.forEach(system => system.update(delta, time))
+  update(dt: number) {
+    this._systems.forEach(system => system.update(dt))
   }
 
   toString() {

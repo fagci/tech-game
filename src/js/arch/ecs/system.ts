@@ -1,6 +1,10 @@
 import World from './world'
 
-export default class System {
+export interface ISystem {
+  update(dt: number): void;
+}
+
+export default class System implements ISystem {
   world: World
 
   constructor(world: World) {
@@ -8,9 +12,6 @@ export default class System {
     world.addEntity()
   }
 
-  /**
-   * @method
-   * @name System#update
-   * @param {number} dt
-   */
+  update(dt: number): void {
+  }
 }

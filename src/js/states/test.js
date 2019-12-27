@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js'
-import {Viewport} from 'pixi-viewport'
+import { Viewport } from 'pixi-viewport'
 import State from './state'
 import GUI from '../ui/gui'
 
-import {InventoryItem} from '../ui/inventory'
+import { InventoryItem } from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
-import {Drone} from '../game-objects/drone'
+import { Drone } from '../game-objects/drone'
 
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
-import EntityManager from '../arch/entity-manager'
+import EntityManager from '../arch/ecs/entity-manager'
 import Render from '../arch/systems/render'
 
 export default class TestState extends State {
@@ -47,10 +47,10 @@ export default class TestState extends State {
       .wheel()
       .decelerate()
       .clampZoom({
-        minHeight: (app.renderer.screen.height / 4) | 0,
-        minWidth: (app.renderer.screen.width / 4) | 0,
-        maxHeight: (app.renderer.screen.height * 4) | 0,
-        maxWidth: (app.renderer.screen.width * 4) | 0,
+        minHeight: (window.app.renderer.screen.height / 4) | 0,
+        minWidth: (window.app.renderer.screen.width / 4) | 0,
+        maxHeight: (window.app.renderer.screen.height * 4) | 0,
+        maxWidth: (window.app.renderer.screen.width * 4) | 0,
       })
       .clamp({direction: 'all'})
 
@@ -106,11 +106,11 @@ export default class TestState extends State {
 
     window.addEventListener('resize', () => {
       this.gui.resize()
-      this.viewport.resize(app.screen.width, window.app.screen.height)
+      this.viewport.resize(window.app.screen.width, window.app.screen.height)
     })
   }
 
-  update = (time) => {
+  update (time) {
     this.map.update(time)
     this.gui.update(time)
     this.world.update(time)

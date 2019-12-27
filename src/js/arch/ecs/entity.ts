@@ -1,4 +1,4 @@
-import * as Components from '../components'
+import * as Components from './components'
 
 export default class Entity {
   private readonly _uid: string
