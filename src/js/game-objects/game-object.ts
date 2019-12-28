@@ -1,10 +1,13 @@
 import * as PIXI from 'pixi.js'
 
 export default class GameObject extends PIXI.Container {
-  constructor(name) {
+  selected: boolean
+  selectionGraphics: PIXI.Graphics
+
+  constructor() {
     super()
 
-    this.name = name || this.constructor.name
+    this.name = this.constructor.name
     this.selected = false
 
     this.interactive = true
@@ -13,7 +16,7 @@ export default class GameObject extends PIXI.Container {
     this.selectionGraphics = new PIXI.Graphics()
     this.addChild(this.selectionGraphics)
 
-    this.on('pointerdown', e => {
+    this.on('pointerdown', (e: any) => {
       if (e.data.button === 0) this.selected = !this.selected
       this.updateSelection()
     })
@@ -34,7 +37,7 @@ export default class GameObject extends PIXI.Container {
       .endFill()
   }
 
-  destroy(options) {
+  destroy(options: { children?: boolean; texture?: boolean; baseTexture?: boolean; }) {
     this.selectionGraphics.destroy()
     super.destroy(options)
   }

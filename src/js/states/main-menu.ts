@@ -2,13 +2,15 @@ import * as PIXI from 'pixi.js'
 import State from './state'
 
 export default class MainMenuState extends State {
+  menuContainer: PIXI.Container
+
   constructor() {
     super()
 
     const MENU = [
-      {title: 'New game', onClick: e => console.log(e.title)},
-      {title: 'Settings', onClick: e => console.log(e.title)},
-      {title: 'Exit', onClick: e => console.log(e.title)},
+      {title: 'New game', onClick: (e: any) => console.log(e.title)},
+      {title: 'Settings', onClick: (e: any) => console.log(e.title)},
+      {title: 'Exit', onClick: (e: any) => console.log(e.title)},
     ]
 
     this.menuContainer = new PIXI.Container()
@@ -26,7 +28,16 @@ export default class MainMenuState extends State {
 }
 
 class Button extends PIXI.Sprite {
-  constructor(title) {
+  PADDING: number
+  title: string
+  titleText: PIXI.Text
+  bg: PIXI.Graphics
+  mouseover: (e: any) => number
+  mouseout: (e: any) => number
+  w: number
+  h: number
+
+  constructor(title: string) {
     super()
     this.PADDING = 12
     this.title = title
@@ -55,7 +66,7 @@ class Button extends PIXI.Sprite {
     this.mouseout = e => this.alpha = 0.75
   }
 
-  drawBg(color) {
+  drawBg(color: number) {
     this.bg
       .lineStyle(1, 0xffffff)
       .beginFill(color)

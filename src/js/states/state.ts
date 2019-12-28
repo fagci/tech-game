@@ -1,6 +1,12 @@
 import * as PIXI from 'pixi.js'
 
 export default class State extends PIXI.Container {
+  onEnter: () => void
+  onExit: () => void
+  onPause: () => any
+  onResume: () => any
+  loader: PIXI.Loader
+
   constructor() {
     super()
 
@@ -11,8 +17,8 @@ export default class State extends PIXI.Container {
     this.onExit = function () {
     }
 
-    this.onPause = () => window.app.renderer.stop()
-    this.onResume = () => window.app.renderer.start()
+    this.onPause = () => window.app.stop()
+    this.onResume = () => window.app.start()
 
     this.loader = PIXI.Loader.shared
       .on('error', error => this.error(error))
@@ -20,19 +26,14 @@ export default class State extends PIXI.Container {
       .on('complete', (loader, resources) => this.init(loader, resources))
   }
 
-  /**
-   * @param {PIXI.Loader} loader
-   * @param resources
-   */
-  progress(loader, resources) {
-    //TODO: implement progress indicator
+  progress(loader: PIXI.Loader, resources: PIXI.LoaderResource) {
   }
 
-  init(loader, resources) {
+  init(loader: PIXI.Loader, resources: any) {
     //
   }
 
-  error(error) {
+  error(error: Error) {
     console.error(error)
   }
 }

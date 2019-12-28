@@ -1,7 +1,17 @@
 import * as PIXI from 'pixi.js'
 import 'pixi-sound'
+import StateManager from './states/state-manager'
 
 export default class App extends PIXI.Application {
+  textures: { [key: string]: PIXI.Texture }
+  entities: object
+  sounds: { [key: string]: PIXI.sound.IMedia }
+  stateManager: StateManager
+
+  miniMapUpdate() {
+    throw new Error('Method not implemented.')
+  }
+
   constructor() {
     super({
       // antialias: true,

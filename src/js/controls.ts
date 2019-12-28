@@ -1,4 +1,12 @@
 export default class Controls {
+  _keyDown: { [key: number]: boolean }
+  _mouseDown: { [key: number]: boolean }
+  _isMouseDown: boolean
+  _mouseX: number
+  _mouseY: number
+  _dx: number
+  _dy: number
+
   constructor() {
     this._keyDown = {}
     this._mouseDown = {}
@@ -21,7 +29,7 @@ export default class Controls {
     window.addEventListener('touchmove', this.mouseMove)
   }
 
-  getKeyDown = (key) => {
+  getKeyDown = (key: number[] | number) => {
     if (key instanceof Array) {
       return key.filter(e => this._keyDown[e]).length
     }
@@ -29,7 +37,7 @@ export default class Controls {
     return !!this._keyDown[key]
   }
 
-  mouseDown = (e) => {
+  mouseDown = (e: any) => {
     this._mouseX = e.touches ? e.touches[0].pageX : e.clientX
     this._mouseY = e.touches ? e.touches[0].pageY : e.clientY
 
@@ -37,12 +45,12 @@ export default class Controls {
     this._isMouseDown = true
   }
 
-  mouseUp = (e) => {
+  mouseUp = (e: MouseEvent) => {
     this._mouseDown[e.which] = null
     this._isMouseDown = false
   }
 
-  mouseMove = (e) => {
+  mouseMove = (e: any) => {
     let posX = e.touches ? e.touches[0].pageX : e.clientX
     let posY = e.touches ? e.touches[0].pageY : e.clientY
 
@@ -54,9 +62,14 @@ export default class Controls {
     this._mouseX = posX
     this._mouseY = posY
 
-    const event = new Event('drag')
+    const event: DragEvent = new DragEvent('drag')
     event.dx = deltaX
     event.dy = deltaY
     window.dispatchEvent(event)
   }
+}
+
+class DragEvent extends Event {
+  dx: number
+  dy: number
 }

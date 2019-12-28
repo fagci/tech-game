@@ -1,7 +1,14 @@
 import * as PIXI from 'pixi.js'
 
 export default class ProgressBar extends PIXI.Container {
-  constructor(width, height, max, value) {
+  private readonly w: number
+  private readonly h: number
+  private readonly max: number
+  private value: number
+  private readonly bg: PIXI.Graphics
+  private readonly fg: PIXI.Graphics
+
+  constructor(width: number, height: number, max: number, value: number) {
     super()
     this.w = width || 64
     this.h = height || 16
@@ -26,7 +33,7 @@ export default class ProgressBar extends PIXI.Container {
     this.redrawProgress()
   }
 
-  setProgress(value) {
+  setProgress(value: number) {
     if (value < 0) value = 0
     this.value = value
     this.redrawProgress()

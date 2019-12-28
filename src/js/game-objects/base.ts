@@ -4,6 +4,13 @@ import ProgressBar from '../ui/progressbar'
 import Ballistic from './ballistic'
 
 export default class Base extends GameObject {
+  maxLife: number
+  life: number
+  lifeIndicator: ProgressBar
+  graphics: any[]
+  world: PIXI.Container
+  globalHitArea: PIXI.Rectangle
+
   constructor() {
     super()
 
@@ -40,7 +47,7 @@ export default class Base extends GameObject {
 
     this.pivot.set(16, 16)
 
-    this.on('added', world => {
+    this.on('added', (world: PIXI.Container) => {
       this.world = world
       this.globalHitArea = this.world.getLocalBounds()
     })
@@ -50,7 +57,7 @@ export default class Base extends GameObject {
     if (this.life <= 0) {
       this.life = 0
       this.alpha -= 0.05
-      if (this.alpha <= 0) this.destroy()
+      if (this.alpha <= 0) this.destroy({})
       return
     }
     this.world.children.forEach(gameObject => {
@@ -64,13 +71,13 @@ export default class Base extends GameObject {
     })
   }
 
-  destroy(options) {
+  destroy(options: { children?: boolean; texture?: boolean; baseTexture?: boolean; }) {
     window.app.miniMapUpdate()
     delete this.graphics
     // super.destroy() // TODO: destroy base couple with minimap entity
   }
 
-  takeDamage(value) {
+  takeDamage(value: number) {
     this.life -= value
     this.lifeIndicator.setProgress(this.life)
   }

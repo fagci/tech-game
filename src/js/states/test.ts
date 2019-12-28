@@ -1,12 +1,12 @@
 import * as PIXI from 'pixi.js'
-import { Viewport } from 'pixi-viewport'
+import {Viewport} from 'pixi-viewport'
 import State from './state'
 import GUI from '../ui/gui'
 
-import { InventoryItem } from '../ui/inventory'
+import {InventoryItem} from '../ui/inventory'
 import Base from '../game-objects/base'
 import GameMap from '../game-map'
-import { Drone } from '../game-objects/drone'
+import {Drone} from '../game-objects/drone'
 
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
@@ -14,6 +14,13 @@ import EntityManager from '../arch/ecs/entity-manager'
 import Render from '../arch/systems/render'
 
 export default class TestState extends State {
+  WORLD_WIDTH: number
+  WORLD_HEIGHT: number
+  map: GameMap
+  viewport: Viewport
+  gui: GUI
+  world: World
+
   constructor() {
     super()
 
@@ -110,10 +117,10 @@ export default class TestState extends State {
     })
   }
 
-  update (time) {
-    this.map.update(time)
-    this.gui.update(time)
-    this.world.update(time)
+  update(dt: number) {
+    this.map.update(dt)
+    this.gui.update(dt)
+    this.world.update(dt)
   }
 }
 

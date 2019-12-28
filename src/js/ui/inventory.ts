@@ -5,7 +5,12 @@ import * as PIXI from 'pixi.js'
  */
 
 export default class Inventory extends PIXI.Container {
-  constructor(slotsCount) {
+  slots: PIXI.Container
+  detailsView: PIXI.Container
+  detailsViewBg: PIXI.Graphics
+  detailsViewText: PIXI.Text
+
+  constructor(slotsCount: number) {
     super()
     this.slots = new PIXI.Container()
 
@@ -26,11 +31,12 @@ export default class Inventory extends PIXI.Container {
     this.addChild(this.detailsView)
   }
 
-  addItem(item) {
-    this.slots.children[0].addItem(item)
+  addItem(item: InventoryItem) {
+    const inventorySlot: any = this.slots.children[0]
+    inventorySlot.addItem(item)
   }
 
-  setDescription(text) {
+  setDescription(text: string) {
     this.detailsViewText.text = text
     this.detailsViewText.style.wordWrapWidth = this.width
     const height = text ? this.detailsViewText.height : 0
@@ -47,7 +53,14 @@ export default class Inventory extends PIXI.Container {
 }
 
 export class InventorySlot extends PIXI.Graphics {
-  constructor(inventory, size) {
+  inventory: Inventory
+  w: number
+  h: number
+  items: InventoryItem[]
+  text: PIXI.Text
+  itemSprite: any
+
+  constructor(inventory: Inventory, size?: number) {
     super()
     this.inventory = inventory
     this.w = this.h = size || 48
@@ -79,14 +92,14 @@ export class InventorySlot extends PIXI.Graphics {
       item.interactive = true
       item.buttonMode = true
 
-      item.on('pointerover', e => {
+      item.on('pointerover', (e: any) => {
         const target = e.target
         if (target instanceof InventoryItem) {
           this.inventory.setDescription(target.description || null)
         }
       })
 
-      item.on('pointerout', e => {
+      item.on('pointerout', (e: any) => {
         this.inventory.setDescription(null)
       })
 
@@ -96,7 +109,7 @@ export class InventorySlot extends PIXI.Graphics {
     }
   }
 
-  addItem(item) {
+  addItem(item: InventoryItem) {
     if (this.items.length + 1 < (item.stackSize || 16)) {
       this.items.push(item)
     }
@@ -105,6 +118,9 @@ export class InventorySlot extends PIXI.Graphics {
 }
 
 export class InventoryItem extends PIXI.Graphics {
+  stackSize: number
+  description: string
+
   constructor() {
     super()
 

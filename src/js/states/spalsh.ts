@@ -3,6 +3,10 @@ import * as PIXI from 'pixi.js'
 import TestState from './test'
 
 export default class SplashState extends State {
+  progressbar: PIXI.Container
+  progressbarText: PIXI.Text
+  progressBarWidth: number
+  progressbarGraphics: PIXI.Graphics
   constructor() {
     super()
 
@@ -30,7 +34,7 @@ export default class SplashState extends State {
     this.progressbar.pivot.set((this.progressbar.width / 2) | 0, (this.progressbar.height / 2) | 0)
 
     this.addChild(this.progressbar)
-    this.progressbar.position.set((app.screen.width / 2) | 0, (app.screen.height / 2) | 0)
+    this.progressbar.position.set((window.app.screen.width / 2) | 0, (window.app.screen.height / 2) | 0)
 
     this.loader.add('entities', '/entities/entities.json')
     this.loader.add('ss', '/gfx/ss.json')
@@ -39,7 +43,7 @@ export default class SplashState extends State {
     this.loader.load()
   }
 
-  drawProgress(percent) {
+  drawProgress(percent: number) {
     this.progressbarGraphics
       .clear()
       .beginFill(0x882222)
@@ -53,7 +57,7 @@ export default class SplashState extends State {
     }
   }
 
-  init(loader, resources) {
+  init(loader: PIXI.Loader, resources: { [x: string]: any; hasOwnProperty: (arg0: string) => void; }) {
     console.log(resources)
     for (const resourceKey in resources) {
       if (!resources.hasOwnProperty(resourceKey)) continue

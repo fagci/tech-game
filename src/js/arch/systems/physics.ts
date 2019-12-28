@@ -3,7 +3,7 @@ import {limitVector} from '../../utils/geometry'
 
 export default class Physics extends System {
 
-  update(dt) {
+  update(dt: number) {
     this.world.entities.forEach(entity => {
       // test for positioning
       const {Position, Moving} = entity

@@ -7,6 +7,11 @@ import * as PIXI from 'pixi.js'
  * @property {PIXI.Container} undergroundLayer
  */
 export default class GameMap extends PIXI.Container {
+  skyLayer: PIXI.Container
+  entitiesLayer: PIXI.Container
+  groundLayer: PIXI.Container
+  undergroundLayer: PIXI.Container
+
   constructor() {
     super()
 
@@ -21,7 +26,7 @@ export default class GameMap extends PIXI.Container {
     this.addChild(this.skyLayer)
   }
 
-  update = (time) => {
+  update = (time: number) => {
     this.entitiesLayer.children.forEach(gameObject => gameObject.update && gameObject.update(time))
   }
 }

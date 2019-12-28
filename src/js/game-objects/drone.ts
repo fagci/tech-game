@@ -6,6 +6,15 @@ import Ballistic from './ballistic'
 import * as particles from 'pixi-particles'
 
 export class Drone extends GameObject {
+  phase: number
+  fireRate: number
+  timeSpent: number
+  elapsed: number
+  engine: PIXI.Container
+  emitter: particles.Emitter
+  world: PIXI.Container
+  sprite: PIXI.Sprite
+
   constructor() {
     super()
 
@@ -21,7 +30,7 @@ export class Drone extends GameObject {
 
     this.emitter = new particles.Emitter(
       this.engine,
-      [app.textures.cover_red],
+      [window.app.textures.cover_red],
       {
         'alpha': {
           'start': 0.75,
@@ -72,16 +81,16 @@ export class Drone extends GameObject {
     )
 
 
-    this.g = new PIXI.Sprite(window.app.textures.plane)
-    this.g.anchor.set(0.5, 0.5)
-    this.addChild(this.g)
-    this.on('added', w => {
+    this.sprite = new PIXI.Sprite(window.app.textures.plane)
+    this.sprite.anchor.set(0.5, 0.5)
+    this.addChild(this.sprite)
+    this.on('added', (w: PIXI.Container) => {
       this.world = w
     })
 
   }
 
-  update(time) {
+  update(dt: number) {
 // console.log(`Time spent: ${time}`)
     this.timeSpent += window.app.ticker.elapsedMS / 1000.0
 
@@ -95,7 +104,7 @@ export class Drone extends GameObject {
     }
 
     const r = 150
-    this.phase += time * 0.02
+    this.phase += dt * 0.02
     this.phase %= Math.PI * 2
     const x = Math.cos(this.phase) * r + 4096
     const y = Math.sin(this.phase) * r + 4096
@@ -111,7 +120,7 @@ export class Drone extends GameObject {
 
   fire() {
     const target = new PIXI.Point(4096, 4096)
-    const rocket = new Ballistic(this.position, pointDirection(this.position, target))
+    const rocket: PIXI.Container = new Ballistic(this.position, pointDirection(this.position, target))
     this.world.addChild(rocket)
   }
 }

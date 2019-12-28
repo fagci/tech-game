@@ -1,13 +1,5 @@
 import * as PIXI from 'pixi.js'
 
-class Component {
-  name: string
-
-  constructor() {
-    this.name = this.constructor.name
-  }
-}
-
 export class Health {
   MAX_HEALTH: number
   health: number
@@ -19,7 +11,7 @@ export class Health {
 }
 
 export class Position extends PIXI.Point {
-  constructor(options: {}) {
+  constructor(options?: {}) {
     super()
     if (options) Object.assign(this, options)
   }
@@ -28,7 +20,7 @@ export class Position extends PIXI.Point {
 export class Damage {
   value: number
 
-  constructor(value: number) {
+  constructor(value?: number) {
     this.value = value || 100
   }
 }
@@ -39,7 +31,7 @@ export class Moving {
   velocity: PIXI.Point
   maxVelocity: number
 
-  constructor(options: {}) {
+  constructor(options?: {}) {
     this.mass = 1
     this.force = new PIXI.Point(0, 0)
     this.velocity = new PIXI.Point(0, 0)
@@ -52,7 +44,7 @@ export class Dissolve {
   dissolveTime: number
   dissolveTimeMax: any
 
-  constructor(period: {}) {
+  constructor(period?: {}) {
     this.dissolveTime = 0
     this.dissolveTimeMax = period || 5
   }
@@ -62,7 +54,7 @@ export class RenderObject extends PIXI.Container {
   texture: string
   sprite: PIXI.Sprite
 
-  constructor(options: {}) {
+  constructor(options?: {}) {
     super()
     const g = new PIXI.Graphics()
       .lineStyle(1, 0x0000ff, 1, 0)
@@ -91,7 +83,7 @@ export class Energy {
   totalCapacity: number
   capacity: number
 
-  constructor(totalCapacity: number, capacity: number) {
+  constructor(totalCapacity?: number, capacity?: number) {
     this.totalCapacity = totalCapacity || 100
     this.capacity = capacity || 100
   }
@@ -100,7 +92,7 @@ export class Energy {
 export class EnergyGenerator extends Energy {
   powerSource: PowerSourceType
 
-  constructor(maxPowerStorage: number, powerStorageLevel: number) {
+  constructor(maxPowerStorage?: number, powerStorageLevel?: number) {
     super(maxPowerStorage, powerStorageLevel)
     this.powerSource = PowerSourceType.THERMAL
   }
@@ -118,4 +110,11 @@ export class EnergyRetranslator {
 //   constructor() {
 //
 //   }
+// }
+
+// export type EntityComponentsHolder = {
+//   RenderObject?: RenderObject
+//   Position?: Position
+//   Moving?: Moving
+//   Health?: Health
 // }

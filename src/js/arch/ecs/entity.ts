@@ -1,35 +1,48 @@
-import * as Components from './components'
+// import {EntityComponentsHolder} from './components'
 
-export default class Entity {
-  private readonly _uid: string
-  private readonly _components: { [name: string]: typeof Components } = {}
+type ComponentsType = typeof import('./components')
+type ComponentTypeSymbols = keyof ComponentsType
+type EntityComponentsHolder = {
+  [T in ComponentTypeSymbols]?: ComponentsType[T]
+}
+
+type EntityComponentsContainer = {
+  _uid: string
+  _components: EntityComponentsHolder
+} & EntityComponentsHolder
+
+export default class Entity implements EntityComponentsContainer {
+
+  _uid: string
+  _components: EntityComponentsHolder
 
   /**
    * Create an entity with components as arguments
    * @description Can create entity with components at once
    */
-  constructor(...components: typeof Components[]) {
+  constructor(...components: ComponentsType[]) {
+    this._components = {}
     this._uid = `${+new Date}_${(Math.random() * 100000) | 0}`
     this.add(...components)
   }
 
-  get components(): typeof Components[] {
-    return Object.values(this)
-  }
-
   get componentNames(): string[] {
-    return Object.keys(this).filter(k => this.hasOwnProperty(k))
+    return Object.keys(this._components).filter(k => this.hasOwnProperty(k))
   }
 
-  add = (...components: typeof Components[]) => {
+  static getComponentName(component: ComponentsType): ComponentTypeSymbols {
+    return <ComponentTypeSymbols>component.constructor.name
+  }
+
+  add = (...components: ComponentsType[]) => {
     components.forEach(component => {
-      const name = component.constructor.name
+      const name: keyof ComponentsType = <keyof ComponentsType>component.constructor.name
 
       Object.defineProperty(this, name, {
         configurable: true,
         enumerable: true,
         get: () => {
-          return Reflect.get(this._components, component.constructor.name)
+          return this.get(name)
         },
       })
 
@@ -38,7 +51,7 @@ export default class Entity {
     return this
   }
 
-  remove = (...components: object[]) => {
+  remove = (...components: ComponentsType[]) => {
     components.forEach(component => {
       const componentName = Entity.getComponentName(component)
       delete this._components[componentName]
@@ -46,16 +59,18 @@ export default class Entity {
     return this
   }
 
-  static getComponentName(component: string | object): string {
-    return typeof component === 'string' ? component : component.constructor.name
-  }
 
   toString() {
     return `${this.constructor.name}.${this._uid}: [${this.componentNames}]`
   }
 
-  private set(name: string, component: typeof Components): Entity {
+  private set(name: ComponentTypeSymbols, component: object): Entity {
+    // @ts-ignore
     this._components[name] = component
     return this
+  }
+
+  private get(name: ComponentTypeSymbols) {
+    return this._components[name]
   }
 }

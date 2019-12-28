@@ -1,6 +1,22 @@
 import * as PIXI from 'pixi.js'
 
+class Message {
+  id: number
+  time: Date
+  level: number
+  removeAt: number
+  text: string
+}
+
 export default class Console extends PIXI.Container {
+  counter: number
+  PADDING: number
+  MAX_WIDTH: number
+  levels: { LOW: number; URGENT: number; }
+  messages: Message[]
+  msgContainer: PIXI.Container
+  consoleBg: PIXI.Graphics
+
   constructor() {
     super()
 
@@ -36,7 +52,7 @@ export default class Console extends PIXI.Container {
       .endFill()
   }
 
-  refreshMessages(removedMessages) { // TODO: remove messages and realign
+  refreshMessages() { // TODO: remove messages and realign
     this.msgContainer.removeChildren()
     this.messages.forEach(msg => {
       const msgName = `msg_${msg.id}`
@@ -60,7 +76,7 @@ export default class Console extends PIXI.Container {
     this.updateConsoleBg()
   }
 
-  addMessage(text, level) {
+  addMessage(text: any, level: number) {
     const id = this.counter++
     level = level || this.levels.LOW
     const time = new Date()
@@ -70,7 +86,7 @@ export default class Console extends PIXI.Container {
     this.refreshMessages()
   }
 
-  update(delta) {
+  update(dt: number) {
     const nowTimestamp = +new Date()
     const removedMessages = []
 
@@ -82,7 +98,7 @@ export default class Console extends PIXI.Container {
       }
     }
 
-    if (removedMessages.length) this.refreshMessages(removedMessages)
+    if (removedMessages.length) this.refreshMessages()
   };
 
 }

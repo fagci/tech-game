@@ -3,7 +3,16 @@ import GameObject from './game-object'
 import {pointDirection} from '../utils/geometry'
 
 export default class Ballistic extends GameObject {
-  constructor(fromPosition, direction) {
+  DAMAGE: number
+  MAX_SPEED: number
+  direction: number
+  speed: number
+  lifeTime: number
+  lifeTimeMax: number
+  acceleration: number
+  sprite: PIXI.Sprite
+
+  constructor(fromPosition: PIXI.IPoint, direction: number) {
     super()
 
     this.DAMAGE = 1200
@@ -24,8 +33,8 @@ export default class Ballistic extends GameObject {
     this.addChild(this.sprite)
   }
 
-  update(time) {
-    if (this.speed < this.MAX_SPEED) this.speed += this.acceleration * time
+  update(dt: number) {
+    if (this.speed < this.MAX_SPEED) this.speed += this.acceleration * dt
     const x = this.position.x + Math.cos(this.direction) * this.speed
     const y = this.position.y + Math.sin(this.direction) * this.speed
     const oldPosition = new PIXI.Point()
@@ -37,16 +46,16 @@ export default class Ballistic extends GameObject {
     this.rotation = pointDirection(oldPosition, newPosition) + Math.PI / 2
 
     if (this.lifeTime >= this.lifeTimeMax) {
-      this.destroy()
+      this.destroy({})
     }
     this.lifeTime += window.app.ticker.elapsedMS / 1000.0
   }
 
   hit() {
-    this.destroy()
+    this.destroy({})
   }
 
-  destroy(options) {
+  destroy(options: { children?: boolean; texture?: boolean; baseTexture?: boolean; }) {
     this.sprite.destroy()
     super.destroy(options)
     window.app.miniMapUpdate()

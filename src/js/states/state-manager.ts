@@ -1,8 +1,9 @@
+import Game from '../game'
+
 export default class StateManager extends Array {
-  /**
-   * @param {Game} container
-   */
-  constructor(container) {
+  container: Game
+
+  constructor(container: Game) {
     super()
     this.container = container
   }
@@ -11,7 +12,7 @@ export default class StateManager extends Array {
     return this.length ? this[this.length - 1] : null
   }
 
-  update(time) {
+  update(time: number) {
     const state = this.top()
     if (state && state.update) state.update(time)
   };
