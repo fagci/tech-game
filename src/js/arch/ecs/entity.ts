@@ -1,76 +1,52 @@
-// import {EntityComponentsHolder} from './components'
+import Component, {ComponentType} from './component'
+import {ComponentMap, ComponentNames} from './components'
 
-type ComponentsType = typeof import('./components')
-type ComponentTypeSymbols = keyof ComponentsType
-type EntityComponentsHolder = {
-  [T in ComponentTypeSymbols]?: ComponentsType[T]
-}
-
-type EntityComponentsContainer = {
-  _uid: string
-  _components: EntityComponentsHolder
-} & EntityComponentsHolder
-
-export default class Entity implements EntityComponentsContainer {
+export default class Entity {
 
   _uid: string
-  _components: EntityComponentsHolder
-
   /**
    * Create an entity with components as arguments
    * @description Can create entity with components at once
    */
-  constructor(...components: ComponentsType[]) {
-    this._components = {}
+  constructor(...components: ComponentType<Component>[]) {
     this._uid = `${+new Date}_${(Math.random() * 100000) | 0}`
-    this.add(...components)
+    components.forEach(component => this.addComponent(component))
+  }
+
+  _components: ComponentMap = {}
+
+  get components() {
+    return this._components
   }
 
   get componentNames(): string[] {
-    return Object.keys(this._components).filter(k => this.hasOwnProperty(k))
+    return Object.keys(this._components)
   }
 
-  static getComponentName(component: ComponentsType): ComponentTypeSymbols {
-    return <ComponentTypeSymbols>component.constructor.name
-  }
+  addComponent<T extends Component>(component: ComponentType<T>): Entity {
+    const name = <ComponentNames>component.constructor.name
 
-  add = (...components: ComponentsType[]) => {
-    components.forEach(component => {
-      const name: keyof ComponentsType = <keyof ComponentsType>component.constructor.name
-
-      Object.defineProperty(this, name, {
-        configurable: true,
-        enumerable: true,
-        get: () => {
-          return this.get(name)
-        },
-      })
-
-      this.set(name, component)
+    Object.defineProperty(this, name, {
+      configurable: true,
+      enumerable: true,
+      get: () => this.getComponent(name),
     })
+
+    this.setComponent(name, component)
     return this
   }
-
-  remove = (...components: ComponentsType[]) => {
-    components.forEach(component => {
-      const componentName = Entity.getComponentName(component)
-      delete this._components[componentName]
-    })
-    return this
-  }
-
 
   toString() {
     return `${this.constructor.name}.${this._uid}: [${this.componentNames}]`
   }
 
-  private set(name: ComponentTypeSymbols, component: object): Entity {
-    // @ts-ignore
+  private setComponent(name: ComponentNames, component: any): Entity {
     this._components[name] = component
+    console.info(`Components[${name}]=`, component)
     return this
   }
 
-  private get(name: ComponentTypeSymbols) {
+  private getComponent(name: ComponentNames) {
     return this._components[name]
   }
 }

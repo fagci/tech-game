@@ -1,5 +1,6 @@
 import World from './world' // TODO: remove this (move entity manager to world?)
 import * as Components from './components'
+import Component, {ComponentType} from './component'
 
 export default class EntityManager {
   world: World
@@ -23,20 +24,20 @@ export default class EntityManager {
         name = componentName
       }
 
-      const Component: typeof Components = (<any>Components)[name]
+      const Component: ComponentType<Component> = (<any>Components)[name]
       if (Component === undefined) {
         console.warn(`Component [${name}] not defined.`)
         return
       }
 
-      const component: typeof Components = new (<any>Component)(options)
+      const component: ComponentType<Component> = new (<any>Component)(options)
 
       if (component instanceof Components.RenderObject) {
         this.world.map.addChild(component)
         console.info(`Entity with RenderObject component added to map`)
       }
 
-      entity.add(component)
+      entity.addComponent(component)
     })
     return entity
   }

@@ -1,23 +1,27 @@
 import * as PIXI from 'pixi.js'
+import Component from './component'
 
-export class Health {
+export class Health implements Component {
   MAX_HEALTH: number
   health: number
+
 
   constructor(maxHealth: number, health: number) {
     this.MAX_HEALTH = maxHealth || 100
     this.health = health || maxHealth
   }
+
 }
 
-export class Position extends PIXI.Point {
+export class Position extends PIXI.Point implements Component {
+
   constructor(options?: {}) {
     super()
     if (options) Object.assign(this, options)
   }
 }
 
-export class Damage {
+export class Damage implements Component {
   value: number
 
   constructor(value?: number) {
@@ -25,10 +29,10 @@ export class Damage {
   }
 }
 
-export class Moving {
+export class Moving implements Component {
   mass: number
-  force: PIXI.Point
-  velocity: PIXI.Point
+  force: PIXI.IPoint
+  velocity: PIXI.IPoint
   maxVelocity: number
 
   constructor(options?: {}) {
@@ -40,7 +44,7 @@ export class Moving {
   }
 }
 
-export class Dissolve {
+export class Dissolve implements Component {
   dissolveTime: number
   dissolveTimeMax: any
 
@@ -50,7 +54,7 @@ export class Dissolve {
   }
 }
 
-export class RenderObject extends PIXI.Container {
+export class RenderObject extends PIXI.Container implements Component {
   texture: string
   sprite: PIXI.Sprite
 
@@ -79,7 +83,7 @@ enum PowerSourceType {
   FUEL,
 }
 
-export class Energy {
+export class Energy implements Component {
   totalCapacity: number
   capacity: number
 
@@ -89,7 +93,7 @@ export class Energy {
   }
 }
 
-export class EnergyGenerator extends Energy {
+export class EnergyGenerator extends Energy implements Component {
   powerSource: PowerSourceType
 
   constructor(maxPowerStorage?: number, powerStorageLevel?: number) {
@@ -98,7 +102,7 @@ export class EnergyGenerator extends Energy {
   }
 }
 
-export class EnergyRetranslator {
+export class EnergyTransponder implements Component {
   source: Energy
 
   constructor(source: Energy) {
@@ -106,15 +110,24 @@ export class EnergyRetranslator {
   }
 }
 
-// export class Debug {
-//   constructor() {
-//
-//   }
-// }
+export class Debug implements Component {
 
-// export type EntityComponentsHolder = {
-//   RenderObject?: RenderObject
-//   Position?: Position
-//   Moving?: Moving
-//   Health?: Health
-// }
+  constructor() {
+
+  }
+}
+
+export type ComponentMap = {
+  Health?: Health
+  Position?: Position
+  Damage?: Damage
+  Moving?: Moving
+  Dissolve?: Dissolve
+  RenderObject?: RenderObject
+  Energy?: Energy
+  EnergyGenerator?: EnergyGenerator
+  EnergyTransponder?: EnergyTransponder
+  Debug?: Debug
+}
+
+export type ComponentNames = keyof ComponentMap

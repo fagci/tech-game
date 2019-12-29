@@ -6,7 +6,7 @@ export default class Physics extends System {
   update(dt: number) {
     this.world.entities.forEach(entity => {
       // test for positioning
-      const {Position, Moving} = entity
+      let {Position, Moving} = entity.components
       if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
 
         Moving.velocity.x += Moving.force.x * dt / Moving.mass
