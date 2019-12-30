@@ -1,9 +1,9 @@
 import Component, {ComponentType} from './component'
-import {ComponentMap, ComponentNames} from './components'
 
 export default class Entity {
 
   _uid: string
+
   /**
    * Create an entity with components as arguments
    * @description Can create entity with components at once
@@ -13,7 +13,7 @@ export default class Entity {
     components.forEach(component => this.addComponent(component))
   }
 
-  _components: ComponentMap = {}
+  _components: { [name: string]: any } = {}
 
   get components() {
     return this._components
@@ -24,7 +24,7 @@ export default class Entity {
   }
 
   addComponent<T extends Component>(component: ComponentType<T>): Entity {
-    const name = <ComponentNames>component.constructor.name
+    const name = component.constructor.name
 
     Object.defineProperty(this, name, {
       configurable: true,
@@ -40,13 +40,13 @@ export default class Entity {
     return `${this.constructor.name}.${this._uid}: [${this.componentNames}]`
   }
 
-  private setComponent(name: ComponentNames, component: any): Entity {
+  private setComponent(name: string, component: any): Entity {
     this._components[name] = component
     console.info(`Components[${name}]=`, component)
     return this
   }
 
-  private getComponent(name: ComponentNames) {
+  private getComponent(name: string) {
     return this._components[name]
   }
 }

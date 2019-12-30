@@ -1,7 +1,7 @@
 import Entity from './entity'
 import System from './system'
 import * as PIXI from 'pixi.js'
-import * as Components from './components'
+import * as Components from '../components/components'
 
 export default class World {
   map: PIXI.Container

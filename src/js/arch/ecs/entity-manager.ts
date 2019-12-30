@@ -1,5 +1,5 @@
 import World from './world' // TODO: remove this (move entity manager to world?)
-import * as Components from './components'
+import * as Components from '../components/components'
 import Component, {ComponentType} from './component'
 
 export default class EntityManager {

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import Component from './component'
+import Component from '../ecs/component'
 
 export class Health implements Component {
   MAX_HEALTH: number
@@ -111,23 +111,7 @@ export class EnergyTransponder implements Component {
 }
 
 export class Debug implements Component {
-
   constructor() {
 
   }
 }
-
-export type ComponentMap = {
-  Health?: Health
-  Position?: Position
-  Damage?: Damage
-  Moving?: Moving
-  Dissolve?: Dissolve
-  RenderObject?: RenderObject
-  Energy?: Energy
-  EnergyGenerator?: EnergyGenerator
-  EnergyTransponder?: EnergyTransponder
-  Debug?: Debug
-}
-
-export type ComponentNames = keyof ComponentMap
