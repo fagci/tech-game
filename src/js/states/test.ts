@@ -8,7 +8,6 @@ import GameMap from '../game-map'
 
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
-import EntityManager from '../arch/ecs/entity-manager'
 import Render from '../arch/systems/render'
 
 export default class TestState extends State {
@@ -98,11 +97,9 @@ export default class TestState extends State {
     this.map.groundLayer.addChild(cross)
 
 
-    const world = new World(this.map.entitiesLayer)
+    const world = new World('Test', this.map.entitiesLayer)
     this.world = world
-    EntityManager.setWorld(world)
     world
-      .addEntity(EntityManager.createEntity('Turret'))
       .addSystem(new Physics(world))
       .addSystem(new Render(world))
 

@@ -37,6 +37,7 @@ export default class SplashState extends State {
     this.progressbar.position.set((window.app.screen.width / 2) | 0, (window.app.screen.height / 2) | 0)
 
     this.loader.add('entities', '/entities/entities.json')
+    this.loader.add('maps', '/maps/maps.json')
     this.loader.add('ss', '/gfx/ss.json')
     this.loader.add('ss2', '/gfx/swss.json')
     this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
@@ -69,7 +70,7 @@ export default class SplashState extends State {
         if (!window.app.sounds) window.app.sounds = {}
         window.app.sounds[resource.name] = resource.sound
       } else if(resource.extension === 'json') {
-        window.app.entities = resource.data // TODO: придумать как обозначить контейнер для сущностей, пока так
+        window.app[resource.name] = resource.data // TODO: придумать как обозначить контейнер для сущностей, пока так
       }
     }
 

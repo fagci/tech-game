@@ -1,4 +1,5 @@
 import Component, {ComponentType} from './component'
+import * as Components from '../components/components'
 
 export default class Entity {
 
@@ -51,4 +52,48 @@ export default class Entity {
   private getComponent(name: string) {
     return this._components[name]
   }
+
+  static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer?: PIXI.Container) {
+    let eName: string
+    let eOptions = null
+
+    if (typeof entityDefinition === 'object') {
+      eName = Object.keys(entityDefinition)[0]
+      eOptions = entityDefinition[eName]
+      Object.assign(eOptions, window.app.entities[eName]) // TODO: make deep copy or merge in iteration cycle
+    } else if (typeof entityDefinition === 'string') {
+      eName = entityDefinition
+      eOptions = window.app.entities[entityDefinition]
+    }
+    const entity = new Entity(eName)
+    if (eOptions === undefined) {
+      console.error(`Entity with name "${eName}" is not described`)
+      return entity
+    }
+
+    for (const [name, options] of Object.entries(eOptions)) {
+      const Component: ComponentType<Component> = (<any>Components)[name]
+      if (Component === undefined) {
+        console.warn(`Component <${name}> not defined.`)
+        continue
+      }
+
+      const component: ComponentType<Component> = new (<any>Component)(options)
+
+      if (component instanceof Components.RenderObject && parentRenderContainer) {
+        parentRenderContainer.addChild(component)
+        console.info(`[Render] <${eName}>`)
+      }
+
+      if (component instanceof Components.Slots) {
+        options?.items?.forEach((item, key, items) => {
+          items[key] = Entity.create(item, entity.RenderObject ? entity.RenderObject : null)
+        })
+      }
+
+      entity.addComponent(component)
+    }
+    return entity
+  }
+
 }

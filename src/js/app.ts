@@ -4,7 +4,8 @@ import StateManager from './states/state-manager'
 
 export default class App extends PIXI.Application {
   textures: { [key: string]: PIXI.Texture }
-  entities: object
+  maps: { [name: string]: any }
+  entities: { [name: string]: any }
   sounds: { [key: string]: PIXI.sound.IMedia }
   stateManager: StateManager
 

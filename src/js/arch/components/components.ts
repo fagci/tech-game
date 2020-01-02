@@ -56,18 +56,11 @@ export class Dissolve implements Component {
 }
 
 export class RenderObject extends PIXI.Container implements Component {
-  texture: string
+  texture: string = 'bricks'
   sprite: PIXI.Sprite
 
   constructor(options?: {}) {
     super()
-    const g = new PIXI.Graphics()
-      .lineStyle(1, 0x0000ff)
-      .drawCircle(0, 0, 10)
-    this.addChild(g)
-
-    this.texture = 'bricks'
-
 
     if (options) Object.assign(this, options)
 
@@ -116,6 +109,21 @@ export class Slots {
 
   constructor(options: { items: [] }) {
     if (options) Object.assign(this, options)
+  }
+}
+
+export enum Teams {
+  ALPHA,
+  BETA,
+  GAMMA,
+  THETA
+}
+
+export class Team {
+  value: number = Teams.ALPHA
+
+  constructor(value: any) {
+    this.value = typeof value === 'string' ? Teams[value] : value
   }
 }
 

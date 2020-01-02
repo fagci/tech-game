@@ -8,10 +8,16 @@ export default class World {
   private readonly _entities: Entity[]
   private _systems: System[]
 
-  constructor(map: PIXI.Container) {
+  constructor(mapName: string, map: PIXI.Container) {
     this._entities = []
     this._systems = []
     this.map = map
+
+    const mapEntitiesData = window.app.maps[mapName].entities
+
+    mapEntitiesData.forEach((entityDefinition: { [x: string]: {}; } | string) => {
+      this.addEntity(Entity.create(entityDefinition, this.map))
+    })
   }
 
   static createEntity(name: string, ...components: typeof Components[]): Entity {
