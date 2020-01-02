@@ -19,13 +19,16 @@ export class Health implements Component {
   }
 
   enableIndication() {
-    console.log(this)
-    this.lifeIndicator = new ProgressBar(32, 4, this.MAX_HEALTH, this.health)
+    this.lifeIndicator = new ProgressBar(32, 4, this.maxHealth, this.health)
   }
 
   disableIndication() {
     this.lifeIndicator.destroy()
     this.lifeIndicator = null
+  }
+
+  destroy() {
+    this.lifeIndicator && this.lifeIndicator.destroy()
   }
 }
 

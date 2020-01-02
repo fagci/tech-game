@@ -1,6 +1,7 @@
 import Component, {ComponentType} from './component'
 import * as Components from '../components/components'
 import {Health, RenderObject, Slots} from '../components/components'
+import * as PIXI from 'pixi.js'
 
 export default class Entity {
 
@@ -8,7 +9,7 @@ export default class Entity {
   _uid: number
   _name: string
 
-  readonly [key: string]: any
+  [key: string]: any
 
   /**
    * Create an entity with components as arguments
@@ -41,6 +42,21 @@ export default class Entity {
 
     this.setComponent(name, component)
     return this
+  }
+
+  removeComponent<T extends Component>(component: ComponentType<T>): Entity {
+    const name = component.constructor.name
+
+    delete this[name]
+    delete this._components[name]
+    return this
+  }
+
+  removeComponents() {
+    for (const c in this.components) {
+      if (this.components[c].destroy) this.components[c].destroy()
+      this.removeComponent(this.components[c])
+    }
   }
 
   toString() {
@@ -108,6 +124,10 @@ export default class Entity {
     }
 
     return entity
+  }
+
+  destroy() {
+    this.removeComponents()
   }
 
 }

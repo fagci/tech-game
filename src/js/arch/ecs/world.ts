@@ -1,7 +1,6 @@
 import Entity from './entity'
 import System from './system'
 import * as PIXI from 'pixi.js'
-import * as Components from '../components/components'
 
 export default class World {
   map: PIXI.Container
@@ -20,13 +19,10 @@ export default class World {
     })
   }
 
-  static createEntity(name: string, ...components: typeof Components[]): Entity {
-    return new Entity(name, ...components)
-  }
-
   addEntity(...entities: Entity[]): World {
     entities.forEach(entity => {
       this._entities.push(entity)
+      console.log(`[WORLD +] ${entity}`)
     })
     return this
   }
@@ -36,7 +32,8 @@ export default class World {
     while (i--) {
       if (this._entities.indexOf(this._entities[i]) !== -1) {
         const removedEntity = this._entities.splice(i, 1)
-        console.log(`Removed entity ${removedEntity[0]}`)
+        console.log(`[WORLD -] ${removedEntity[0]}`)
+        removedEntity[0].destroy()
       }
     }
     return this

@@ -4,6 +4,8 @@ import {Moving, Position} from '../components/components'
 
 export default class Physics extends System {
 
+  ot: number = +new Date
+
   update(dt: number) {
     this.world.entities.forEach(entity => {
       let Position: Position, Moving: Moving
@@ -16,6 +18,15 @@ export default class Physics extends System {
 
         Position.x += Moving.velocity.x
         Position.y += Moving.velocity.y
+      }
+
+
+      if (+new Date > this.ot + 500) {
+        this.ot = +new Date
+        entity.Health && entity.Health.takeDamage(10)
+        if (entity.Health.health <= 0) {
+          this.world.removeEntity(entity)
+        }
       }
     })
   }

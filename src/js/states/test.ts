@@ -103,9 +103,6 @@ export default class TestState extends State {
       .addSystem(new Physics(world))
       .addSystem(new Render(world))
 
-    console.log(`World: ${world}`)
-
-
     window.addEventListener('resize', () => {
       this.gui.resize()
       this.viewport.resize(window.app.screen.width, window.app.screen.height)
