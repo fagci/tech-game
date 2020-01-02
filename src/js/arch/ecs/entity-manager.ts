@@ -10,7 +10,7 @@ export default class EntityManager {
     this.world = world
   }
 
-  static createEntity(entityName: string) {
+  static createEntity(entityName: string, parentRenderContainer?: PIXI.Container) {
     const entityComponentsData = window.app.entities[entityName]
     const entity = World.createEntity(entityName)
     if (entityComponentsData === undefined) {
@@ -38,8 +38,14 @@ export default class EntityManager {
       const component: ComponentType<Component> = new (<any>Component)(options)
 
       if (component instanceof Components.RenderObject) {
-        this.world.map.addChild(component)
+        (parentRenderContainer ? parentRenderContainer : this.world.map).addChild(component)
         console.info(`[Render] <${entityName}>`)
+      }
+
+      if (component instanceof Components.Slots) {
+        options?.items?.forEach((item, key, items) => {
+          items[key] = EntityManager.createEntity(item, entity.RenderObject ? entity.RenderObject : null)
+        })
       }
 
       entity.addComponent(component)

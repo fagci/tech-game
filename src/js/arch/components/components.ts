@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js'
 import Component from '../ecs/component'
 import Entity from '../ecs/entity'
-import EntityManager from '../ecs/entity-manager'
 
 export class Health implements Component {
   MAX_HEALTH: number
@@ -116,11 +115,7 @@ export class Slots {
   items: Array<Entity> = []
 
   constructor(options: { items: [] }) {
-    if (options && options.items) {
-      options.items.forEach(item => {
-        this.items.push(EntityManager.createEntity(item))
-      })
-    }
+    if (options) Object.assign(this, options)
   }
 }
 
