@@ -58,29 +58,24 @@ export default class Entity {
 
   static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer?: PIXI.Container) {
     let entityName: string
-    let entityOptions = null
+    let entityOptions = {}
+
 
     if (typeof entityDefinition === 'object') {
       entityName = Object.keys(entityDefinition)[0]
-      entityOptions = window.app.entities[entityName] || {}
-      const mapComponentOptions = entityDefinition[entityName]
-      const componentNames = [...Object.keys(entityOptions), ...Object.keys(mapComponentOptions)]
-
-      for (const componentName of componentNames) {
-        entityOptions[componentName] = {...entityOptions[componentName], ...mapComponentOptions[componentName] || {}}
-      }
-
+      entityOptions = entityDefinition[entityName]
     } else if (typeof entityDefinition === 'string') {
       entityName = entityDefinition
-      entityOptions = window.app.entities[entityName]
-    }
-    const entity = new Entity(entityName)
-    if (entityOptions === undefined) {
-      console.error(`Entity with name "${entityName}" is not described`)
-      return entity
     }
 
-    for (const [componentName, componentOptions] of Object.entries(entityOptions)) {
+    const entity = new Entity(entityName)
+    const defaultEntityOptions = window.app.entities[entityName] || {}
+
+    const componentNames = [...Object.keys(defaultEntityOptions), ...Object.keys(entityOptions)]
+
+    for (let componentName of componentNames) {
+      const componentOptions = {...defaultEntityOptions[componentName], ...entityOptions[componentName] || {}}
+
       const Component: ComponentType<Component> = (<any>Components)[componentName]
       if (Component === undefined) {
         console.warn(`Component <${componentName}> not defined.`)
