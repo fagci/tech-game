@@ -8,11 +8,17 @@
       "items": [
         "TurretGun"
       ]
+    },
+    "Team": {
+      "team": "BETA"
     }
   },
   "TurretGun": {
     "RenderObject": {
       "texture": "turret"
+    },
+    "Armed": {
+      "type": "MACHINE_GUN"
     }
   }
 }

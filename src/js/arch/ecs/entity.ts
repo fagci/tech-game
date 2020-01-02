@@ -98,7 +98,9 @@ export default class Entity {
         continue
       }
 
+
       const component: ComponentType<Component> = new (<any>Component)(componentOptions)
+      console.log(component)
 
       entity.addComponent(component)
     }
@@ -108,7 +110,6 @@ export default class Entity {
 
     if (RenderObject) {
       parentRenderContainer.addChild(RenderObject)
-      console.info(`[Render] <${entityName}>`)
     }
 
     if (Slots) {

@@ -23,10 +23,7 @@ export default class Physics extends System {
 
       if (+new Date > this.ot + 500) {
         this.ot = +new Date
-        entity.Health && entity.Health.takeDamage(10)
-        if (entity.Health.health <= 0) {
-          this.world.removeEntity(entity)
-        }
+
       }
     })
   }

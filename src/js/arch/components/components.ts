@@ -137,11 +137,39 @@ export enum Teams {
   THETA
 }
 
-export class Team {
+export class Team implements Component {
   value: number = Teams.ALPHA
 
   constructor(value: any) {
     this.value = typeof value === 'string' ? Teams[value] : value
+  }
+}
+
+const Weapons = {
+  MACHINE_GUN: {
+    roundCapacity: 50,
+    initialCapacity: 250,
+    reloadTime: 5000,
+    damage: 12,
+  },
+}
+
+export class Weapon implements Component {
+  capacity: number = 0
+
+  constructor(options: {}) {
+    if (options) Object.assign(this, options)
+    this.capacity = this.initialCapacity || 0
+  }
+}
+
+export class Armed implements Component {
+  type: string = 'NONE'
+  weapon: Weapon
+
+  constructor(options: {}) {
+    if (options) Object.assign(this, options)
+    this.weapon = new Weapon(Weapons[this.type])
   }
 }
 

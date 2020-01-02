@@ -22,7 +22,7 @@ export default class World {
   addEntity(...entities: Entity[]): World {
     entities.forEach(entity => {
       this._entities.push(entity)
-      console.log(`[WORLD +] ${entity}`)
+      console.log(`[WORLD] + ${entity}`)
     })
     return this
   }
@@ -32,7 +32,7 @@ export default class World {
     while (i--) {
       if (this._entities.indexOf(this._entities[i]) !== -1) {
         const removedEntity = this._entities.splice(i, 1)
-        console.log(`[WORLD -] ${removedEntity[0]}`)
+        console.log(`[WORLD] - ${removedEntity[0]}`)
         removedEntity[0].destroy()
       }
     }
