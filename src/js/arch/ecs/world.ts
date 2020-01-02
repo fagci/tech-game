@@ -14,8 +14,8 @@ export default class World {
     this.map = map
   }
 
-  static createEntity(...components: typeof Components[]): Entity {
-    return new Entity(...components)
+  static createEntity(name: string, ...components: typeof Components[]): Entity {
+    return new Entity(name, ...components)
   }
 
   addEntity(...entities: Entity[]): World {

@@ -4,9 +4,7 @@ import State from './state'
 import GUI from '../ui/gui'
 
 import {InventoryItem} from '../ui/inventory'
-import Base from '../game-objects/base'
 import GameMap from '../game-map'
-import {Drone} from '../game-objects/drone'
 
 import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
@@ -38,8 +36,8 @@ export default class TestState extends State {
       interaction: window.app.renderer.plugins.interaction,
     })
 
-    const playerBase = new Base()
-    const drone = new Drone()
+    // const playerBase = new Base()
+    // const drone = new Drone()
     const invItem = new InventoryItem()
     this.gui = new GUI(this.map, this.viewport)
 
@@ -66,7 +64,7 @@ export default class TestState extends State {
 
     const WORLD_W2 = (this.WORLD_WIDTH / 2) | 0
     const WORLD_H2 = (this.WORLD_HEIGHT / 2) | 0
-    playerBase.position.set(WORLD_W2, WORLD_H2)
+    // playerBase.position.set(WORLD_W2, WORLD_H2)
     this.viewport.moveCenter(WORLD_W2, WORLD_H2) // FIXME: initial image w/o artifacts
 
 
@@ -74,11 +72,11 @@ export default class TestState extends State {
 
     this.addChild(this.viewport)
 
-    this.map.entitiesLayer.addChild(playerBase)
+    // this.map.entitiesLayer.addChild(playerBase)
 
 
     this.gui.inventory.addItem(invItem)
-    this.map.entitiesLayer.addChild(drone)
+    // this.map.entitiesLayer.addChild(drone)
 
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
@@ -96,15 +94,15 @@ export default class TestState extends State {
       .lineTo(100, 0)
       .moveTo(0, -100)
       .lineTo(0, 100)
-    cross.position.set(this.WORLD_WIDTH / 2, this.WORLD_HEIGHT / 2)
+    cross.position.set((this.WORLD_WIDTH / 2) | 0, (this.WORLD_HEIGHT / 2) | 0)
     this.map.groundLayer.addChild(cross)
 
 
     const world = new World(this.map.entitiesLayer)
     this.world = world
-    const entityFactory = new EntityManager(world)
+    EntityManager.setWorld(world)
     world
-      .addEntity(entityFactory.createBullet())
+      .addEntity(EntityManager.createEntity('Turret'))
       .addSystem(new Physics(world))
       .addSystem(new Render(world))
 

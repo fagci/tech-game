@@ -2,14 +2,17 @@ import Component, {ComponentType} from './component'
 
 export default class Entity {
 
-  _uid: string
+  static __uid: number = 0
+  _uid: number
+  _name: string
 
   /**
    * Create an entity with components as arguments
    * @description Can create entity with components at once
    */
-  constructor(...components: ComponentType<Component>[]) {
-    this._uid = `${+new Date}_${(Math.random() * 100000) | 0}`
+  constructor(name: string, ...components: ComponentType<Component>[]) {
+    this._uid = ++Entity.__uid
+    this._name = name
     components.forEach(component => this.addComponent(component))
   }
 
@@ -37,12 +40,11 @@ export default class Entity {
   }
 
   toString() {
-    return `${this.constructor.name}.${this._uid}: [${this.componentNames}]`
+    return `<${this._name}#${this._uid}: ${this.componentNames}>`
   }
 
   private setComponent(name: string, component: any): Entity {
     this._components[name] = component
-    console.info(`Components[${name}]=`, component)
     return this
   }
 

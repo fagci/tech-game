@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 import Component from '../ecs/component'
+import Entity from '../ecs/entity'
+import EntityManager from '../ecs/entity-manager'
 
 export class Health implements Component {
   MAX_HEALTH: number
@@ -61,7 +63,7 @@ export class RenderObject extends PIXI.Container implements Component {
   constructor(options?: {}) {
     super()
     const g = new PIXI.Graphics()
-      .lineStyle(1, 0x0000ff, 1, 0)
+      .lineStyle(1, 0x0000ff)
       .drawCircle(0, 0, 10)
     this.addChild(g)
 
@@ -107,6 +109,18 @@ export class EnergyTransponder implements Component {
 
   constructor(source: Energy) {
     this.source = source
+  }
+}
+
+export class Slots {
+  items: Array<Entity> = []
+
+  constructor(options: { items: [] }) {
+    if (options && options.items) {
+      options.items.forEach(item => {
+        this.items.push(EntityManager.createEntity(item))
+      })
+    }
   }
 }
 

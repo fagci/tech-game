@@ -23,5 +23,33 @@
     "Dissolve",
     "Damage",
     "Debug"
+  ],
+  "Turret": [
+    "Health",
+    {
+      "RenderObject": {
+        "texture": "turret_base"
+      }
+    },
+    {
+      "Position": {
+        "x": 4096,
+        "y": 4096
+      }
+    },
+    {
+      "Slots": {
+        "items": [
+          "TurretGun"
+        ]
+      }
+    }
+  ],
+  "TurretGun": [
+    {
+      "RenderObject": {
+        "texture": "turret"
+      }
+    }
   ]
 }

@@ -4,14 +4,19 @@ import Component, {ComponentType} from './component'
 
 export default class EntityManager {
   world: World
+  static world: any
 
-  constructor(world: World) {
+  static setWorld(world: World) {
     this.world = world
   }
 
-  createEntity(name: string) {
-    const entityComponentsData = window.app.entities[name]
-    const entity = World.createEntity()
+  static createEntity(entityName: string) {
+    const entityComponentsData = window.app.entities[entityName]
+    const entity = World.createEntity(entityName)
+    if (entityComponentsData === undefined) {
+      console.error(`Entity with name "${entityName}" is not described`)
+      return entity
+    }
 
     entityComponentsData.forEach((componentName: { [x: string]: {}; } | string) => {
       let name: string
@@ -26,7 +31,7 @@ export default class EntityManager {
 
       const Component: ComponentType<Component> = (<any>Components)[name]
       if (Component === undefined) {
-        console.warn(`Component [${name}] not defined.`)
+        console.warn(`Component <${name}> not defined.`)
         return
       }
 
@@ -34,15 +39,11 @@ export default class EntityManager {
 
       if (component instanceof Components.RenderObject) {
         this.world.map.addChild(component)
-        console.info(`Entity with RenderObject component added to map`)
+        console.info(`[Render] <${entityName}>`)
       }
 
       entity.addComponent(component)
     })
     return entity
-  }
-
-  createBullet() {
-    return this.createEntity('Bullet')
   }
 }

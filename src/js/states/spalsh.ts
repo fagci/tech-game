@@ -58,7 +58,7 @@ export default class SplashState extends State {
   }
 
   init(loader: PIXI.Loader, resources: { [x: string]: any; hasOwnProperty: (arg0: string) => void; }) {
-    console.log(resources)
+    // console.log(resources)
     for (const resourceKey in resources) {
       if (!resources.hasOwnProperty(resourceKey)) continue
       const resource = resources[resourceKey]
@@ -75,7 +75,7 @@ export default class SplashState extends State {
 
 
     this.removeChildren()
-    window.app.stateManager.push(new TestState(app))
+    window.app.stateManager.push(new TestState(window.app))
   }
 
   progress(loader, resources) {
