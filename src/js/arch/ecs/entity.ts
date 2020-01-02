@@ -1,11 +1,14 @@
 import Component, {ComponentType} from './component'
 import * as Components from '../components/components'
+import {Health, RenderObject, Slots} from '../components/components'
 
 export default class Entity {
 
   static __uid: number = 0
   _uid: number
   _name: string
+
+  readonly [key: string]: any
 
   /**
    * Create an entity with components as arguments
@@ -54,45 +57,61 @@ export default class Entity {
   }
 
   static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer?: PIXI.Container) {
-    let eName: string
-    let eOptions = null
+    let entityName: string
+    let entityOptions = null
 
     if (typeof entityDefinition === 'object') {
-      eName = Object.keys(entityDefinition)[0]
-      eOptions = entityDefinition[eName]
-      Object.assign(eOptions, window.app.entities[eName]) // TODO: make deep copy or merge in iteration cycle
+      entityName = Object.keys(entityDefinition)[0]
+      entityOptions = window.app.entities[entityName] || {}
+      const mapComponentOptions = entityDefinition[entityName]
+      const componentNames = [...Object.keys(entityOptions), ...Object.keys(mapComponentOptions)]
+
+      for (const componentName of componentNames) {
+        entityOptions[componentName] = {...entityOptions[componentName], ...mapComponentOptions[componentName] || {}}
+      }
+
     } else if (typeof entityDefinition === 'string') {
-      eName = entityDefinition
-      eOptions = window.app.entities[entityDefinition]
+      entityName = entityDefinition
+      entityOptions = window.app.entities[entityName]
     }
-    const entity = new Entity(eName)
-    if (eOptions === undefined) {
-      console.error(`Entity with name "${eName}" is not described`)
+    const entity = new Entity(entityName)
+    if (entityOptions === undefined) {
+      console.error(`Entity with name "${entityName}" is not described`)
       return entity
     }
 
-    for (const [name, options] of Object.entries(eOptions)) {
-      const Component: ComponentType<Component> = (<any>Components)[name]
+    for (const [componentName, componentOptions] of Object.entries(entityOptions)) {
+      const Component: ComponentType<Component> = (<any>Components)[componentName]
       if (Component === undefined) {
-        console.warn(`Component <${name}> not defined.`)
+        console.warn(`Component <${componentName}> not defined.`)
         continue
       }
 
-      const component: ComponentType<Component> = new (<any>Component)(options)
-
-      if (component instanceof Components.RenderObject && parentRenderContainer) {
-        parentRenderContainer.addChild(component)
-        console.info(`[Render] <${eName}>`)
-      }
-
-      if (component instanceof Components.Slots) {
-        options?.items?.forEach((item, key, items) => {
-          items[key] = Entity.create(item, entity.RenderObject ? entity.RenderObject : null)
-        })
-      }
+      const component: ComponentType<Component> = new (<any>Component)(componentOptions)
 
       entity.addComponent(component)
     }
+
+    let Slots: Slots, Health: Health, RenderObject: RenderObject
+    ({Slots, Health, RenderObject} = entity)
+
+    if (RenderObject) {
+      parentRenderContainer.addChild(RenderObject)
+      console.info(`[Render] <${entityName}>`)
+    }
+
+    if (Slots) {
+      Slots?.items?.forEach((item: any, key: number, items: any) => {
+        items[key] = Entity.create(item, entity.RenderObject)
+      })
+    }
+
+    if (Health && RenderObject) {
+      Health.enableIndication()
+      Health.lifeIndicator.position.y = -(RenderObject.getBounds().height / 2 + Health.lifeIndicator.height)
+      RenderObject.addChild(Health.lifeIndicator)
+    }
+
     return entity
   }
 

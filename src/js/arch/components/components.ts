@@ -1,17 +1,32 @@
 import * as PIXI from 'pixi.js'
 import Component from '../ecs/component'
 import Entity from '../ecs/entity'
+import ProgressBar from '../../ui/progressbar'
 
 export class Health implements Component {
-  MAX_HEALTH: number
-  health: number
+  maxHealth: number = 100
+  health: number = 100
+  lifeIndicator: ProgressBar
 
-
-  constructor(maxHealth: number, health: number) {
-    this.MAX_HEALTH = maxHealth || 100
-    this.health = health || maxHealth
+  constructor(options: { maxHealth?: number, health?: number }) {
+    if (options) Object.assign(this, options)
   }
 
+  takeDamage(damage: number) {
+    this.health -= damage
+    if (this.health < 0) this.health = 0
+    if (this.lifeIndicator) this.lifeIndicator.setProgress(this.health)
+  }
+
+  enableIndication() {
+    console.log(this)
+    this.lifeIndicator = new ProgressBar(32, 4, this.MAX_HEALTH, this.health)
+  }
+
+  disableIndication() {
+    this.lifeIndicator.destroy()
+    this.lifeIndicator = null
+  }
 }
 
 export class Position extends PIXI.Point implements Component {

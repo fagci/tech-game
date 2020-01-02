@@ -6,6 +6,9 @@
           "Position": {
             "x": 4096,
             "y": 4096
+          },
+          "Health": {
+            "health": 50
           }
         }
       }
