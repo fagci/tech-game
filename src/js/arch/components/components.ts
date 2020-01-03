@@ -52,6 +52,7 @@ export class Moving implements Component {
   mass: number
   force: PIXI.IPoint
   velocity: PIXI.IPoint
+  direction: number = 0
   maxVelocity: number
 
   constructor(options?: {}) {
@@ -154,11 +155,13 @@ const Weapons = {
     initialCapacity: 250,
     reloadTime: 5000,
     damage: 12,
+    fireDelay: 500,
   },
 }
 
 export class Weapon implements Component {
   capacity: number = 0
+  lastFire: number = 0
 
   constructor(options: {}) {
     if (options) Object.assign(this, options)
@@ -191,6 +194,17 @@ export class Factory implements Component {
     if (options) Object.assign(this, options)
   }
 }
+
+export class Selectable implements Component {
+  selected: boolean = false
+  color: number = 0xff0000
+
+  constructor(options: {}) {
+    if (options) Object.assign(this, options)
+  }
+}
+
+
 
 export class Debug implements Component {
   attributes: Array<string> = null

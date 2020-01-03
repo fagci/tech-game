@@ -1,6 +1,7 @@
 import System from '../ecs/system'
-import {limitVector} from '../../utils/geometry'
+import {limitVector, pointDirection} from '../../utils/geometry'
 import * as Components from '../components/components'
+import * as PIXI from 'pixi.js'
 
 export default class Physics extends System {
   update(dt: number) {
@@ -15,6 +16,8 @@ export default class Physics extends System {
 
         Position.x += Moving.velocity.x
         Position.y += Moving.velocity.y
+
+        Moving.direction = pointDirection(new PIXI.Point(0, 0), Moving.velocity)
       }
     })
   }

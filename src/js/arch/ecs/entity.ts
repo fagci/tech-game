@@ -91,7 +91,7 @@ export default class Entity {
 
     for (let componentName of componentNames) {
       const componentOptions = {...defaultEntityOptions[componentName], ...entityOptions[componentName] || {}}
-
+// TODO: implement component aliases
       const Component: ComponentType<Component> = (<any>Components)[componentName]
       if (Component === undefined) {
         console.warn(`Component <${componentName}> not defined.`)

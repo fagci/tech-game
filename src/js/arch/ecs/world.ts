@@ -22,13 +22,13 @@ export default class World {
   addEntity(...entities: Entity[]): World {
     entities.forEach(entity => {
       this._entities.push(entity)
-      console.log(`[WORLD] + ${entity}`)
+      // console.log(`[WORLD] + ${entity}`)
     })
     return this
   }
 
   removeEntity(...entities: Entity[]) {
-    console.log(`[WORLD] - ${entities}`)
+    // console.log(`[WORLD] - ${entities}`)
     this._entities = this._entities.filter((i) => !entities.includes(i))
 
     return this
