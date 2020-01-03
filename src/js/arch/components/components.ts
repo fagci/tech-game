@@ -79,7 +79,6 @@ export class Dissolve implements Component {
 export class RenderObject extends PIXI.Container implements Component {
   texture: string = 'bricks'
   sprite: PIXI.Sprite
-  globalHitArea: PIXI.Rectangle
 
   constructor(options?: {}) {
     super()

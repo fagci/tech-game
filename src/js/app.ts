@@ -1,9 +1,7 @@
 import * as PIXI from 'pixi.js'
 import 'pixi-sound'
-import 'pixi-layers'
 import StateManager from './states/state-manager'
 
-window.PIXI = PIXI
 
 export default class App extends PIXI.Application {
   textures: { [key: string]: PIXI.Texture }
