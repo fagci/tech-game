@@ -3,6 +3,7 @@ import Component from '../ecs/component'
 import Entity from '../ecs/entity'
 import ProgressBar from '../../ui/progressbar'
 
+
 export class Health implements Component {
   maxHealth: number = 100
   health: number = 100
@@ -42,6 +43,7 @@ export class Position extends PIXI.Point implements Component {
 
 export class Damage implements Component {
   value: number
+  from: Entity
 
   constructor(value?: number) {
     this.value = value || 100
@@ -77,6 +79,7 @@ export class Dissolve implements Component {
 export class RenderObject extends PIXI.Container implements Component {
   texture: string = 'bricks'
   sprite: PIXI.Sprite
+  globalHitArea: PIXI.Rectangle
 
   constructor(options?: {}) {
     super()

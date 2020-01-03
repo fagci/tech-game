@@ -4775,6 +4775,11 @@ physical-cpu-count@^2.0.0:
   resolved "https://registry.yarnpkg.com/physical-cpu-count/-/physical-cpu-count-2.0.0.tgz#18de2f97e4bf7a9551ad7511942b5496f7aba660"
   integrity sha1-GN4vl+S/epVRrXURlCtUlverpmA=
 
+pixi-layers@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/pixi-layers/-/pixi-layers-0.2.3.tgz#db441af4622349deb6257a5c2aff22315468aee5"
+  integrity sha512-alf52hWgJ5P95TMUMgLdG4ul/wpqQ1J2MMBYT9/d263FQRSSP4Apgq4bDGKvpXRND2HkboQ1ISGDRAkMwOJLIw==
+
 pixi-particles@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pixi-particles/-/pixi-particles-4.2.0.tgz#338d976e8ff43290a8da540fad81fcc3ee0b5300"

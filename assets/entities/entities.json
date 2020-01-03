@@ -13,7 +13,7 @@
       "team": "BETA"
     },
     "Debug": {
-      "debugTextTemplate": "First slot: ${this.entity.Slots.items[0]}"
+      "debugTextTemplate": "B: ${JSON.stringify(this.entity.RenderObject.globalHitArea)}"
     }
   },
   "TurretGun": {
@@ -29,6 +29,7 @@
       "texture": "small_rocket"
     },
     "LifeTime": {},
-    "Position": {}
+    "Position": {},
+    "Damage": {}
   }
 }

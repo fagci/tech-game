@@ -126,7 +126,7 @@ export default class Entity {
 
     if (Debug && RenderObject) {
       const debugBounds = new PIXI.Graphics()
-      const b = RenderObject.getLocalBounds()
+      const b = RenderObject.sprite.getLocalBounds()
       RenderObject.sortableChildren = true
 
       debugBounds

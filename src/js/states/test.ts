@@ -10,6 +10,7 @@ import World from '../arch/ecs/world'
 import Physics from '../arch/systems/physics'
 import Render from '../arch/systems/render'
 import Weapons from '../arch/systems/weapons'
+import Collision from '../arch/systems/collision'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -102,6 +103,7 @@ export default class TestState extends State {
     this.world = world
     world
       .addSystem(new Weapons(world))
+      .addSystem(new Collision(world))
       .addSystem(new Physics(world))
       .addSystem(new Render(world))
 

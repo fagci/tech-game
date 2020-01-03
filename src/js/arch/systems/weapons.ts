@@ -30,6 +30,8 @@ export default class Weapons extends System {
               const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation, 2)
               bullet.addComponent(new Components.Moving({velocity: velocityVector}))
               bullet.Position.copyFrom(Position)
+              bullet.Damage.from = entity
+              bullet.Damage.value = Armed.weapon.damage
               this.world.addEntity(bullet)
             }
           }
