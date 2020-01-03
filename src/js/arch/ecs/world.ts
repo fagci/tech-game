@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 
 export default class World {
   map: PIXI.Container
-  private readonly _entities: Entity[]
+  private _entities: Entity[]
   private _systems: System[]
 
   constructor(mapName: string, map: PIXI.Container) {
@@ -28,14 +28,9 @@ export default class World {
   }
 
   removeEntity(...entities: Entity[]) {
-    let i = entities.length
-    while (i--) {
-      if (this._entities.indexOf(this._entities[i]) !== -1) {
-        const removedEntity = this._entities.splice(i, 1)
-        console.log(`[WORLD] - ${removedEntity[0]}`)
-        removedEntity[0].destroy()
-      }
-    }
+    console.log(`[WORLD] - ${entities}`)
+    this._entities = this._entities.filter((i) => !entities.includes(i))
+
     return this
   }
 

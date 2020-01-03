@@ -81,8 +81,11 @@ export class RenderObject extends PIXI.Container implements Component {
     super()
 
     if (options) Object.assign(this, options)
-
-    this.sprite = new PIXI.Sprite(window.app.textures[this.texture])
+    const texture = window.app.textures[this.texture]
+    if (!texture) {
+      console.warn(`Texture "${this.texture}" not exists`)
+    }
+    this.sprite = new PIXI.Sprite(texture)
     this.addChild(this.sprite)
     this.sprite.anchor.set(0.5, 0.5)
   }
@@ -173,8 +176,54 @@ export class Armed implements Component {
   }
 }
 
-export class Debug implements Component {
-  constructor() {
+export class LifeTime implements Component {
+  maxValue: number = 10000
+  value: number = 0
 
+  constructor(options: {}) {
+    if (options) Object.assign(this, options)
+  }
+}
+
+export class Factory implements Component {
+
+  constructor(options: {}) {
+    if (options) Object.assign(this, options)
+  }
+}
+
+export class Debug implements Component {
+  attributes: Array<string> = null
+  entity: Entity
+  debugInfo: PIXI.Container
+  debugText: PIXI.Text
+  debugTextPattern: string = '[no data]'
+
+  constructor(options: {}) {
+
+    if (options) Object.assign(this, options)
+
+    if (this.attributes) {
+      this.debugInfo = new PIXI.Container()
+
+      // TODO compose text template string
+      this.debugTextPattern = ''
+      this.attributes.forEach((attributeName) => {
+        this.debugTextPattern += attributeName + ': ${JSON.stringify(this.entity.' + attributeName + ',null,2)}\n'
+      })
+      this.debugText = new PIXI.Text('', {fontSize: 9, fontFamily: 'monospace'})
+      this.debugText.roundPixels = true
+
+      this.debugInfo.addChild(this.debugText)
+    }
+  }
+
+  static interpolate(templateString: string, templateVars: {}) {
+    return new Function('return `' + templateString + '`;').call(templateVars)
+  }
+
+  update(dt: number) {
+    this.debugText.rotation = -this.entity.RenderObject.rotation
+    this.debugText.text = Debug.interpolate(this.debugTextPattern, {entity: this.entity})
   }
 }

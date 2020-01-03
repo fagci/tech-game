@@ -1,14 +1,11 @@
 import System from '../ecs/system'
 import {limitVector} from '../../utils/geometry'
-import {Moving, Position} from '../components/components'
+import * as Components from '../components/components'
 
 export default class Physics extends System {
-
-  ot: number = +new Date
-
   update(dt: number) {
     this.world.entities.forEach(entity => {
-      let Position: Position, Moving: Moving
+      let Position: Components.Position, Moving: Components.Moving
       ({Position, Moving} = entity.components)
       if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
         Moving.velocity.x += Moving.force.x * dt / Moving.mass
@@ -18,12 +15,6 @@ export default class Physics extends System {
 
         Position.x += Moving.velocity.x
         Position.y += Moving.velocity.y
-      }
-
-
-      if (+new Date > this.ot + 500) {
-        this.ot = +new Date
-
       }
     })
   }

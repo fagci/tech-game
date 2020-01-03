@@ -40,7 +40,7 @@ export default class SplashState extends State {
     this.loader.add('maps', '/maps/maps.json')
     this.loader.add('ss', '/gfx/ss.json')
     this.loader.add('ss2', '/gfx/swss.json')
-    this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
+    // this.loader.add('rocket_launch', '/sfx/rocket_launch.mp3')
     this.loader.load()
   }
 

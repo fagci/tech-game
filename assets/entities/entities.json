@@ -20,5 +20,12 @@
     "Armed": {
       "type": "MACHINE_GUN"
     }
+  },
+  "Bullet": {
+    "RenderObject": {
+      "texture": "small_rocket"
+    },
+    "LifeTime": {},
+    "Position": {}
   }
 }

@@ -98,15 +98,14 @@ export default class Entity {
         continue
       }
 
+      if (componentName === 'Debug') componentOptions.entity = entity
 
       const component: ComponentType<Component> = new (<any>Component)(componentOptions)
-      console.log(component)
-
       entity.addComponent(component)
     }
 
-    let Slots: Slots, Health: Health, RenderObject: RenderObject
-    ({Slots, Health, RenderObject} = entity)
+    let Slots: Slots, Health: Health, RenderObject: RenderObject, Debug: Components.Debug
+    ({Slots, Health, RenderObject, Debug} = entity)
 
     if (RenderObject) {
       parentRenderContainer.addChild(RenderObject)
@@ -122,6 +121,22 @@ export default class Entity {
       Health.enableIndication()
       Health.lifeIndicator.position.y = -(RenderObject.getBounds().height / 2 + Health.lifeIndicator.height)
       RenderObject.addChild(Health.lifeIndicator)
+    }
+
+    if (Debug && RenderObject) {
+      const debugBounds = new PIXI.Graphics()
+      const b = RenderObject.getLocalBounds()
+      debugBounds
+        .lineStyle(1, 0xff0000, 1, 1)
+        .beginFill(0xff0000, 0.24)
+        .drawRect(b.x, b.y, b.width, b.height)
+        .endFill()
+
+      if (Debug.debugInfo) {
+        RenderObject.addChild(Debug.debugInfo)
+      }
+
+      RenderObject.addChild(debugBounds)
     }
 
     return entity
