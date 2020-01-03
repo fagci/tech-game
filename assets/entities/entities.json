@@ -5,12 +5,15 @@
       "texture": "turret_base"
     },
     "Slots": {
-      "items": [
+      "places": [
         "TurretGun"
       ]
     },
     "Team": {
       "team": "BETA"
+    },
+    "Debug": {
+      "debugTextTemplate": "First slot: ${this.entity.Slots.items[0]}"
     }
   },
   "TurretGun": {

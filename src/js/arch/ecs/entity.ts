@@ -112,8 +112,9 @@ export default class Entity {
     }
 
     if (Slots) {
-      Slots?.items?.forEach((item: any, key: number, items: any) => {
-        items[key] = Entity.create(item, entity.RenderObject)
+      Slots.places?.forEach((item: any, key: number, items: any) => {
+        console.log(`Create slot:`, item)
+        Slots.items[key] = Entity.create(item, entity.RenderObject)
       })
     }
 
@@ -126,14 +127,18 @@ export default class Entity {
     if (Debug && RenderObject) {
       const debugBounds = new PIXI.Graphics()
       const b = RenderObject.getLocalBounds()
+      RenderObject.sortableChildren = true
+
       debugBounds
         .lineStyle(1, 0xff0000, 1, 1)
         .beginFill(0xff0000, 0.24)
         .drawRect(b.x, b.y, b.width, b.height)
         .endFill()
+      debugBounds.zIndex = -1
 
       if (Debug.debugInfo) {
         RenderObject.addChild(Debug.debugInfo)
+        Debug.debugInfo.position.set(b.x, b.y + b.height)
       }
 
       RenderObject.addChild(debugBounds)

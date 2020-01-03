@@ -128,6 +128,7 @@ export class EnergyTransponder implements Component {
 
 export class Slots {
   items: Array<Entity> = []
+  places: Array<string> = []
 
   constructor(options: { items: [] }) {
     if (options) Object.assign(this, options)
@@ -155,7 +156,7 @@ const Weapons = {
     initialCapacity: 250,
     reloadTime: 5000,
     damage: 12,
-    fireDelay: 500,
+    fireDelay: 200,
   },
 }
 
@@ -205,30 +206,32 @@ export class Selectable implements Component {
 }
 
 
-
 export class Debug implements Component {
   attributes: Array<string> = null
   entity: Entity
   debugInfo: PIXI.Container
   debugText: PIXI.Text
-  debugTextPattern: string = '[no data]'
+  debugTextTemplate: string
 
   constructor(options: {}) {
 
     if (options) Object.assign(this, options)
 
-    if (this.attributes) {
+    if (this.attributes || this.debugTextTemplate) {
       this.debugInfo = new PIXI.Container()
 
-      // TODO compose text template string
-      this.debugTextPattern = ''
-      this.attributes.forEach((attributeName) => {
-        this.debugTextPattern += attributeName + ': ${JSON.stringify(this.entity.' + attributeName + ',null,2)}\n'
-      })
       this.debugText = new PIXI.Text('', {fontSize: 9, fontFamily: 'monospace'})
       this.debugText.roundPixels = true
 
       this.debugInfo.addChild(this.debugText)
+    }
+
+    if (this.attributes) {
+      // TODO compose text template string
+      this.debugTextTemplate = ''
+      this.attributes.forEach((attributeName) => {
+        this.debugTextTemplate += attributeName + ': ${JSON.stringify(this.entity.' + attributeName + ',null,2)}\n'
+      })
     }
   }
 
@@ -238,6 +241,6 @@ export class Debug implements Component {
 
   update(dt: number) {
     this.debugText.rotation = -this.entity.RenderObject.rotation
-    this.debugText.text = Debug.interpolate(this.debugTextPattern, {entity: this.entity})
+    this.debugText.text = Debug.interpolate(this.debugTextTemplate, this)
   }
 }

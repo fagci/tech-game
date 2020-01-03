@@ -11,6 +11,17 @@
             "health": 50
           }
         }
+      },
+      {
+        "Turret": {
+          "Position": {
+            "x": 4032,
+            "y": 4032
+          },
+          "Health": {
+            "health": 95
+          }
+        }
       }
     ]
   }
