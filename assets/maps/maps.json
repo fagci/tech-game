@@ -6,9 +6,6 @@
           "Position": {
             "x": 4096,
             "y": 4096
-          },
-          "Health": {
-            "health": 500
           }
         }
       },
@@ -17,9 +14,6 @@
           "Position": {
             "x": 4032,
             "y": 4032
-          },
-          "Health": {
-            "health": 950
           }
         }
       }

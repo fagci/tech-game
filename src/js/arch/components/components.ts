@@ -5,22 +5,25 @@ import ProgressBar from '../../ui/progressbar'
 
 
 export class Health implements Component {
-  maxHealth: number = 100
-  health: number = 100
+  max: number = 100
+  value: number = 100
   lifeIndicator: ProgressBar
 
-  constructor(options: { maxHealth?: number, health?: number }) {
-    if (options) Object.assign(this, options)
+  constructor(options: { max?: number, health?: number }) {
+    if (options) {
+      Object.assign(this, options)
+      if (options.health === undefined) this.value = this.max
+    }
   }
 
   takeDamage(damage: number) {
-    this.health -= damage
-    if (this.health < 0) this.health = 0
-    if (this.lifeIndicator) this.lifeIndicator.setProgress(this.health)
+    this.value -= damage
+    if (this.value < 0) this.value = 0
+    if (this.lifeIndicator) this.lifeIndicator.setProgress(this.value)
   }
 
   enableIndication() {
-    this.lifeIndicator = new ProgressBar(32, 4, this.maxHealth, this.health)
+    this.lifeIndicator = new ProgressBar(32, 4, this.max, this.value)
   }
 
   disableIndication() {
@@ -44,9 +47,19 @@ export class Position extends PIXI.Point implements Component {
 export class Damage implements Component {
   value: number
   from: Entity
+  to: Entity
 
-  constructor(value?: number) {
-    this.value = value || 100
+  constructor(options?: { from: Entity; to: Entity; value: number }) {
+    if (options) Object.assign(this, options)
+  }
+}
+
+export class DamageSource implements Component {
+  value: number
+  from: Entity
+
+  constructor(options?: { from: Entity; value: number }) {
+    if (options) Object.assign(this, options)
   }
 }
 
@@ -158,7 +171,8 @@ const Weapons = {
     initialCapacity: 2500,
     reloadTime: 5000,
     damage: 12,
-    fireDelay: 50,
+    fireDelay: 25,
+    spreadAngle: 15,
   },
 }
 
@@ -183,8 +197,7 @@ export class Armed implements Component {
 }
 
 export class LifeTime implements Component {
-  maxValue: number = 10000
-  value: number = 0
+  value: number = 10000
 
   constructor(options: {}) {
     if (options) Object.assign(this, options)

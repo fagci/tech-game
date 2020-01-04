@@ -6,10 +6,12 @@ import GUI from '../ui/gui'
 import GameMap from '../game-map'
 
 import World from '../arch/ecs/world'
-import Physics from '../arch/systems/physics'
+import Movement from '../arch/systems/movement'
 import Render from '../arch/systems/render'
 import Weapons from '../arch/systems/weapons'
 import Collision from '../arch/systems/collision'
+import Energy from '../arch/systems/energy'
+import Health from '../arch/systems/health'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -27,8 +29,9 @@ export default class TestState extends State {
     this.WORLD_WIDTH = 8192
     this.WORLD_HEIGHT = 8192
 
-    this.map = new GameMap()
     const {height: screenHeight, width: screenWidth} = window.app.screen
+
+    this.map = new GameMap()
     this.viewport = new Viewport({
       screenWidth,
       screenHeight,
@@ -91,9 +94,11 @@ export default class TestState extends State {
 
     this.world =
       new World('Test', this.map.entitiesLayer)
+        .addSystem(new Energy())
         .addSystem(new Weapons())
         .addSystem(new Collision())
-        .addSystem(new Physics())
+        .addSystem(new Health())
+        .addSystem(new Movement())
         .addSystem(new Render())
 
     window.addEventListener('resize', () => {

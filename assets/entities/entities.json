@@ -1,7 +1,7 @@
 {
   "Turret": {
     "Health": {
-      "maxHealth": 1000
+      "max": 1000
     },
     "RenderObject": {
       "texture": "turret_base"
@@ -32,9 +32,8 @@
       "texture": "small_rocket"
     },
     "LifeTime": {
-      "maxValue": 1000
+      "value": 1000
     },
-    "Position": {},
-    "Damage": {}
+    "Position": {}
   }
 }

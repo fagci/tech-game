@@ -3,7 +3,7 @@ import {limitVector, pointDirection} from '../../utils/geometry'
 import * as Components from '../components/components'
 import * as PIXI from 'pixi.js'
 
-export default class Physics extends System {
+export default class Movement extends System {
   update(dt: number) {
     this.world.entities.forEach(entity => {
       let Position: Components.Position, Moving: Components.Moving

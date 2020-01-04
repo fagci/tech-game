@@ -30,8 +30,12 @@ export default class World {
   removeEntity(...entities: Entity[]) {
     // console.log(`[WORLD] - ${entities}`)
     this._entities = this._entities.filter((i) => !entities.includes(i))
-
     return this
+  }
+
+  destroyEntity(entity: Entity) {
+    this.removeEntity(entity)
+    entity.destroy()
   }
 
   addSystem(system: System) {

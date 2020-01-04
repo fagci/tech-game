@@ -10,10 +10,9 @@ export default class Weapons extends System {
       let Slots: Components.Slots, Position: Components.Position, LifeTime: Components.LifeTime
       ({Slots, Position, LifeTime} = entity)
       if (LifeTime) { // TODO: на самом деле это дальность полёта снаряда
-        LifeTime.value += window.app.ticker.elapsedMS
-        if (LifeTime.value >= LifeTime.maxValue) {
-          this.world.removeEntity(entity)
-          entity.destroy()
+        LifeTime.value -= window.app.ticker.elapsedMS
+        if (LifeTime.value <= 0) {
+          this.world.destroyEntity(entity)
           return
         }
       }
@@ -26,12 +25,17 @@ export default class Weapons extends System {
             Armed.weapon.lastFire = window.app.ticker.lastTime
             if (Armed && Armed.weapon.capacity > 0) {
               Armed.weapon.capacity--
+              const spreadAngle = (Math.random() - 0.5) * Math.PI / (Armed.weapon.spreadAngle || 0)
               const bullet = Entity.create('Bullet', this.world.map)
-              const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation, 12)
-              bullet.addComponent(new Components.Moving({velocity: velocityVector}))
+              const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation - spreadAngle, 12)
+              const damageSource = new Components.DamageSource({
+                from: entity,
+                value: Armed.weapon.damage,
+              })
+              const moving = new Components.Moving({velocity: velocityVector})
+              bullet.addComponent(moving)
+              bullet.addComponent(damageSource)
               bullet.Position.copyFrom(Position)
-              bullet.Damage.from = entity
-              bullet.Damage.value = Armed.weapon.damage
               this.world.addEntity(bullet)
             }
           }
