@@ -128,10 +128,10 @@ export class RenderObject extends PIXI.Container implements Component {
 }
 
 const PowerSource = {
-  AIR: {currency: 0.05},
-  THERMAL: {currency: 0.01},
-  MECHANICAL: {currency: 1},
-  FUEL: {currency: 0.9},
+  AIR: {current: 0.05},
+  THERMAL: {current: 0.01},
+  MECHANICAL: {current: 1},
+  FUEL: {current: 3.9},
 }
 
 export class Energy implements Component {
@@ -147,30 +147,57 @@ export class EnergyGenerator extends Energy implements Component {
   powerSource: {} = PowerSource.THERMAL
   range: number = 64
 
-  constructor(options: { source?: string, maxPowerStorage?: number, powerStorageLevel?: number }) {
+  constructor(options: { type?: string, maxPowerStorage?: number, powerStorageLevel?: number }) {
     super(options)
-    if (options.source) this.powerSource = PowerSource[options.source]
+    if (options.type) this.powerSource = PowerSource[options.type]
   }
 
   generate() {
-    this.capacity += this.powerSource.currency
+    this.capacity += this.powerSource.current
   }
 }
 
 export class EnergyTransponder extends Energy implements Component {
   source: Entity
   range: number = 128
+  current: number = 3
 
   constructor(options: { source: Entity }) {
     super(options)
     if (options) Object.assign(this, options)
   }
 
-  takeFrom(source: Energy, amount: number) {
+  takeFrom(source: Energy) {
     if (this.capacity >= this.totalCapacity) return
-    const taken = limit(amount, source.capacity)
+    const taken = limit(this.current, source.capacity)
     this.capacity += taken
     source.capacity -= taken
+    return taken
+  }
+}
+
+export class EnergyConsumer extends Energy implements Component {
+  source: Entity
+  load: number = 1
+
+  constructor(options: { source: Entity }) {
+    super(options)
+    if (options) Object.assign(this, options)
+  }
+
+  takeFrom(source: Energy) {
+    if (this.capacity >= this.totalCapacity) return
+    const taken = limit(this.load, source.capacity)
+    this.capacity += taken
+    source.capacity -= taken
+  }
+
+  consume() {
+    if (this.capacity >= this.load) {
+      this.capacity -= this.load
+      return this.load
+    }
+    return 0
   }
 }
 

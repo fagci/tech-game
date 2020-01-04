@@ -3,13 +3,13 @@ import {distance} from '../../utils/geometry'
 
 export default class Energy extends System {
   update(dt: number) {
-    const energySources = this.world.entities.filter(({EnergyGenerator, EnergyTransponder}) => {
-      return !!EnergyGenerator || !!EnergyTransponder
+    const energySources = this.world.entities.filter(({EnergyGenerator, EnergyTransponder, EnergyConsumer}) => {
+      return !!EnergyGenerator || !!EnergyTransponder || !!EnergyConsumer
     })
 
     this.world.entities.forEach(entity => {
-      const {EnergyTransponder, EnergyGenerator} = entity.components
-      if (!EnergyTransponder && !EnergyGenerator) return
+      const {EnergyTransponder, EnergyGenerator, EnergyConsumer} = entity.components
+      if (!EnergyTransponder && !EnergyGenerator && !EnergyConsumer) return
 
       if (EnergyGenerator) {
         EnergyGenerator.generate()
@@ -19,18 +19,30 @@ export default class Energy extends System {
         energySources.forEach(source => {
           if (source._uid === entity._uid) return
 
-          const {EnergyGenerator: Generator, EnergyTransponder: Transponder} = source
+          const {
+            EnergyGenerator: Generator,
+            EnergyTransponder: Transponder,
+            EnergyConsumer: Consumer,
+          } = source
 
           const distanceToSource = distance(entity.Position, source.Position)
 
-          if (Generator && Generator.range <= distanceToSource) {
-            EnergyTransponder.takeFrom(Generator, 0.1)
+          if (Generator && distanceToSource <= Generator.range) {
+            EnergyTransponder.takeFrom(Generator)
           }
 
-          if (Transponder && Transponder.range <= distanceToSource) {
-            EnergyTransponder.takeFrom(Transponder, 0.1)
+          if (Transponder && distanceToSource <= Transponder.range) {
+            EnergyTransponder.takeFrom(Transponder)
+          }
+
+          if (Consumer && distanceToSource <= EnergyTransponder.range) {
+            Consumer.takeFrom(EnergyTransponder)
           }
         })
+      }
+
+      if (EnergyConsumer) {
+        EnergyConsumer.consume() // TODO: пустить энергию в нужное русло =)
       }
     })
   }

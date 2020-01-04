@@ -40,10 +40,11 @@
     },
     "EnergyGenerator": {
       "totalCapacity": 1000,
-      "capacity": 100
+      "capacity": 100,
+      "type": "FUEL"
     },
     "Debug": {
-      "debugTextTemplate": "Energy: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}, ${this.entity.EnergyGenerator.range}"
+      "debugTextTemplate": "E: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}, ${this.entity.EnergyGenerator.range}"
     }
   },
   "ER": {
@@ -55,7 +56,20 @@
       "capacity": 0
     },
     "Debug": {
-      "debugTextTemplate": "Energy: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}, ${this.entity.EnergyTransponder.range}"
+      "debugTextTemplate": "E: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}, ${this.entity.EnergyTransponder.range}"
+    }
+  },
+  "EC": {
+    "RenderObject": {
+      "texture": "cover_red"
+    },
+    "EnergyConsumer": {
+      "totalCapacity": 10,
+      "capacity": 0,
+      "load": 2
+    },
+    "Debug": {
+      "debugTextTemplate": "E: ${this.entity.EnergyConsumer.capacity|0}/${this.entity.EnergyConsumer.totalCapacity}"
     }
   }
 }
