@@ -16,8 +16,8 @@ export class Health implements Component {
     }
   }
 
-  takeDamage(damage: number) {
-    this.value -= damage
+  take(damage: Damage) {
+    this.value -= damage.value
     if (this.value < 0) this.value = 0
     if (this.lifeIndicator) this.lifeIndicator.setProgress(this.value)
   }
@@ -79,13 +79,19 @@ export class Moving implements Component {
   }
 }
 
-export class Dissolve implements Component {
-  dissolveTime: number
-  dissolveTimeMax: any
+export class Destroy implements Component {
+}
 
-  constructor(period?: {}) {
-    this.dissolveTime = 0
-    this.dissolveTimeMax = period || 5
+export class Solid implements Component {
+}
+
+export class Dissolve implements Component {
+  value: number
+  max: any
+
+  constructor(options?: { value?: number, max: number }) {
+    if (options) Object.assign(this, options)
+    if (options.value === undefined) this.value = this.max
   }
 }
 

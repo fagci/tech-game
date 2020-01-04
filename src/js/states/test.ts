@@ -12,6 +12,7 @@ import Weapons from '../arch/systems/weapons'
 import Collision from '../arch/systems/collision'
 import Energy from '../arch/systems/energy'
 import Health from '../arch/systems/health'
+import Destroy from '../arch/systems/destroy'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -100,6 +101,7 @@ export default class TestState extends State {
         .addSystem(new Health())
         .addSystem(new Movement())
         .addSystem(new Render())
+        .addSystem(new Destroy())
 
     window.addEventListener('resize', () => {
       this.gui.resize()
