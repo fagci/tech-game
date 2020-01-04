@@ -14,9 +14,6 @@
     "Team": {
       "team": "BETA"
     },
-    "Debug": {
-      "debugTextTemplate": "Ammo: ${this.entity.Slots?this.entity.Slots.items[0].Armed.weapon.capacity:0}"
-    },
     "Solid": {}
   },
   "TurretGun": {
@@ -36,5 +33,29 @@
     },
     "Position": {},
     "Solid": {}
+  },
+  "EG": {
+    "RenderObject": {
+      "texture": ["base_1", "base_2", "base_3", "base_4"]
+    },
+    "EnergyGenerator": {
+      "totalCapacity": 1000,
+      "capacity": 100
+    },
+    "Debug": {
+      "debugTextTemplate": "Energy: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}"
+    }
+  },
+  "ER": {
+    "RenderObject": {
+      "texture": "retransmitter"
+    },
+    "EnergyTransponder": {
+      "totalCapacity": 10,
+      "capacity": 0
+    },
+    "Debug": {
+      "debugTextTemplate": "Energy: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}"
+    }
   }
 }

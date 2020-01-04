@@ -4,7 +4,7 @@ import {Destroy} from '../components/components'
 export default class Render extends System {
   update(dt: number) {
     this.world.entities.forEach(entity => {
-      var {RenderObject, Position, Moving, Debug, Dissolve} = entity
+      let {RenderObject, Position, Moving, Debug, Dissolve} = entity
       if (!RenderObject) return
       if (Position) {
         RenderObject.position.copyFrom(Position)

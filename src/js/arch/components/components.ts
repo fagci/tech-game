@@ -96,54 +96,71 @@ export class Dissolve implements Component {
 }
 
 export class RenderObject extends PIXI.Container implements Component {
-  texture: string = 'bricks'
-  sprite: PIXI.Sprite
+  texture: string | Array<string>
+  sprite: PIXI.AnimatedSprite | PIXI.Sprite
+  animationSpeed: number = 0.25
 
   constructor(options?: {}) {
     super()
 
     if (options) Object.assign(this, options)
-    const texture = window.app.textures[this.texture]
-    if (!texture) {
-      console.warn(`Texture "${this.texture}" not exists`)
+
+
+    if (this.texture instanceof Array) {
+      const textures = this.texture.map(texture => {
+        const t = window.app.textures[texture]
+        if (!t) console.warn(`Texture "${texture}" not exists`)
+        return t
+      })
+      this.sprite = new PIXI.AnimatedSprite(textures)
+      this.sprite.animationSpeed = this.animationSpeed
+      this.sprite.play()
+    } else {
+      const texture = window.app.textures[this.texture]
+      if (!texture) console.warn(`Texture "${this.texture}" not exists`)
+      this.sprite = new PIXI.Sprite(texture)
     }
-    this.sprite = new PIXI.Sprite(texture)
+
     this.addChild(this.sprite)
     this.sprite.anchor.set(0.5, 0.5)
   }
 }
 
-enum PowerSourceType {
-  AIR,
-  THERMAL,
-  MECHANICAL,
-  FUEL,
+const PowerSource = {
+  AIR: {currency: 0.05},
+  THERMAL: {currency: 0.01},
+  MECHANICAL: {currency: 1},
+  FUEL: {currency: 0.9},
 }
 
 export class Energy implements Component {
-  totalCapacity: number
-  capacity: number
+  totalCapacity: number = 100
+  capacity: number = 0
 
-  constructor(totalCapacity?: number, capacity?: number) {
-    this.totalCapacity = totalCapacity || 100
-    this.capacity = capacity || 100
+  constructor(options: { totalCapacity?: number, capacity?: number }) {
+    if (options) Object.assign(this, options)
   }
 }
 
 export class EnergyGenerator extends Energy implements Component {
-  powerSource: PowerSourceType
+  powerSource: {} = PowerSource.THERMAL
 
-  constructor(maxPowerStorage?: number, powerStorageLevel?: number) {
-    super(maxPowerStorage, powerStorageLevel)
-    this.powerSource = PowerSourceType.THERMAL
+  constructor(options: { source?: string, maxPowerStorage?: number, powerStorageLevel?: number }) {
+    super(options)
+    if (options.source) this.powerSource = PowerSource[options.source]
+  }
+
+  generate() {
+    this.capacity += this.powerSource.currency
   }
 }
 
-export class EnergyTransponder implements Component {
-  source: Energy
+export class EnergyTransponder extends Energy implements Component {
+  source: Entity
 
-  constructor(source: Energy) {
-    this.source = source
+  constructor(options: { source: Entity }) {
+    super(options)
+    if (options) Object.assign(this, options)
   }
 }
 
