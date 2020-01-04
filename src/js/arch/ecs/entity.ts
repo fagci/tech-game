@@ -104,10 +104,12 @@ export default class Entity {
       entity.addComponent(component)
     }
 
-    let Slots: Slots, Health: Health, RenderObject: RenderObject, Debug: Components.Debug
-    ({Slots, Health, RenderObject, Debug} = entity)
+    let Slots: Slots, Health: Health, RenderObject: RenderObject, Debug: Components.Debug,
+      EnergyGenerator: Components.EnergyGenerator, EnergyTransponder: Components.EnergyTransponder
+    ({Slots, Health, RenderObject, Debug, EnergyGenerator, EnergyTransponder} = entity)
 
     if (RenderObject) {
+      RenderObject.parentGroup = window.app.foreGroup
       parentRenderContainer.addChild(RenderObject)
     }
 
@@ -121,6 +123,18 @@ export default class Entity {
       Health.enableIndication()
       Health.lifeIndicator.position.y = -(RenderObject.getBounds().height / 2 + Health.lifeIndicator.height)
       RenderObject.addChild(Health.lifeIndicator)
+    }
+
+    if (EnergyGenerator || EnergyTransponder) {
+      const energyCircle = new PIXI.Graphics()
+      energyCircle
+        .lineStyle(0, 0, 0, 1)
+        .beginFill(0xccccff)
+        .drawCircle(0, 0, EnergyGenerator ? EnergyGenerator.range : EnergyTransponder.range)
+        .endFill()
+      energyCircle.parentGroup = window.app.energyGroup
+
+      RenderObject.addChild(energyCircle)
     }
 
     if (Debug && RenderObject) {
@@ -139,6 +153,7 @@ export default class Entity {
         RenderObject.addChild(Debug.debugInfo)
         Debug.debugInfo.position.set(b.x, b.y + b.height)
       }
+
 
       RenderObject.addChild(debugBounds)
     }

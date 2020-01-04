@@ -43,7 +43,7 @@
       "capacity": 100
     },
     "Debug": {
-      "debugTextTemplate": "Energy: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}"
+      "debugTextTemplate": "Energy: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}, ${this.entity.EnergyGenerator.range}"
     }
   },
   "ER": {
@@ -55,7 +55,7 @@
       "capacity": 0
     },
     "Debug": {
-      "debugTextTemplate": "Energy: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}"
+      "debugTextTemplate": "Energy: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}, ${this.entity.EnergyTransponder.range}"
     }
   }
 }

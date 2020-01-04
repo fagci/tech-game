@@ -144,6 +144,7 @@ export class Energy implements Component {
 
 export class EnergyGenerator extends Energy implements Component {
   powerSource: {} = PowerSource.THERMAL
+  range: number = 64
 
   constructor(options: { source?: string, maxPowerStorage?: number, powerStorageLevel?: number }) {
     super(options)
@@ -157,10 +158,18 @@ export class EnergyGenerator extends Energy implements Component {
 
 export class EnergyTransponder extends Energy implements Component {
   source: Entity
+  range: number = 128
 
   constructor(options: { source: Entity }) {
     super(options)
     if (options) Object.assign(this, options)
+  }
+
+  takeFrom(source: Energy, amount: number) {
+    if (this.capacity >= this.totalCapacity) return
+    const taken = source.capacity % amount
+    this.capacity += taken
+    source.capacity -= taken
   }
 }
 

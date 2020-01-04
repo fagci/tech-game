@@ -22,6 +22,10 @@ export function limitVector(vector: PIXI.IPoint, maxSize: number) {
   return vector
 }
 
+export function distance(from: PIXI.IPoint, to: PIXI.IPoint) {
+  return Math.sqrt(Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2))
+}
+
 export function boxIntersects(b1: PIXI.Rectangle, b2: PIXI.Rectangle) {
   return b1.x + b1.width > b2.x && b1.x < b2.x + b2.width && b1.y + b1.height > b2.y && b1.y < b2.y + b2.height
 }
