@@ -11,9 +11,6 @@
     },
     "Team": {
       "team": "BETA"
-    },
-    "Debug": {
-      "debugTextTemplate": "B: ${JSON.stringify(this.entity.RenderObject.globalHitArea)}"
     }
   },
   "TurretGun": {

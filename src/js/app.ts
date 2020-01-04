@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import 'pixi-sound'
+// import 'pixi-sound'
 import StateManager from './states/state-manager'
 
 
@@ -7,7 +7,7 @@ export default class App extends PIXI.Application {
   textures: { [key: string]: PIXI.Texture }
   maps: { [name: string]: any }
   entities: { [name: string]: any }
-  sounds: { [key: string]: PIXI.sound.IMedia }
+  // sounds: { [key: string]: PIXI.sound.IMedia }
   stateManager: StateManager
 
   miniMapUpdate() {
