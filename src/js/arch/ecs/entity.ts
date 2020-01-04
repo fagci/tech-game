@@ -128,8 +128,8 @@ export default class Entity {
     if (EnergyGenerator || EnergyTransponder) {
       const energyCircle = new PIXI.Graphics()
       energyCircle
-        .lineStyle(0, 0, 0, 1)
-        .beginFill(0xccccff)
+        .lineStyle(1, 0x0000ff, 0.24, 1)
+        .beginFill(0x0000ff, 0.1)
         .drawCircle(0, 0, EnergyGenerator ? EnergyGenerator.range : EnergyTransponder.range)
         .endFill()
       energyCircle.parentGroup = window.app.energyGroup

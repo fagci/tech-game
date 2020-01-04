@@ -44,8 +44,10 @@
       "type": "FUEL"
     },
     "Debug": {
-      "debugTextTemplate": "E: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}, ${this.entity.EnergyGenerator.range}"
-    }
+      "debugTextTemplate": "E: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}"
+    },
+    "Solid": {},
+    "Health": {"max": 500}
   },
   "ER": {
     "RenderObject": {
@@ -56,8 +58,10 @@
       "capacity": 0
     },
     "Debug": {
-      "debugTextTemplate": "E: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}, ${this.entity.EnergyTransponder.range}"
-    }
+      "debugTextTemplate": "E: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}"
+    },
+    "Solid": {},
+    "Health": {"max": 200}
   },
   "EC": {
     "RenderObject": {
@@ -70,6 +74,8 @@
     },
     "Debug": {
       "debugTextTemplate": "E: ${this.entity.EnergyConsumer.capacity|0}/${this.entity.EnergyConsumer.totalCapacity}"
-    }
+    },
+    "Solid": {},
+    "Health": {"max": 500}
   }
 }

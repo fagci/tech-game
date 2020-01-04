@@ -7,6 +7,7 @@ import * as PIXI from 'pixi.js'
 export default class Weapons extends System {
   update(dt: number): void {
     this.world.entities.forEach(entity => {
+      if (entity.Dead) return
       let Slots: Components.Slots, Position: Components.Position, LifeTime: Components.LifeTime
       ({Slots, Position, LifeTime} = entity)
       if (LifeTime) { // TODO: на самом деле это дальность полёта снаряда

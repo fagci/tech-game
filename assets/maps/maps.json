@@ -2,7 +2,7 @@
   "Test": {
     "entities": [
       {
-        "Turret": {"Position": {"x": 4096, "y": 4096}}
+        "Turret": {"Position": {"x": 4096, "y": 4160}}
       },
       {
         "Turret": {"Position": {"x": 4032, "y": 4032}}

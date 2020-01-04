@@ -6,6 +6,7 @@ import * as PIXI from 'pixi.js'
 export default class Movement extends System {
   update(dt: number) {
     this.world.entities.forEach(entity => {
+      if (entity.Dead) return
       let Position: Components.Position, Moving: Components.Moving
       ({Position, Moving} = entity.components)
       if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component

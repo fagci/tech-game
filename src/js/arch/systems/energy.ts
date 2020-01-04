@@ -8,6 +8,7 @@ export default class Energy extends System {
     })
 
     this.world.entities.forEach(entity => {
+      if (entity.Dead) return
       const {EnergyTransponder, EnergyGenerator, EnergyConsumer} = entity.components
       if (!EnergyTransponder && !EnergyGenerator && !EnergyConsumer) return
 

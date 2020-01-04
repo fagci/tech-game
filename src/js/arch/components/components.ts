@@ -86,6 +86,9 @@ export class Destroy implements Component {
 export class Solid implements Component {
 }
 
+export class Dead implements Component {
+}
+
 export class Dissolve implements Component {
   value: number
   max: any
@@ -295,7 +298,7 @@ export class Debug implements Component {
     if (this.attributes || this.debugTextTemplate) {
       this.debugInfo = new PIXI.Container()
 
-      this.debugText = new PIXI.Text('', {fontSize: 9, fontFamily: 'monospace'})
+      this.debugText = new PIXI.Text('', {fontSize: 11, fontFamily: 'monospace'})
       this.debugText.roundPixels = true
 
       this.debugInfo.addChild(this.debugText)

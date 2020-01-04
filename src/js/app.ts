@@ -29,7 +29,7 @@ export default class App extends PIXI.Application {
     this.stage.sortableChildren = true
     const energyLayer = new PIXI.display.Layer(this.energyGroup)
     energyLayer.on('display', element => {
-      element.blendMode = PIXI.BLEND_MODES.MULTIPLY
+      element.blendMode = PIXI.BLEND_MODES.DARKEN
     })
     this.stage.addChild(energyLayer)
     this.stage.addChild(new PIXI.display.Layer(this.foreGroup))
