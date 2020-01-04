@@ -8,7 +8,7 @@
             "y": 4096
           },
           "Health": {
-            "health": 50
+            "health": 500
           }
         }
       },
@@ -19,7 +19,7 @@
             "y": 4032
           },
           "Health": {
-            "health": 95
+            "health": 950
           }
         }
       }

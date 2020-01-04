@@ -27,7 +27,7 @@ export default class Weapons extends System {
             if (Armed && Armed.weapon.capacity > 0) {
               Armed.weapon.capacity--
               const bullet = Entity.create('Bullet', this.world.map)
-              const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation, 2)
+              const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation, 12)
               bullet.addComponent(new Components.Moving({velocity: velocityVector}))
               bullet.Position.copyFrom(Position)
               bullet.Damage.from = entity

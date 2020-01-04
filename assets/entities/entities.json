@@ -1,6 +1,8 @@
 {
   "Turret": {
-    "Health": {},
+    "Health": {
+      "maxHealth": 1000
+    },
     "RenderObject": {
       "texture": "turret_base"
     },
@@ -11,7 +13,11 @@
     },
     "Team": {
       "team": "BETA"
+    },
+    "Debug": {
+      "debugTextTemplate": "Ammo: ${this.entity.Slots.items[0].Armed.weapon.capacity}"
     }
+
   },
   "TurretGun": {
     "RenderObject": {
@@ -25,7 +31,9 @@
     "RenderObject": {
       "texture": "small_rocket"
     },
-    "LifeTime": {},
+    "LifeTime": {
+      "maxValue": 1000
+    },
     "Position": {},
     "Damage": {}
   }

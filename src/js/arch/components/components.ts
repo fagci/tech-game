@@ -155,10 +155,10 @@ export class Team implements Component {
 const Weapons = {
   MACHINE_GUN: {
     roundCapacity: 50,
-    initialCapacity: 250,
+    initialCapacity: 2500,
     reloadTime: 5000,
     damage: 12,
-    fireDelay: 200,
+    fireDelay: 50,
   },
 }
 

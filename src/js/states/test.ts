@@ -3,7 +3,6 @@ import {Viewport} from 'pixi-viewport'
 import State from './state'
 import GUI from '../ui/gui'
 
-import {InventoryItem} from '../ui/inventory'
 import GameMap from '../game-map'
 
 import World from '../arch/ecs/world'
@@ -37,9 +36,6 @@ export default class TestState extends State {
       interaction: window.app.renderer.plugins.interaction,
     })
 
-    // const playerBase = new Base()
-    // const drone = new Drone()
-    const invItem = new InventoryItem()
     this.gui = new GUI(this.map, this.viewport)
 
 
@@ -73,11 +69,6 @@ export default class TestState extends State {
 
     this.addChild(this.viewport)
 
-    // this.map.entitiesLayer.addChild(playerBase)
-
-
-    this.gui.inventory.addItem(invItem)
-    // this.map.entitiesLayer.addChild(drone)
 
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
