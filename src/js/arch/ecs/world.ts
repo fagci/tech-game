@@ -35,6 +35,7 @@ export default class World {
   }
 
   addSystem(system: System) {
+    system.world = this
     this._systems.push(system)
     return this
   }

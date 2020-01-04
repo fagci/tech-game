@@ -89,14 +89,12 @@ export default class TestState extends State {
     cross.position.set(WORLD_W2, WORLD_H2)
     this.map.groundLayer.addChild(cross)
 
-
-    const world = new World('Test', this.map.entitiesLayer)
-    this.world = world
-    world
-      .addSystem(new Weapons(world))
-      .addSystem(new Collision(world))
-      .addSystem(new Physics(world))
-      .addSystem(new Render(world))
+    this.world =
+      new World('Test', this.map.entitiesLayer)
+        .addSystem(new Weapons())
+        .addSystem(new Collision())
+        .addSystem(new Physics())
+        .addSystem(new Render())
 
     window.addEventListener('resize', () => {
       this.gui.resize()

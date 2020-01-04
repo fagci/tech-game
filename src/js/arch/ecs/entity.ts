@@ -74,7 +74,7 @@ export default class Entity {
 
   static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer?: PIXI.Container) {
     let entityName: string
-    let entityOptions = {}
+    let entityOptions: { [key: string]: {} } = {}
 
 
     if (typeof entityDefinition === 'object') {
@@ -112,8 +112,7 @@ export default class Entity {
     }
 
     if (Slots) {
-      Slots.places?.forEach((item: any, key: number, items: any) => {
-        console.log(`Create slot:`, item)
+      Slots.places?.forEach((item: any, key: number) => {
         Slots.items[key] = Entity.create(item, entity.RenderObject)
       })
     }
