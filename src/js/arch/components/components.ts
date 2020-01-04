@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import Component from '../ecs/component'
 import Entity from '../ecs/entity'
 import ProgressBar from '../../ui/progressbar'
+import {limit} from '../../utils/geometry'
 
 
 export class Health implements Component {
@@ -167,7 +168,7 @@ export class EnergyTransponder extends Energy implements Component {
 
   takeFrom(source: Energy, amount: number) {
     if (this.capacity >= this.totalCapacity) return
-    const taken = source.capacity % amount
+    const taken = limit(amount, source.capacity)
     this.capacity += taken
     source.capacity -= taken
   }

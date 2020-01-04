@@ -6,8 +6,11 @@ export default class Energy extends System {
     const energySources = this.world.entities.filter(({EnergyGenerator, EnergyTransponder}) => {
       return !!EnergyGenerator || !!EnergyTransponder
     })
+
     this.world.entities.forEach(entity => {
       const {EnergyTransponder, EnergyGenerator} = entity.components
+      if (!EnergyTransponder && !EnergyGenerator) return
+
       if (EnergyGenerator) {
         EnergyGenerator.generate()
       }
@@ -15,8 +18,11 @@ export default class Energy extends System {
       if (EnergyTransponder) {
         energySources.forEach(source => {
           if (source._uid === entity._uid) return
+
           const {EnergyGenerator: Generator, EnergyTransponder: Transponder} = source
+
           const distanceToSource = distance(entity.Position, source.Position)
+
           if (Generator && Generator.range <= distanceToSource) {
             EnergyTransponder.takeFrom(Generator, 0.1)
           }
