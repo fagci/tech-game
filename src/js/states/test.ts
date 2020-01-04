@@ -28,9 +28,10 @@ export default class TestState extends State {
     this.WORLD_HEIGHT = 8192
 
     this.map = new GameMap()
+    const {height: screenHeight, width: screenWidth} = window.app.screen
     this.viewport = new Viewport({
-      screenWidth: window.app.screen.width,
-      screenHeight: window.app.screen.height,
+      screenWidth,
+      screenHeight,
       worldWidth: this.WORLD_WIDTH,
       worldHeight: this.WORLD_HEIGHT,
       interaction: window.app.renderer.plugins.interaction,
@@ -49,10 +50,10 @@ export default class TestState extends State {
       .wheel()
       .decelerate()
       .clampZoom({
-        minHeight: (window.app.renderer.screen.height / 4) | 0,
-        minWidth: (window.app.renderer.screen.width / 4) | 0,
-        maxHeight: (window.app.renderer.screen.height * 4) | 0,
-        maxWidth: (window.app.renderer.screen.width * 4) | 0,
+        minHeight: (screenHeight / 4) | 0,
+        minWidth: (screenWidth / 4) | 0,
+        maxHeight: (screenHeight * 4) | 0,
+        maxWidth: (screenWidth * 4) | 0,
       })
       .clamp({direction: 'all'})
 
@@ -61,8 +62,7 @@ export default class TestState extends State {
 
     const WORLD_W2 = (this.WORLD_WIDTH / 2) | 0
     const WORLD_H2 = (this.WORLD_HEIGHT / 2) | 0
-    // playerBase.position.set(WORLD_W2, WORLD_H2)
-    this.viewport.moveCenter(WORLD_W2, WORLD_H2) // FIXME: initial image w/o artifacts
+    this.viewport.moveCenter(WORLD_W2, WORLD_H2)
 
 
     // Setup stage
@@ -86,7 +86,7 @@ export default class TestState extends State {
       .lineTo(100, 0)
       .moveTo(0, -100)
       .lineTo(0, 100)
-    cross.position.set((this.WORLD_WIDTH / 2) | 0, (this.WORLD_HEIGHT / 2) | 0)
+    cross.position.set(WORLD_W2, WORLD_H2)
     this.map.groundLayer.addChild(cross)
 
 
@@ -105,9 +105,6 @@ export default class TestState extends State {
   }
 
   update(dt: number) {
-    this.map.update(dt)
-    this.gui.update(dt)
     this.world.update(dt)
   }
 }
-
