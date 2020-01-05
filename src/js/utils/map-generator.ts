@@ -98,7 +98,6 @@ export default class MapGenerator {
     container.children.forEach(children => {
       if (persistChunks.indexOf(children.name) === -1) {
         children.destroy()
-        // container.removeChild(children)
       }
     })
   }
