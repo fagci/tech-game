@@ -29,3 +29,11 @@ export function distance(from: PIXI.IPoint, to: PIXI.IPoint) {
 export function boxIntersects(b1: PIXI.Rectangle, b2: PIXI.Rectangle) {
   return b1.x + b1.width > b2.x && b1.x < b2.x + b2.width && b1.y + b1.height > b2.y && b1.y < b2.y + b2.height
 }
+
+export function cellToPoint(i: number, j: number, cellSize: number = 16) {
+  return new PIXI.Point(i * cellSize, j * cellSize)
+}
+
+export function pointToCell(point: PIXI.IPoint, cellSize: number = 16) {
+  return {i: (point.x / cellSize) | 0, j: (point.y / cellSize) | 0}
+}

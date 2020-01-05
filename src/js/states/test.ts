@@ -14,7 +14,7 @@ import Energy from '../arch/systems/energy'
 import Health from '../arch/systems/health'
 import Destroy from '../arch/systems/destroy'
 
-const Noise = require('noisejs').Noise
+import {Noise} from 'noisejs'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -23,6 +23,10 @@ export default class TestState extends State {
   viewport: Viewport
   gui: GUI
   world: World
+  groundContainer: PIXI.Container
+  noise: any
+
+  mapHeight: [][] = []
 
   constructor() {
     super()
@@ -79,49 +83,19 @@ export default class TestState extends State {
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
 
-    const texture = window.app.textures.sand
+
+    this.noise = new Noise(1)
 
 
-    const noise = new Noise()
-    const worldCellSizeW = this.WORLD_WIDTH / 16
-    const worldCellSizeH = this.WORLD_HEIGHT / 16
-
-
-    // const sprite = new PIXI.Sprite(texture)
-    // const bgT = window.app.renderer.generateTexture(sprite, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
-    // const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-    // this.map.groundLayer.addChild(bgGrid)
-
-    let groundContainer = new PIXI.Container()
-    for (let j = 0; j < worldCellSizeH; j++) {
-      for (let i = 0; i < worldCellSizeW; i++) {
-        let t
-        let value = noise.perlin2(i / 80, j / 80)
-          + 0.5 * noise.perlin2(i / 50, j / 50)
-          + 0.25 * noise.perlin2(i / 25, j / 25)
-
-        if (value < 0.15) t = window.app.textures.sand
-        else if (value < 0.22) t = window.app.textures.ground
-        else if (value < 0.6) t = window.app.textures.grass
-        else t = window.app.textures.snow
-        let s = PIXI.Sprite.from(t)
-        s.position.set(i * 16, j * 16)
-        groundContainer.addChild(s)
-
-        if (value < 0.05) {
-          s = PIXI.Sprite.from(window.app.textures.water)
-          s.position.set(i * 16, j * 16)
-          groundContainer.addChild(s)
-        }
-      }
-    }
-
-    const bgT = window.app.renderer.generateTexture(groundContainer, PIXI.SCALE_MODES.LINEAR, window.devicePixelRatio)
-    const sprite = new PIXI.Sprite(bgT)
-    sprite.scale.set(this.gui.miniMap.MINIMAP_SIZE / this.WORLD_WIDTH, this.gui.miniMap.MINIMAP_SIZE / this.WORLD_HEIGHT)
-    this.gui.miniMap.addChildAt(sprite, 1)
-    groundContainer = null
-    this.map.groundLayer.addChild(new PIXI.Sprite(bgT))
+    const texture = new PIXI.Graphics()
+    texture
+      .lineStyle(2, 0, 1, 0)
+      .drawRect(0, 0, 512, 512)
+    const bgT = window.app.renderer.generateTexture(texture, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
+    const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
+    bgGrid.zIndex = 100
+    this.map.groundLayer.sortableChildren = true
+    this.map.groundLayer.addChild(bgGrid)
 
     const cross = new PIXI.Graphics()
       .lineStyle(1, 0xff0000, 1, 0)
@@ -146,6 +120,83 @@ export default class TestState extends State {
       this.gui.resize()
       this.viewport.resize(window.app.screen.width, window.app.screen.height)
     })
+
+    this.viewport.on('moved-end', () => this.loadChunksInView())
+    this.viewport.on('zoomed-end', () => this.loadChunksInView())
+
+    this.loadChunksInView()
+  }
+
+  getChunkSprite(col: number, row: number) {
+    const tileRow = row << 5
+    const tileCol = col << 5
+    const x = tileCol << 4
+    const y = tileRow << 4
+    const container = new PIXI.Container()
+
+    const nextChunkTileRow = (row + 1) << 5
+    const nextChunkTileCol = (col + 1) << 5
+
+    console.log(row, col, tileCol, tileRow, nextChunkTileCol, nextChunkTileRow, x, y)
+
+    const {sand, snow, ground, grass} = window.app.textures
+    let texture
+
+    for (let j = tileRow; j < nextChunkTileRow; j++) {
+      for (let i = tileCol; i < nextChunkTileCol; i++) {
+        let heightValue = this.getHeightValue(i, j)
+        let tileX = i << 4
+        let tileY = j << 4
+
+        if (heightValue < 0.15) texture = sand
+        else if (heightValue < 0.22) texture = ground
+        else if (heightValue < 0.6) texture = grass
+        else texture = snow
+
+        let sprite = PIXI.Sprite.from(texture)
+
+        sprite.position.set(tileX, tileY)
+        container.addChild(sprite)
+
+        if (heightValue < 0.05) {
+          sprite = PIXI.Sprite.from(window.app.textures.water)
+          sprite.position.set(tileX, tileY)
+          container.addChild(sprite)
+        }
+      }
+    }
+
+    let bgT = window.app.renderer.generateTexture(container, PIXI.SCALE_MODES.LINEAR, window.devicePixelRatio)
+    const chunkSprite = new PIXI.Sprite(bgT)
+    chunkSprite.position.set(x, y)
+    chunkSprite.name = this.getChunkName(col, row)
+    return chunkSprite
+  }
+
+  loadChunksInView() {
+    const chunkColStart = (this.viewport.left >> 9) - 1
+    const chunkRowStart = (this.viewport.top >> 9) - 1
+    const chunkColEnd = (this.viewport.right >> 9) + 1
+    const chunkRowEnd = (this.viewport.bottom >> 9) + 1
+
+    console.log(chunkColStart, chunkRowStart, chunkColEnd, chunkRowEnd)
+
+    for (let j = chunkRowStart; j < chunkRowEnd; j++) {
+      for (let i = chunkColStart; i < chunkColEnd; i++) {
+        if (this.map.groundLayer.getChildByName(this.getChunkName(i, j))) continue
+        this.map.groundLayer.addChild(this.getChunkSprite(i, j))
+      }
+    }
+  }
+
+  private getChunkName(col: number, row: number) {
+    return `Chunk_${col}_${row}`
+  }
+
+  private getHeightValue(i: number, j: number) {
+    return this.noise.perlin2(i / 80, j / 80)
+      + 0.5 * this.noise.perlin2(i / 50, j / 50)
+      + 0.25 * this.noise.perlin2(i / 25, j / 25)
   }
 
   update(dt: number) {
