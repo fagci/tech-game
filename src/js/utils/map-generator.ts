@@ -31,21 +31,25 @@ export default class MapGenerator {
     const nextChunkTileRow = (row + 1) << 5
     const nextChunkTileCol = (col + 1) << 5
 
-    const bgT = new PIXI.Graphics()
+    const chunkGraphics = new PIXI.Graphics()
+    chunkGraphics.position.set(x, y)
+    chunkGraphics.name = MapGenerator.getChunkName(col, row)
 
     let tx = 0
     let ty = 0
 
     const textureTiles: any = {}
     const waterTiles: any = []
+    let i, j, heightValue, textureName, tilePos
 
-    for (let j = tileRow; j < nextChunkTileRow; j++) {
+    for (j = tileRow; j < nextChunkTileRow; j++) {
       tx = 0
-      for (let i = tileCol; i < nextChunkTileCol; i++) {
-        let heightValue = this.getHeightValue(i, j)
-        const textureName = MapGenerator.getBiome(heightValue)
+      for (i = tileCol; i < nextChunkTileCol; i++) {
+        heightValue = this.getHeightValue(i, j)
+        textureName = MapGenerator.getBiome(heightValue)
+
         if (textureTiles[textureName] === undefined) textureTiles[textureName] = []
-        const tilePos = {x: tx, y: ty}
+        tilePos = {x: tx, y: ty}
         textureTiles[textureName].push(tilePos)
 
         if (heightValue < 0.05) waterTiles.push(tilePos)
@@ -54,25 +58,23 @@ export default class MapGenerator {
       ty += 16
     }
 
-    for (let textureName in textureTiles) {
+    let texture
+
+    for (textureName in textureTiles) {
       if (!textureTiles.hasOwnProperty(textureName)) continue
-      const texture = window.app.textures[textureName]
+      texture = window.app.textures[textureName]
       texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
-      texture.baseTexture.mipmap = PIXI.MIPMAP_MODES.ON
-      bgT.beginTextureFill({texture})
-      textureTiles[textureName].forEach((c: { x: number; y: number }) => bgT.drawRect(c.x, c.y, 16, 16))
-      bgT.endFill()
+      chunkGraphics.beginTextureFill({texture})
+      textureTiles[textureName].forEach((c: { x: number; y: number }) => chunkGraphics.drawRect(c.x, c.y, 16, 16))
+      chunkGraphics.endFill()
     }
 
     if (waterTiles.length > 0) {
-      bgT.beginTextureFill({texture: window.app.textures.water})
-      waterTiles.forEach((c: { x: number; y: number }) => bgT.drawRect(c.x, c.y, 16, 16))
+      chunkGraphics.beginTextureFill({texture: window.app.textures.water})
+      waterTiles.forEach((c: { x: number; y: number }) => chunkGraphics.drawRect(c.x, c.y, 16, 16))
     }
 
-    const chunkSprite = bgT
-    chunkSprite.position.set(x, y)
-    chunkSprite.name = MapGenerator.getChunkName(col, row)
-    return chunkSprite
+    return chunkGraphics
   }
 
   loadChunksInView(viewport: Viewport, container: PIXI.Container) {
@@ -83,8 +85,10 @@ export default class MapGenerator {
 
     const persistChunks: Array<string> = []
 
-    for (let j = chunkRowStart; j < chunkRowEnd; j++) {
-      for (let i = chunkColStart; i < chunkColEnd; i++) {
+    let i, j
+
+    for (j = chunkRowStart; j < chunkRowEnd; j++) {
+      for (i = chunkColStart; i < chunkColEnd; i++) {
         const chunkName = MapGenerator.getChunkName(i, j)
         persistChunks.push(chunkName)
         if (container.getChildByName(chunkName)) continue
@@ -92,7 +96,10 @@ export default class MapGenerator {
       }
     }
     container.children.forEach(children => {
-      if (persistChunks.indexOf(children.name) === -1) container.removeChild(children)
+      if (persistChunks.indexOf(children.name) === -1) {
+        children.destroy()
+        // container.removeChild(children)
+      }
     })
   }
 
