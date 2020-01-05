@@ -19,12 +19,11 @@ export default class Collision extends System {
           if (!Health || !Solid) return
 
           if (entity.RenderObject && boxIntersects(RenderObject.sprite.getBounds(true), entity.RenderObject.sprite.getBounds(true))) {
-            const damage = new Components.Damage({
+            entityToCheck.addComponent(new Components.Damage({
               from: entity,
               to: entityToCheck,
               value: DamageSource.value,
-            })
-            entityToCheck.addComponent(damage)
+            }))
             this.world.removeEntity(entity)
             entity.destroy()
           }

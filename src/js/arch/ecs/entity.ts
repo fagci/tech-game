@@ -31,7 +31,7 @@ export default class Entity {
     return Object.keys(this._components)
   }
 
-  addComponent<T extends Component>(component: ComponentType<T>): Entity {
+  addComponent<T extends Component>(component: T): Entity {
     const name = component.constructor.name
 
     Object.defineProperty(this, name, {

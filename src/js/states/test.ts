@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
 import State from './state'
 import GUI from '../ui/gui'
@@ -75,29 +74,8 @@ export default class TestState extends State {
 
     this.addChild(this.viewport)
 
-
     this.viewport.addChild(this.map)
     this.addChild(this.gui)
-
-
-    const texture = new PIXI.Graphics()
-    texture
-      .lineStyle(2, 0, 1, 0)
-      .drawRect(0, 0, 512, 512)
-    const bgT = window.app.renderer.generateTexture(texture, PIXI.SCALE_MODES.NEAREST, window.devicePixelRatio)
-    const bgGrid = new PIXI.TilingSprite(bgT, this.WORLD_WIDTH, this.WORLD_HEIGHT)
-    bgGrid.zIndex = 100
-    this.map.groundLayer.sortableChildren = true
-    this.map.groundLayer.addChild(bgGrid)
-
-    const cross = new PIXI.Graphics()
-      .lineStyle(1, 0xff0000, 1, 0)
-      .moveTo(-100, 0)
-      .lineTo(100, 0)
-      .moveTo(0, -100)
-      .lineTo(0, 100)
-    cross.position.set(WORLD_W2, WORLD_H2)
-    this.map.groundLayer.addChild(cross)
 
     this.world =
       new World('Test', this.map.entitiesLayer)

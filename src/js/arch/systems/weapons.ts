@@ -20,18 +20,19 @@ export default class Weapons extends System {
 
       if (Slots) {
         Slots.items.forEach(slotItem => {
-          const {Armed} = slotItem
+          let {Armed} = slotItem
           slotItem.RenderObject.rotation += Math.PI / 180 * dt
-          if (window.app.ticker.lastTime > Armed.weapon.lastFire + Armed.weapon.fireDelay) {
-            Armed.weapon.lastFire = window.app.ticker.lastTime
-            if (Armed && Armed.weapon.capacity > 0) {
-              Armed.weapon.capacity--
-              const spreadAngle = (Math.random() - 0.5) * Math.PI / (Armed.weapon.spreadAngle || 0)
+          let weapon = Armed.weapon
+          if (window.app.ticker.lastTime > weapon.lastFire + weapon.fireDelay) {
+            weapon.lastFire = window.app.ticker.lastTime
+            if (Armed && weapon.capacity > 0) {
+              weapon.capacity--
+              const spreadAngle = (Math.random() - 0.5) * Math.PI / (weapon.spreadAngle || 0)
               const bullet = Entity.create('Bullet', this.world.map)
               const velocityVector = directionVector(new PIXI.Point(), slotItem.RenderObject.rotation - spreadAngle, 12)
               const damageSource = new Components.DamageSource({
                 from: entity,
-                value: Armed.weapon.damage,
+                value: weapon.damage,
               })
               const moving = new Components.Moving({velocity: velocityVector})
               bullet.addComponent(moving)
