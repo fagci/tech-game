@@ -39,8 +39,6 @@ export default class MapGenerator {
     const textureTiles: any = {}
     const waterTiles: any = []
 
-    bgT.lineStyle(0, 0, 0, 1)
-
     for (let j = tileRow; j < nextChunkTileRow; j++) {
       tx = 0
       for (let i = tileCol; i < nextChunkTileCol; i++) {
@@ -83,13 +81,19 @@ export default class MapGenerator {
     const chunkColEnd = (viewport.right >> 9) + 1
     const chunkRowEnd = (viewport.bottom >> 9) + 1
 
+    const persistChunks: Array<string> = []
+
     for (let j = chunkRowStart; j < chunkRowEnd; j++) {
       for (let i = chunkColStart; i < chunkColEnd; i++) {
         const chunkName = MapGenerator.getChunkName(i, j)
+        persistChunks.push(chunkName)
         if (container.getChildByName(chunkName)) continue
         container.addChild(this.getChunkSprite(i, j))
       }
     }
+    container.children.forEach(children => {
+      if (persistChunks.indexOf(children.name) === -1) container.removeChild(children)
+    })
   }
 
   getHeightValue(i: number, j: number) {
