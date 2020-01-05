@@ -127,47 +127,56 @@ export default class TestState extends State {
     this.loadChunksInView()
   }
 
+  static getBiome(v: number) {
+    if (v < 0.15) return 'sand'
+    else if (v < 0.22) return 'ground'
+    else if (v < 0.6) return 'grass'
+    else return 'snow'
+
+  }
+
   getChunkSprite(col: number, row: number) {
     const tileRow = row << 5
     const tileCol = col << 5
     const x = tileCol << 4
     const y = tileRow << 4
-    const container = new PIXI.Container()
+    // const container = new PIXI.Container()
 
     const nextChunkTileRow = (row + 1) << 5
     const nextChunkTileCol = (col + 1) << 5
 
     console.log(row, col, tileCol, tileRow, nextChunkTileCol, nextChunkTileRow, x, y)
 
-    const {sand, snow, ground, grass} = window.app.textures
-    let texture
+    const bgT = new PIXI.Graphics()
+
+    let tx = 0
+    let ty = 0
+
+    const textureTiles: any = {}
+
+    bgT.lineStyle(0, 0, 0, 1)
 
     for (let j = tileRow; j < nextChunkTileRow; j++) {
+      tx = 0
       for (let i = tileCol; i < nextChunkTileCol; i++) {
         let heightValue = this.getHeightValue(i, j)
-        let tileX = i << 4
-        let tileY = j << 4
-
-        if (heightValue < 0.15) texture = sand
-        else if (heightValue < 0.22) texture = ground
-        else if (heightValue < 0.6) texture = grass
-        else texture = snow
-
-        let sprite = PIXI.Sprite.from(texture)
-
-        sprite.position.set(tileX, tileY)
-        container.addChild(sprite)
-
-        if (heightValue < 0.05) {
-          sprite = PIXI.Sprite.from(window.app.textures.water)
-          sprite.position.set(tileX, tileY)
-          container.addChild(sprite)
-        }
+        const textureName = TestState.getBiome(heightValue)
+        if (textureTiles[textureName] === undefined) textureTiles[textureName] = []
+        textureTiles[textureName].push({x: tx, y: ty})
+        tx += 16
       }
+      ty += 16
     }
 
-    let bgT = window.app.renderer.generateTexture(container, PIXI.SCALE_MODES.LINEAR, window.devicePixelRatio)
-    const chunkSprite = new PIXI.Sprite(bgT)
+    for (let textureName in textureTiles) {
+      const texture = window.app.textures[textureName]
+      texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
+      bgT.beginTextureFill(texture)
+      textureTiles[textureName].forEach((c: { x: number; y: number }) => bgT.drawRect(c.x, c.y, 16, 16))
+    }
+
+    // let bgT = window.app.renderer.generateTexture(container, PIXI.SCALE_MODES.LINEAR, window.devicePixelRatio)
+    const chunkSprite = bgT//new PIXI.Sprite(bgT)
     chunkSprite.position.set(x, y)
     chunkSprite.name = this.getChunkName(col, row)
     return chunkSprite
