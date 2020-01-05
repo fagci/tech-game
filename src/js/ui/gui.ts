@@ -3,6 +3,10 @@ import MiniMap from './minimap'
 import Console from './console'
 
 export default class GUI extends PIXI.Container {
+  miniMap: MiniMap
+  map: any
+  viewport: any
+
   constructor(map, viewport) {
     super()
     this.map = map

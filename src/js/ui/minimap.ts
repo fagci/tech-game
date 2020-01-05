@@ -4,6 +4,7 @@ import GameObject from '../game-objects/game-object'
 import {Viewport} from 'pixi-viewport'
 
 export default class MiniMap extends PIXI.Container {
+  MINIMAP_SIZE: number
   /**
    * @param {GameMap} map
    * @param {Viewport} viewport
@@ -26,7 +27,7 @@ export default class MiniMap extends PIXI.Container {
 
     this.view = new PIXI.Graphics()
     this.bg = new PIXI.Graphics()
-      .lineStyle(1, 0, 1, 1)
+      .lineStyle(2, 0, 1, 1)
       .beginFill(0x223844)
       .drawRect(0, 0, this.MINIMAP_SIZE, this.MINIMAP_SIZE)
       .endFill()
