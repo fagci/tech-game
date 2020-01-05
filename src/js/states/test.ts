@@ -14,7 +14,7 @@ import Energy from '../arch/systems/energy'
 import Health from '../arch/systems/health'
 import Destroy from '../arch/systems/destroy'
 
-import {Noise} from 'noisejs'
+import MapGenerator from '../utils/map-generator'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -23,10 +23,6 @@ export default class TestState extends State {
   viewport: Viewport
   gui: GUI
   world: World
-  groundContainer: PIXI.Container
-  noise: any
-
-  mapHeight: [][] = []
 
   constructor() {
     super()
@@ -84,9 +80,6 @@ export default class TestState extends State {
     this.addChild(this.gui)
 
 
-    this.noise = new Noise(1)
-
-
     const texture = new PIXI.Graphics()
     texture
       .lineStyle(2, 0, 1, 0)
@@ -121,91 +114,13 @@ export default class TestState extends State {
       this.viewport.resize(window.app.screen.width, window.app.screen.height)
     })
 
-    this.viewport.on('moved-end', () => this.loadChunksInView())
-    this.viewport.on('zoomed-end', () => this.loadChunksInView())
+    const mapGenerator = new MapGenerator(1)
 
-    this.loadChunksInView()
-  }
 
-  static getBiome(v: number) {
-    if (v < 0.15) return 'sand'
-    else if (v < 0.22) return 'ground'
-    else if (v < 0.6) return 'grass'
-    else return 'snow'
+    this.viewport.on('moved-end', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
+    this.viewport.on('zoomed-end', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
 
-  }
-
-  getChunkSprite(col: number, row: number) {
-    const tileRow = row << 5
-    const tileCol = col << 5
-    const x = tileCol << 4
-    const y = tileRow << 4
-    // const container = new PIXI.Container()
-
-    const nextChunkTileRow = (row + 1) << 5
-    const nextChunkTileCol = (col + 1) << 5
-
-    console.log(row, col, tileCol, tileRow, nextChunkTileCol, nextChunkTileRow, x, y)
-
-    const bgT = new PIXI.Graphics()
-
-    let tx = 0
-    let ty = 0
-
-    const textureTiles: any = {}
-
-    bgT.lineStyle(0, 0, 0, 1)
-
-    for (let j = tileRow; j < nextChunkTileRow; j++) {
-      tx = 0
-      for (let i = tileCol; i < nextChunkTileCol; i++) {
-        let heightValue = this.getHeightValue(i, j)
-        const textureName = TestState.getBiome(heightValue)
-        if (textureTiles[textureName] === undefined) textureTiles[textureName] = []
-        textureTiles[textureName].push({x: tx, y: ty})
-        tx += 16
-      }
-      ty += 16
-    }
-
-    for (let textureName in textureTiles) {
-      const texture = window.app.textures[textureName]
-      texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
-      bgT.beginTextureFill(texture)
-      textureTiles[textureName].forEach((c: { x: number; y: number }) => bgT.drawRect(c.x, c.y, 16, 16))
-    }
-
-    // let bgT = window.app.renderer.generateTexture(container, PIXI.SCALE_MODES.LINEAR, window.devicePixelRatio)
-    const chunkSprite = bgT//new PIXI.Sprite(bgT)
-    chunkSprite.position.set(x, y)
-    chunkSprite.name = this.getChunkName(col, row)
-    return chunkSprite
-  }
-
-  loadChunksInView() {
-    const chunkColStart = (this.viewport.left >> 9) - 1
-    const chunkRowStart = (this.viewport.top >> 9) - 1
-    const chunkColEnd = (this.viewport.right >> 9) + 1
-    const chunkRowEnd = (this.viewport.bottom >> 9) + 1
-
-    console.log(chunkColStart, chunkRowStart, chunkColEnd, chunkRowEnd)
-
-    for (let j = chunkRowStart; j < chunkRowEnd; j++) {
-      for (let i = chunkColStart; i < chunkColEnd; i++) {
-        if (this.map.groundLayer.getChildByName(this.getChunkName(i, j))) continue
-        this.map.groundLayer.addChild(this.getChunkSprite(i, j))
-      }
-    }
-  }
-
-  private getChunkName(col: number, row: number) {
-    return `Chunk_${col}_${row}`
-  }
-
-  private getHeightValue(i: number, j: number) {
-    return this.noise.perlin2(i / 80, j / 80)
-      + 0.5 * this.noise.perlin2(i / 50, j / 50)
-      + 0.25 * this.noise.perlin2(i / 25, j / 25)
+    mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer)
   }
 
   update(dt: number) {
