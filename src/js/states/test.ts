@@ -117,8 +117,8 @@ export default class TestState extends State {
     const mapGenerator = new MapGenerator(1)
 
 
-    this.viewport.on('moved-end', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
-    this.viewport.on('zoomed-end', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
+    this.viewport.on('moved', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
+    this.viewport.on('zoomed', () => mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer))
 
     mapGenerator.loadChunksInView(this.viewport, this.map.groundLayer)
   }
