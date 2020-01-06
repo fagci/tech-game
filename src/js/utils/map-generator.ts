@@ -32,6 +32,7 @@ export default class MapGenerator {
     const nextChunkTileCol = (col + 1) << 5
 
     const chunkGraphics = new PIXI.Graphics()
+    chunkGraphics.cacheAsBitmap = true
     chunkGraphics.position.set(x, y)
     chunkGraphics.name = MapGenerator.getChunkName(col, row)
 
@@ -63,14 +64,13 @@ export default class MapGenerator {
     for (textureName in textureTiles) {
       if (!textureTiles.hasOwnProperty(textureName)) continue
       texture = window.app.textures[textureName]
-      texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
       chunkGraphics.beginTextureFill({texture})
       textureTiles[textureName].forEach((c: { x: number; y: number }) => chunkGraphics.drawRect(c.x, c.y, 16, 16))
       chunkGraphics.endFill()
     }
 
     if (waterTiles.length > 0) {
-      chunkGraphics.beginTextureFill({texture: window.app.textures.water})
+      chunkGraphics.beginTextureFill({texture: window.app.textures.water_1})
       waterTiles.forEach((c: { x: number; y: number }) => chunkGraphics.drawRect(c.x, c.y, 16, 16))
     }
 
@@ -78,10 +78,10 @@ export default class MapGenerator {
   }
 
   loadChunksInView(viewport: Viewport, container: PIXI.Container) {
-    const chunkColStart = (viewport.left >> 9) - 1
-    const chunkRowStart = (viewport.top >> 9) - 1
-    const chunkColEnd = (viewport.right >> 9) + 1
-    const chunkRowEnd = (viewport.bottom >> 9) + 1
+    const chunkColStart = (viewport.left >> 9) - 2
+    const chunkRowStart = (viewport.top >> 9) - 2
+    const chunkColEnd = (viewport.right >> 9) + 2
+    const chunkRowEnd = (viewport.bottom >> 9) + 2
 
     const persistChunks: Array<string> = []
 
