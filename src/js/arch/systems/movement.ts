@@ -13,9 +13,7 @@ export default class Movement extends System {
         let {force, velocity, mass, maxVelocity} = Moving
         velocity.x += force.x * dt / mass
         velocity.y += force.y * dt / mass
-if(!velocity.copyFrom) {
-  console.log(entity._name)
-}
+
         velocity.copyFrom(limitVector(velocity, maxVelocity))
 
         Position.x += velocity.x
