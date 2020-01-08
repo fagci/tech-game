@@ -16,7 +16,7 @@
     },
     "Solid": {},
     "Debug": {
-      "debugTextTemplate": "#${this.entity._uid}\nTeam: ${this.entity.Team.value}\nB: ${this.entity.Solid.x},${this.entity.Solid.y},${this.entity.Solid.width},${this.entity.Solid.height}"
+      "debugTextTemplate": "#${this.entity._uid}\nTeam: ${this.entity.Team.value}"
     }
   },
   "TurretGun": {
