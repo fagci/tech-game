@@ -53,6 +53,7 @@ export default class StateManager extends Array {
   attachTopState = () => {
     const state = this.top()
     if (!state) return
+    this.container.children.forEach(ch => ch.destroy())
     this.container.addChild(state)
   }
 }

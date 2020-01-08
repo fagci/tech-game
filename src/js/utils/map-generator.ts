@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
 
 export default class MapGenerator {
-  noise: Noise
+  private readonly noise: Noise
   static readonly TILE_SIZE = 16
   static readonly TILE_SIZE_POWER = 4
   static readonly CHUNK_SIZE_POWER = 5
@@ -54,7 +54,7 @@ export default class MapGenerator {
         textureName = MapGenerator.getBiome(heightValue)
 
         if (textureTiles[textureName] === undefined) textureTiles[textureName] = []
-        tilePos = {x: tx, y: ty}
+        tilePos = {x: tx, y: ty, h: heightValue}
         textureTiles[textureName].push(tilePos)
 
         if (heightValue < 0.05) waterTiles.push(tilePos)
@@ -73,15 +73,15 @@ export default class MapGenerator {
       textureTiles[textureName].forEach((c: { x: number; y: number }) => {
         chunkGraphics.drawRect(c.x, c.y, MapGenerator.TILE_SIZE, MapGenerator.TILE_SIZE)
       })
-      chunkGraphics.endFill()
     }
 
     if (waterTiles.length > 0) {
-      chunkGraphics.beginTextureFill({texture: window.app.textures.water_1})
       waterTiles.forEach((c: { x: number; y: number }) => {
+        chunkGraphics.beginTextureFill({
+          texture: window.app.textures.water_1,
+        })
         chunkGraphics.drawRect(c.x, c.y, MapGenerator.TILE_SIZE, MapGenerator.TILE_SIZE)
       })
-      chunkGraphics.endFill()
     }
 
     return chunkGraphics

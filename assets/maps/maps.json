@@ -2,10 +2,10 @@
   "Test": {
     "entities": [
       {
-        "Turret": {"Position": {"x": 4096, "y": 4160}}
+        "Turret": {"Position": {"x": 4096, "y": 4160}, "Team": {"value": "Alpha"}}
       },
       {
-        "Turret": {"Position": {"x": 4032, "y": 4032}}
+        "Turret": {"Position": {"x": 4032, "y": 4032}, "Team": {"value": "Beta"}}
       },
       {
         "EG": {"Position": {"x": 3904, "y": 4096}}

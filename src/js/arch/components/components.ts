@@ -83,7 +83,8 @@ export class Moving implements Component {
 export class Destroy implements Component {
 }
 
-export class Solid implements Component {
+export class Solid extends PIXI.Rectangle implements Component {
+  collisions: {[entityId: number]: Entity} = {}
 }
 
 export class Dead implements Component {
@@ -213,18 +214,11 @@ export class Slots {
   }
 }
 
-export enum Teams {
-  ALPHA,
-  BETA,
-  GAMMA,
-  THETA
-}
-
 export class Team implements Component {
-  value: number = Teams.ALPHA
+  value: string
 
-  constructor(value: any) {
-    this.value = typeof value === 'string' ? Teams[value] : value
+  constructor(options: { items: [] }) {
+    if (options) Object.assign(this, options)
   }
 }
 

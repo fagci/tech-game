@@ -9,4 +9,8 @@ export default class System implements ISystem {
 
   update(dt: number): void {
   }
+
+  get entities () {
+    return this.world.entities
+  }
 }

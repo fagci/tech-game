@@ -6,7 +6,7 @@ import * as PIXI from 'pixi.js'
 
 export default class Weapons extends System {
   update(dt: number): void {
-    this.world.entities.forEach(entity => {
+    this.entities.forEach(entity => {
       if (entity.Dead) return
       let Slots: Components.Slots, Position: Components.Position, LifeTime: Components.LifeTime
       ({Slots, Position, LifeTime} = entity)
@@ -37,6 +37,7 @@ export default class Weapons extends System {
               const moving = new Components.Moving({velocity: velocityVector})
               bullet.addComponent(moving)
               bullet.addComponent(damageSource)
+              bullet.addComponent(new Components.Team({value: entity.Team.value}))
               bullet.Position.copyFrom(Position)
               this.world.addEntity(bullet)
             }

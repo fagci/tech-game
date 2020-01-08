@@ -3,9 +3,13 @@ import {distance} from '../../utils/geometry'
 
 export default class Energy extends System {
   update(dt: number) {
-    const energySources = this.world.entities.filter(({EnergyGenerator, EnergyTransponder, EnergyConsumer}) => {
-      return !!EnergyGenerator || !!EnergyTransponder || !!EnergyConsumer
-    })
+    const energySources = []
+    for (const [id, entity] of this.entities) {
+      let {EnergyGenerator, EnergyTransponder, EnergyConsumer} = entity
+      if(!!EnergyGenerator || !!EnergyTransponder || !!EnergyConsumer) {
+        energySources.push(entity)
+      }
+    }
 
     this.world.entities.forEach(entity => {
       if (entity.Dead) return

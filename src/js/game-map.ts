@@ -20,6 +20,12 @@ export default class GameMap extends PIXI.Container {
     this.groundLayer = new PIXI.Container()
     this.undergroundLayer = new PIXI.Container()
 
+    this.skyLayer.name = 'Sky'
+    this.entitiesLayer.name = 'Entities'
+    this.groundLayer.name = 'Ground'
+    this.undergroundLayer.name = 'Underground'
+
+
     this.addChild(this.undergroundLayer)
     this.addChild(this.groundLayer)
     this.addChild(this.entitiesLayer)

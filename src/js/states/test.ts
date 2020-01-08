@@ -14,6 +14,7 @@ import Health from '../arch/systems/health'
 import Destroy from '../arch/systems/destroy'
 
 import MapGenerator from '../utils/map-generator'
+import Damage from '../arch/systems/damage'
 
 export default class TestState extends State {
   WORLD_WIDTH: number
@@ -34,6 +35,7 @@ export default class TestState extends State {
     const {height: screenHeight, width: screenWidth} = window.app.screen
 
     this.map = new GameMap()
+    this.map.groundLayer.parentGroup = window.app.mapGroup
     this.viewport = new Viewport({
       screenWidth,
       screenHeight,
@@ -43,6 +45,7 @@ export default class TestState extends State {
     })
 
     this.gui = new GUI(this.map, this.viewport)
+    this.gui.parentGroup = window.app.guiGroup
 
 
     // Set things options
@@ -82,6 +85,7 @@ export default class TestState extends State {
         .addSystem(new Energy())
         .addSystem(new Weapons())
         .addSystem(new Collision())
+        .addSystem(new Damage())
         .addSystem(new Health())
         .addSystem(new Movement())
         .addSystem(new Render())

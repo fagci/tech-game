@@ -4,11 +4,11 @@ import * as PIXI from 'pixi.js'
 
 export default class World {
   map: PIXI.Container
-  private _entities: Entity[]
+  private _entities: Map<number, Entity>
   private _systems: System[]
 
   constructor(mapName: string, map: PIXI.Container) {
-    this._entities = []
+    this._entities = new Map()
     this._systems = []
     this.map = map
 
@@ -21,15 +21,15 @@ export default class World {
 
   addEntity(...entities: Entity[]): World {
     entities.forEach(entity => {
-      this._entities.push(entity)
+      this._entities.set(entity._uid, entity)
       // console.log(`[WORLD] + ${entity}`)
     })
     return this
   }
 
-  removeEntity(...entities: Entity[]) {
+  removeEntity(entity: Entity) {
     // console.log(`[WORLD] - ${entities}`)
-    this._entities = this._entities.filter((i) => !entities.includes(i))
+    this._entities.delete(entity._uid)
     return this
   }
 
@@ -54,7 +54,11 @@ export default class World {
   }
 
   update(dt: number) {
-    this._systems.forEach(system => system.update(dt))
+    this._systems.forEach(system => {
+      console.timeStamp(`Update system ${system.constructor.name} begin`)
+      system.update(dt)
+      console.timeStamp(`Update system ${system.constructor.name} end`)
+    })
   }
 
   toString() {

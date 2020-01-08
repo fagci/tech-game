@@ -104,13 +104,16 @@ export default class Entity {
       entity.addComponent(component)
     }
 
-    let Slots: Slots, Health: Health, RenderObject: RenderObject, Debug: Components.Debug,
-      EnergyGenerator: Components.EnergyGenerator, EnergyTransponder: Components.EnergyTransponder
-    ({Slots, Health, RenderObject, Debug, EnergyGenerator, EnergyTransponder} = entity)
+    let Position: Position, Slots: Slots, Health: Health, RenderObject: RenderObject, Debug: Components.Debug,
+      EnergyGenerator: Components.EnergyGenerator, EnergyTransponder: Components.EnergyTransponder, Solid: Components.Solid
+    ({Position, Slots, Health, RenderObject, Debug, EnergyGenerator, EnergyTransponder, Solid} = entity)
 
     if (RenderObject) {
       RenderObject.parentGroup = window.app.foreGroup
       parentRenderContainer.addChild(RenderObject)
+      if(Solid) {
+        RenderObject.sprite.getLocalBounds(Solid) 
+      }
     }
 
     if (Slots) {
