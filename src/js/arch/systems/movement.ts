@@ -5,21 +5,24 @@ import * as PIXI from 'pixi.js'
 
 export default class Movement extends System {
   update(dt: number) {
-    this.world.entities.forEach(entity => {
-      if (entity.Dead) return
+    for (const [id, entity] of this.entities) {
+      if (entity.Dead) continue
       let Position: Components.Position, Moving: Components.Moving
       ({Position, Moving} = entity.components)
       if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
-        Moving.velocity.x += Moving.force.x * dt / Moving.mass
-        Moving.velocity.y += Moving.force.y * dt / Moving.mass
+        let {force, velocity, mass, maxVelocity} = Moving
+        velocity.x += force.x * dt / mass
+        velocity.y += force.y * dt / mass
+if(!velocity.copyFrom) {
+  console.log(entity._name)
+}
+        velocity.copyFrom(limitVector(velocity, maxVelocity))
 
-        Moving.velocity = limitVector(Moving.velocity, Moving.maxVelocity)
+        Position.x += velocity.x
+        Position.y += velocity.y
 
-        Position.x += Moving.velocity.x
-        Position.y += Moving.velocity.y
-
-        Moving.direction = pointDirection(new PIXI.Point(0, 0), Moving.velocity)
+        Moving.direction = pointDirection(new PIXI.Point(0, 0), velocity)
       }
-    })
+    }
   }
 }

@@ -15,17 +15,15 @@ export default class Damage extends System {
   }
 
   update(dt: number) {
-    this.world.entities.forEach(from => {
-      if(!from.Solid) return
+    for (const [id, from] of this.world.getEntitiesWith('DamageSource')) {
       let collisions = from.Solid.collisions
 
       for(let toID in collisions){
-        if(!from.DamageSource) continue
         let collisionTo = collisions[toID]
         if(!collisionTo) continue
         if(from.Team && collisionTo.Team && from.Team.value === collisionTo.Team.value) continue
-        this.addDamage(from.DamageSource.from, collisionTo, from)
+        from.DamageSource && this.addDamage(from.DamageSource.from, collisionTo, from)
       }
-    })
+    }
   }
 }

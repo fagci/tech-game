@@ -3,10 +3,10 @@ export function pointDirection(anchor: PIXI.IPoint, point: PIXI.IPoint) {
 }
 
 export function directionVector(anchor: PIXI.IPoint, direction: number, multiplier: number = 1.0) {
-  return {
-    x: anchor.x + Math.cos(direction) * multiplier,
-    y: anchor.y + Math.sin(direction) * multiplier,
-  }
+  return new PIXI.Point(
+    anchor.x + Math.cos(direction) * multiplier,
+    anchor.y + Math.sin(direction) * multiplier,
+  )
 }
 
 export function limit(value: number, max: number) {

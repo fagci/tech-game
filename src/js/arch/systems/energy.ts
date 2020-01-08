@@ -3,26 +3,26 @@ import {distance} from '../../utils/geometry'
 
 export default class Energy extends System {
   update(dt: number) {
-    const energySources = []
+    const energySources = new Map()
     for (const [id, entity] of this.entities) {
       let {EnergyGenerator, EnergyTransponder, EnergyConsumer} = entity
-      if(!!EnergyGenerator || !!EnergyTransponder || !!EnergyConsumer) {
-        energySources.push(entity)
+      if(EnergyGenerator || EnergyTransponder || EnergyConsumer) {
+        energySources.set(id, entity)
       }
     }
 
-    this.world.entities.forEach(entity => {
-      if (entity.Dead) return
+    for (const [id, entity] of this.entities) {
+      if (entity.Dead) continue
       const {EnergyTransponder, EnergyGenerator, EnergyConsumer} = entity.components
-      if (!EnergyTransponder && !EnergyGenerator && !EnergyConsumer) return
+      if (!EnergyTransponder && !EnergyGenerator && !EnergyConsumer) continue
 
       if (EnergyGenerator) {
         EnergyGenerator.generate()
       }
 
       if (EnergyTransponder) {
-        energySources.forEach(source => {
-          if (source._uid === entity._uid) return
+        for (const [sourceId, source] of energySources) {
+          if (sourceId === id) continue
 
           const {
             EnergyGenerator: Generator,
@@ -43,12 +43,12 @@ export default class Energy extends System {
           if (Consumer && distanceToSource <= EnergyTransponder.range) {
             Consumer.takeFrom(EnergyTransponder)
           }
-        })
+        }
       }
 
       if (EnergyConsumer) {
         EnergyConsumer.consume() // TODO: пустить энергию в нужное русло =)
       }
-    })
+    }
   }
 }

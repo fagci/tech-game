@@ -24,11 +24,11 @@ export default class Collision extends System {
   }
 
   update(dt: number): void {
-    for (const [fromId, from] of this.entities) {
-      let Solid: Components.Solid, Position: Components.Position
-      ({Solid, Position} = from)
+    for (const [fromId, from] of this.world.getEntitiesWith('Solid')) {
+      let Position: Components.Position
+      ({Position} = from)
       
-      if (!Solid || !Position) return
+      if (!Position) continue
       
       for (const [toId, to] of this.entities) {
         if(toId === fromId || !to.Solid || !to.Position) continue

@@ -65,17 +65,13 @@ export class DamageSource implements Component {
 }
 
 export class Moving implements Component {
-  mass: number
-  force: PIXI.IPoint
-  velocity: PIXI.IPoint
+  mass: number = 1
+  force: PIXI.IPoint = new PIXI.Point(0, 0)
+  velocity: PIXI.IPoint = new PIXI.Point(0, 0)
   direction: number = 0
-  maxVelocity: number
+  maxVelocity: number = 12 // TODO: needed?
 
   constructor(options?: {}) {
-    this.mass = 1
-    this.force = new PIXI.Point(0, 0)
-    this.velocity = new PIXI.Point(0, 0)
-    this.maxVelocity = 12 // TODO: needed?
     if (options) Object.assign(this, options)
   }
 }
@@ -217,7 +213,7 @@ export class Slots {
 export class Team implements Component {
   value: string
 
-  constructor(options: { items: [] }) {
+  constructor(options: { value: string }) {
     if (options) Object.assign(this, options)
   }
 }
@@ -236,6 +232,13 @@ const Weapons = {
 export class Weapon implements Component {
   capacity: number = 0
   lastFire: number = 0
+
+  roundCapacity: number
+  initialCapacity: number
+  reloadTime: number
+  damage: number
+  fireDelay: number
+  spreadAngle: number
 
   constructor(options: {}) {
     if (options) Object.assign(this, options)

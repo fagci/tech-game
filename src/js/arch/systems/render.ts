@@ -3,19 +3,15 @@ import {Destroy} from '../components/components'
 
 export default class Render extends System {
   update(dt: number) {
-    this.world.entities.forEach(entity => {
+    for (const [id, entity] of this.entities) {
       let {RenderObject, Position, Moving, Debug, Dissolve} = entity
-      if (!RenderObject) return
-      if (Position) {
-        RenderObject.position.copyFrom(Position)
-      }
-      if (Moving) {
-        RenderObject.rotation = Moving.direction
-      }
+      if (!RenderObject) continue
 
-      if (Debug) {
-        Debug.update(dt)
-      }
+      if (Position) RenderObject.position.copyFrom(Position)
+      
+      if (Moving) RenderObject.sprite.rotation = Moving.direction
+
+      if (Debug) Debug.update(dt)
 
       if (Dissolve) {
         Dissolve.value -= window.app.ticker.elapsedMS
@@ -26,6 +22,6 @@ export default class Render extends System {
           RenderObject.alpha = Dissolve.value / Dissolve.max
         }
       }
-    })
+    }
   }
 }

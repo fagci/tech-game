@@ -2,23 +2,22 @@ import Component, {ComponentType} from './component'
 import * as Components from '../components/components'
 import {Health, RenderObject, Slots} from '../components/components'
 import * as PIXI from 'pixi.js'
+import World from './world'
 
 export default class Entity {
 
   static __uid: number = 0
   _uid: number
   _name: string
+  world: World
 
   [key: string]: any
 
-  /**
-   * Create an entity with components as arguments
-   * @description Can create entity with components at once
-   */
-  constructor(name: string, ...components: ComponentType<Component>[]) {
+  constructor(name: string, world: World) {
+    if(!world) throw `World required for entity`
+    this.world = world
     this._uid = ++Entity.__uid
     this._name = name
-    components.forEach(component => this.addComponent(component))
   }
 
   _components: { [name: string]: any } = {}
@@ -41,11 +40,14 @@ export default class Entity {
     })
 
     this.setComponent(name, component)
+    this.world.addEntityComponent(this, name)
     return this
   }
 
   removeComponent<T extends Component>(component: ComponentType<T>): Entity {
     const name = component.constructor.name
+
+    this.world.removeEntityComponent(this, name)
 
     delete this[name]
     delete this._components[name]
@@ -72,7 +74,7 @@ export default class Entity {
     return this._components[name]
   }
 
-  static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer?: PIXI.Container) {
+  static create(entityDefinition: { [x: string]: {}; } | string, parentRenderContainer: PIXI.Container, world: World) {
     let entityName: string
     let entityOptions: { [key: string]: {} } = {}
 
@@ -84,7 +86,7 @@ export default class Entity {
       entityName = entityDefinition
     }
 
-    const entity = new Entity(entityName)
+    const entity = new Entity(entityName, world)
     const defaultEntityOptions = window.app.entities[entityName] || {}
 
     const componentNames = [...Object.keys(defaultEntityOptions), ...Object.keys(entityOptions)]
@@ -118,7 +120,10 @@ export default class Entity {
 
     if (Slots) {
       Slots.places?.forEach((item: any, key: number) => {
-        Slots.items[key] = Entity.create(item, entity.RenderObject)
+        let slotItem = Entity.create(item, entity.RenderObject, world)
+        let {Team} = entity
+        if(Team) slotItem.addComponent(new Components.Team({value: Team.value}))
+        Slots.items[key] = slotItem
       })
     }
 
