@@ -36,7 +36,7 @@ export default class MapGenerator {
 
     const chunkGraphics = new PIXI.Graphics()
     chunkGraphics.cacheAsBitmap = true
-    chunkGraphics.lineStyle(0, 0, 0, 0)
+    chunkGraphics.lineStyle(0)
     chunkGraphics.position.set(tileCol << MapGenerator.TILE_SIZE_POWER, tileRow << MapGenerator.TILE_SIZE_POWER)
     chunkGraphics.name = MapGenerator.getChunkName(col, row)
 
@@ -75,10 +75,10 @@ export default class MapGenerator {
     }
 
     if (waterTiles.length > 0) {
+      chunkGraphics.beginTextureFill({
+        texture: window.app.textures.water_1,
+      })
       for(const c of waterTiles) {
-        chunkGraphics.beginTextureFill({
-          texture: window.app.textures.water_1,
-        })
         chunkGraphics.drawRect(c.x, c.y, MapGenerator.TILE_SIZE, MapGenerator.TILE_SIZE)
       }
     }
@@ -107,9 +107,9 @@ export default class MapGenerator {
       }
     }
     console.timeEnd('Generate chunks')
+
     for(const children of container.children) {
-      if (persistChunks[children.name]) continue
-      children.destroy()
+      if (!persistChunks[children.name]) children.destroy()
     }
   }
 
