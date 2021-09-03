@@ -10,13 +10,13 @@
     "prebuild": "rm -rf dist",
     "build": "parcel build src/index.html --public-url '.'"
   },
-  "repository": "git+https://github.com/fagcinsk/tech-game.git",
+  "repository": "git+https://github.com/fagci/tech-game.git",
   "author": "Mikhail Yudin aka fagci",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fagcinsk/tech-game/issues"
+    "url": "https://github.com/fagci/tech-game/issues"
   },
-  "homepage": "https://github.com/fagcinsk/tech-game#readme",
+  "homepage": "https://github.com/fagci/tech-game#readme",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
